@@ -27,7 +27,7 @@
     <main class="flex justify-center items-center h-screen font-[Lato]">
         <section class="flex flex-col rounded-2xl justify-center items-center bg-gray-200 h-115 w-100 gap-10 shadow-xl shadow-black-500">
 
-            <p class="text-5xl">Entrar</p>
+            <p class="text-5xl">Bem-Vindo!</p>
 
             <div class="flex flex-col gap-5" id="formulario">
 
@@ -36,23 +36,23 @@
 
                 <input class="border-gray-500 rounded-sm px-3 py-1" type="password" placeholder="Digite sua senha..." id="senha">
 
-                <button class="btn btn-neutral bg-green-700 px-7 " onclick="fazer_login()">Logar</button>
+                <button class="btn btn-neutral bg-green-700 px-7 " onclick="fazer_cadastro()">Cadastrar</button>
             </div>
 
             <div class="flex flex-col gap-1 items-center " ">
-                <p>Ainda não tem uma conta?</p>
+                <p>Já tem uma conta?</p>
 
-                <a href="{{ url_for('cadastro') }}" 
+                <a href="{{ url_for('login') }}" 
                 class="text-blue-600 hover:underline font-lato">
-                Clique aqui para se cadastrar
+                Clique aqui para logar.
                 </a>
             </div>
             
-            <p id="feedback-login" class="p-2"></p>
+            <p id="feedback-cadastro" class="p-2"></p>
         </section>                                                                                                                                                  
     </main>
     <script>
-        function fazer_login() {
+        function fazer_cadastro() {
 
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
@@ -63,7 +63,7 @@
                 senha: senha
             }
 
-            fetch ('/validar_login', {
+            fetch ('/cadastrar', {
 
                 method: 'POST',
                 headers: {
@@ -72,17 +72,7 @@
                 body: JSON.stringify(dados)
             })
             .then(resposta => resposta.json())
-            .then(resultado => {
-
-                if (resultado.status === "sucesso") {
-                    // Se o login for válido, manda o usuário para a página principal
-                    window.location.href = "/dashboard";
-                } else {
-                    // Se der erro (senha errada, por exemplo), mostra a mensagem na tela
-                    document.getElementById('feedback-login').innerText = resultado.mensagem;
-                    document.getElementById('feedback-login').style.color = "red";
-                }
-            })
+           
         }
     </script>
 </body>
