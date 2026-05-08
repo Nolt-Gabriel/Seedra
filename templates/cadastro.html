@@ -10,23 +10,77 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Balsamiq Sans', 'sans-serif'],
+            lato: ['Lato', 'sans-serif']
+          },
+          colors: {
+            seedra: {
+              leafDark: '#044b2d',
+              leafMid: '#587e49',
+              leafLight: '#78b863',
+              seedBrown: '#9a774c',
+              seedSand: '#ddd1ae',
+              seedMist: '#d9d6cc',
+              deepForest: '#001500',
+              stone: '#888784',
+              cloud: '#d9d9d9'
+            }
+          },
+          boxShadow: {
+            soft: '0 10px 30px rgba(4,75,45,0.10)',
+            card: '0 8px 24px rgba(0,21,0,0.08)'
+          },
+          backgroundImage: {
+            organic: 'radial-gradient(circle at top right, rgba(120,184,99,0.18), transparent 28%), radial-gradient(circle at bottom left, rgba(154,119,76,0.16), transparent 30%)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --leaf-dark: #044b2d;
+      --leaf-mid: #587e49;
+      --leaf-light: #78b863;
+      --seed-brown: #9a774c;
+      --seed-sand: #ddd1ae;
+      --seed-mist: #d9d6cc;
+      --deep-forest: #001500;
+      --stone: #888784;
+      --cloud: #d9d9d9;
+      --surface: rgba(249, 248, 243, 0.78);
+      --surface-strong: rgba(255, 252, 246, 0.9);
+      --line: rgba(4, 75, 45, 0.10);
+    }
 
-    <script>
-        tailwind.config = {
-        theme: {
-            extend: {
-            fontFamily: {
-                lato: ['Lato', 'sans-serif'],
-            }
-            }
-        }
-        }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Balsamiq Sans', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(120,184,99,0.18), transparent 20%),
+        radial-gradient(circle at bottom right, rgba(154,119,76,0.14), transparent 24%),
+        linear-gradient(135deg, #f4f0e8 0%, #eef4ea 40%, #f7f4ef 100%);
+      color: #183124;
+    }
+  </style>
+
     </script>
 </head>
 <body class="bg-[#517547]">
     <main class="flex justify-center items-center h-screen font-[Lato]">
 
-        <section class="flex flex-col border rounded-2xl justify-center items-center bg-gray-200 h-115 w-100 gap-10 shadow-2xl shadow-green-800">
+        <section class="flex flex-col rounded-2xl justify-center items-center bg-gray-200 h-115 w-100 gap-10 shadow-2xl shadow-green-800">
 
             <form action="{{ url_for('cadastro') }}" method="POST">
                 <p class="text-5xl">Bem-Vindo!</p>
