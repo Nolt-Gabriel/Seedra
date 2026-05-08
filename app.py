@@ -1,3 +1,7 @@
+# Toda vez que abrir o arquivo ja existente, utilizar -> . venv/bin/activate
+# Comandos Flask -> pip install flask; flask run --debug
+# Se for primeira vez abrindo o espaço virtual -> python -m venv venv -> . venv/bin/activate
+
 from flask import Flask, render_template, request, jsonify
 from hash import hashear, validar_senha
 from flask_sqlalchemy import SQLAlchemy
@@ -8,9 +12,12 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 db.init_app(app)
 
+@app.route('/')
+def home():
+  return render_template('home.html')
+
 @app.route('/login')
 def login():
-  
   return render_template('login.html')
 
 @app.route('/validar_login', methods=['POST'])
@@ -18,8 +25,8 @@ def validar_login():
 
   dados = request.get_json()
   
-  if not dados[email]:
-    return jsonify({"error": "Missing request body"}), 400
+  if not dados.get('email'):
+    return jsonify({"error": "Missing email"}), 400
   
   email = dados.get('email')
   senha = dados.get('senha')
