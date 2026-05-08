@@ -25,55 +25,44 @@
 </head>
 <body class="bg-[#517547]">
     <main class="flex justify-center items-center h-screen font-[Lato]">
+
         <section class="flex flex-col border rounded-2xl justify-center items-center bg-gray-200 h-115 w-100 gap-10 shadow-2xl shadow-green-800">
 
-            <p class="text-5xl">Bem-Vindo!</p>
+            <form action="{{ url_for('cadastro') }}" method="POST">
+                <p class="text-5xl">Bem-Vindo!</p>
 
-            <div class="flex flex-col gap-5" id="formulario">
+                <div class="flex flex-col gap-5" id="formulario">
 
-                <input class="border-gray-500 rounded-sm px-3 py-1" 
-                type="email" placeholder="Digite seu email..." id="email">
+                    <input class="border-gray-500 rounded-sm px-3 py-1" 
+                    type="email" placeholder="Digite seu email..." id="email" name="email">
 
-                <input class="border-gray-500 rounded-sm px-3 py-1" type="password" placeholder="Digite sua senha..." id="senha">
+                    <input class="border-gray-500 rounded-sm px-3 py-1" type="password" name="senha" placeholder="Digite sua senha..." id="senha">
 
-                <button class="btn btn-neutral bg-green-700 px-7 " onclick="fazer_cadastro()">Cadastrar</button>
-            </div>
+                    <button class="btn btn-neutral bg-green-700 px-7" type="submit">Cadastrar</button>
+                </div>
 
-            <div class="flex flex-col gap-1 items-center " ">
-                <p>Já tem uma conta?</p>
+                <div class="flex flex-col gap-1 items-center " ">
+                    <p>Já tem uma conta?</p>
 
-                <a href="{{ url_for('login') }}" 
-                class="text-blue-600 hover:underline font-lato">
-                Clique aqui para logar.
-                </a>
-            </div>
+                    <a href="{{ url_for('login') }}" 
+                    class="text-blue-600 hover:underline font-lato">
+                    Clique aqui para logar.
+                    </a>
+                </div>
             
-            <p id="feedback-cadastro" class="p-2"></p>
+                
+
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for categoria, mensagem in messages %}
+                    {% if categoria == 'erro' %}
+                        <p class="text-red-600 text-sm">{{ mensagem }}</p>
+                    {% else %}
+                        <p class="text-green-600 text-sm">{{ mensagem }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
         </section>                                                                                                                                                  
     </main>
-    <script>
-        function fazer_cadastro() {
-
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('senha').value;
-
-            const dados = {
-
-                email: email,
-                senha: senha
-            }
-
-            fetch ('/cadastrar', {
-
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dados)
-            })
-            .then(resposta => resposta.json())
-           
-        }
-    </script>
 </body>
 </html>

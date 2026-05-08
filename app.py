@@ -2,93 +2,66 @@
 # Comandos Flask -> pip install flask; flask run --debug
 # Se for primeira vez abrindo o espaço virtual -> python -m venv venv -> . venv/bin/activate
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, url_for, redirect, flash
 from hash import hashear, validar_senha
-from flask_sqlalchemy import SQLAlchemy
 from db import db
 from models import Usuarios
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
+app.config['SECRET_KEY'] = 'acre_viveiro_de_dinossauros'
 db.init_app(app)
+with app.app_context():
+  db.create_all()
 
 @app.route('/')
 def home():
-  return render_template('home.html')
+  return render_template('dashboard.html')
 
-@app.route('/login')
-def login():
-  return render_template('login.html')
-
-@app.route('/validar_login', methods=['POST'])
-def validar_login():
-
-  dados = request.get_json()
-  
-  if not dados.get('email'):
-    return jsonify({"error": "Missing email"}), 400
-  
-  email = dados.get('email')
-  senha = dados.get('senha')
-
-  print(dados)
-  
-  
-  User = {
-    "email": email,
-    "senha": senha
-  }
-
-  return render_template("dashboard.html")
-  # --------- Fazer o reconhecimento com o banco de dados -----------
-
-
-
-
-  # TESTE DE CONEXÃO
-  #if email == "admin@teste.com" and senha == "1234":
-  #    return jsonify({
-  #        "status": "sucesso",
-  #        "mensagem": "Login realizado!"
-  #    })
-  #else:
-  #    return jsonify({
-  #        "status": "erro",
-  #        "mensagem": "E-mail ou senha incorretos."
-  #    })
-    
-@app.route('/cadastro', methods =['GET'])
+@app.route('/cadastro', methods =['GET', 'POST'])
 def cadastro():
+
+  if request.method == ('POST'):
+    senha = request.form.get('senha')
+    email = request.form.get('email')
+
+    usuario_existente = Usuarios.query.filter_by(email=email).first()
+
+    if usuario_existente:
+      flash("Usuário já existe.", 'erro')
+      return redirect(url_for('cadastro'))
+
+    else:
+      senha_hash = hashear(senha)
+      novo_usuario = Usuarios(email=email, senha=senha_hash)
+      db.session.add(novo_usuario)
+      db.session.commit()
+  
   return render_template("cadastro.html")
 
-@app.route('/cadastrar', methods =['POST'] )
-def fazer_cadastro():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
 
-  dados = request.get_json()
-  email = dados.get("email")
-  senha = dados.get("senha")
+  if request.method == ('POST'):
+    email = request.form.get('email')
+    senha = request.form.get('senha')
 
-  senha_hasheada = hashear(senha)
+    usuario = Usuarios.query.filter_by(email=email).first()
 
-  usuario = Usuarios(
+    if usuario:
+      if validar_senha(usuario.senha, senha):
+        return redirect(url_for('home'))
+      else:
+        flash("Senha Incorreta!", 'erro')
+        return redirect(url_for('login'))
+    else:
+      flash("Usuário não encontrado!", 'erro')
+      return redirect(url_for('login'))
+    
+  return render_template('login.html')
 
-    email = email,
-    senha = senha_hasheada
 
-  )
 
-  db.session.add(usuario)
-  db.session.commit()
-
-  #----------- Fazer a parte do banco de dados agora ----------------
-  print(f"Vou salvar o email {email} e a senha {senha_hasheada}")
-   
-  return render_template('dashboard.html')
-
-@app.route('/dashboard')
-def dashboard():
-  
-  return render_template('dashboard.html')
 
 
 

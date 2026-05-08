@@ -5,8 +5,5 @@ def hashear(senha):
     return senha_criptografada
 
 def validar_senha(senhacrypt, senha):
-    validacao = check_password_hash(senhacrypt, senha)  
+    return check_password_hash(senhacrypt, senha)  
 
-def exibir():
-
-    print("senha")
