@@ -37,4 +37,4 @@ O **SEEDRA** é uma aplicação desenvolvida para facilitar o gerenciamento e co
 ## Instalação e Execução
 
 Pré-requisitos
-`Os requisitos estão presentes no arquivo requirements.txt`
+- `Os requisitos estão presentes no arquivo requirements.txt`
