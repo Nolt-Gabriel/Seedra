@@ -16,7 +16,7 @@
 O **SEEDRA** é uma aplicação desenvolvida para facilitar o gerenciamento e consulta de espécies vegetais. Seja para hortas domésticas, viveiros, ou coleções botânicas, o sistema centraliza todas as informações essenciais de cada planta ou semente em um único lugar, de forma organizada e acessível.
  
 <p align="center">
-    <img  src=./static/seedot.gif> 
+    <img  align="center" src=./static/seedot.gif> 
 </p>
 
 ## Funcionalidades principais
