@@ -5,6 +5,9 @@
 <img align="center" src=./static/Logo-SEEDRA.png>
 <img align="left" src=./static/Logo-SEEDRA.png>
 <img align="right" src=./static/Logo-SEEDRA.png>
+<img align="right" src=./static/Logo-SEEDRA.png>
+<img align="right" src=./static/Logo-SEEDRA.png>
+<img align="right" src=./static/Logo-SEEDRA.png>
 
 ---
  
