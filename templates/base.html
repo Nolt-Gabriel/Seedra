@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEEDRA - {% block title %}Painel{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="icon" href="/static/seedot.gif" type="image/gif" />
+  <script src="/static/js/script.js" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+</head>
+<body class="font-sans">
+  <div class="dashboard-shell">
+    
+    <aside class="sidebar p-5 lg:p-6 flex flex-col gap-6">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-leaf text-4xl text-white"></i>
+        <div>
+          <p class="text-xs uppercase tracking-[0.28em] text-white/60 font-lato">Painel</p>
+          <h1 class="text-2xl font-extrabold leading-tight">SEEDRA</h1>
+        </div>
+      </div>
+
+      <nav class="space-y-2 mt-4">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-block justify-start bg-white/14 hover:bg-white/20 hover:text-white text-seedra-leafDark border-white/10 rounded-2xl"><i class="fa-solid fa-chart-pie w-5"></i> Visão Geral</a>
+        <a href="{{ url_for('catalogo') }}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl"><i class="fa-solid fa-magnifying-glass w-5"></i> Catálogo e Acervo</a>
+        <a href="{{ url_for('movimentacao') }}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl"><i class="fa-solid fa-arrow-right-arrow-left w-5"></i> Movimentações</a>
+        <a href="{{ url_for('relatorios') }}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl"><i class="fa-solid fa-file-lines w-5"></i> Relatórios</a>
+        <a href="{{ url_for('usuarios') }}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl"><i class="fa-solid fa-users w-5"></i> Usuários</a>
+      </nav>
+
+      <div class="mt-auto">
+        <a href="{{ url_for('logout') }}" class="btn btn-block justify-start btn-ghost text-red-300 hover:bg-red-500/20 hover:text-red-100 rounded-2xl"><i class="fa-solid fa-right-from-bracket w-5"></i> Sair do Sistema</a>
+      </div>
+    </aside>
+
+    <header class="topbar px-5 lg:px-8 flex items-center justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-semibold font-lato">{% block header_subtitle %}SEEDRA{% endblock %}</p>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-seedra-leafDark">{% block header_title %}Painel de Controle{% endblock %}</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        {% block header_actions %}{% endblock %}
+        <div class="avatar placeholder ml-4">
+          <div class="bg-seedra-leafMid text-white rounded-full w-10">
+            <span>OP</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      {% block content %}
+      {% endblock %}
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Novo Cadastro{% endblock %}
+{% block header_subtitle %}Acervo Geral{% endblock %}
+{% block header_title %}Cadastrar Espécie{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto soft-card rounded-[2rem] p-8">
+    <h3 class="text-2xl font-extrabold text-seedra-leafDark mb-6">Ficha da Planta / Semente</h3>
+    
+    <form action="{{ url_for('novo_item') }}" method="POST" class="space-y-6 font-lato">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-control">
+                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Nome Comum</span></label>
+                <input type="text" name="nome_comum" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required placeholder="Ex: Ipê Amarelo" />
+            </div>
+            <div class="form-control">
+                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Nome Científico</span></label>
+                <input type="text" name="nome_cientifico" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20 italic" required placeholder="Ex: Handroanthus albus" />
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="form-control">
+                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Categoria</span></label>
+                <select name="categoria" class="select select-bordered rounded-2xl bg-white border-seedra-leafDark/20" required>
+                    <option disabled selected>Selecione...</option>
+                    <option value="Semente">Semente</option>
+                    <option value="Planta">Planta</option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Qtd. Inicial</span></label>
+                <input type="number" name="quantidade" min="0" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-bold text-seedra-leafDark">Limite p/ Déficit</span>
+                    <span class="label-text-alt text-slate-500 tooltip" data-tip="Sistema avisará quando o estoque for menor que este valor"><i class="fa-solid fa-circle-info"></i></span>
+                </label>
+                <input type="number" name="limite_deficit" min="1" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required placeholder="Ex: 10" />
+            </div>
+        </div>
+
+        <div class="form-control">
+            <label class="label"><span class="label-text font-bold text-seedra-leafDark">Observações de Cuidado / Plantio</span></label>
+            <textarea name="observacoes" class="textarea textarea-bordered rounded-2xl bg-white border-seedra-leafDark/20 h-24" placeholder="Ex: Necessita de exposição direta ao sol e solo úmido."></textarea>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3 border-t border-seedra-leafDark/10 mt-6 pt-6">
+            <a href="{{ url_for('catalogo') }}" class="btn btn-ghost rounded-2xl text-slate-500">Cancelar</a>
+            <button type="submit" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white shadow-card">Salvar Registro</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
