@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Relatórios{% endblock %}
+{% block header_subtitle %}Análises{% endblock %}
+{% block header_title %}Relatórios e Exportações{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    
+    <div class="soft-card rounded-[2rem] p-6 flex flex-col items-center text-center">
+        <div class="w-16 h-16 rounded-full bg-seedra-leafLight/20 text-seedra-leafDark flex items-center justify-center mb-4">
+            <i class="fa-solid fa-book fa-2x"></i>
+        </div>
+        <h3 class="text-lg font-extrabold text-seedra-leafDark">Panorama do Acervo</h3>
+        <p class="text-sm text-slate-500 font-lato mt-2 mb-6">Planilha completa contendo todas as espécies, categorias e quantidades atuais.</p>
+        <button class="btn btn-outline rounded-2xl text-seedra-leafDark hover:bg-seedra-leafDark hover:text-white mt-auto w-full font-lato">
+            <i class="fa-solid fa-download"></i> Gerar PDF
+        </button>
+    </div>
+
+    <div class="soft-card rounded-[2rem] p-6 flex flex-col items-center text-center border border-red-100">
+        <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center mb-4">
+            <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
+        </div>
+        <h3 class="text-lg font-extrabold text-seedra-leafDark">Itens em Alerta</h3>
+        <p class="text-sm text-slate-500 font-lato mt-2 mb-6">Relatório de espécies com quantidade em déficit crítico necessitando reposição.</p>
+        <button class="btn border-0 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-2xl mt-auto w-full font-lato">
+            <i class="fa-solid fa-download"></i> Gerar PDF
+        </button>
+    </div>
+
+    <div class="soft-card rounded-[2rem] p-6 flex flex-col items-center text-center">
+        <div class="w-16 h-16 rounded-full bg-seedra-seedSand/40 text-seedra-seedBrown flex items-center justify-center mb-4">
+            <i class="fa-solid fa-clipboard-list fa-2x"></i>
+        </div>
+        <h3 class="text-lg font-extrabold text-seedra-leafDark">Balancete de Estoque</h3>
+        <p class="text-sm text-slate-500 font-lato mt-2 mb-6">Histórico consolidado de entradas e saídas de um determinado período.</p>
+        <button class="btn btn-outline rounded-2xl text-seedra-leafDark hover:bg-seedra-leafDark hover:text-white mt-auto w-full font-lato">
+            <i class="fa-solid fa-download"></i> Exportar CSV
+        </button>
+    </div>
+
+</div>
+{% endblock %}

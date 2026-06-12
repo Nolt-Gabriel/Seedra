@@ -72,7 +72,7 @@ def login():
     if usuario:
       if validar_senha(usuario.senha, senha):
         session['user_email'] = email
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('base'))
         
       else:
         flash("Senha Incorreta!", 'erro')
@@ -84,17 +84,41 @@ def login():
   
   return render_template('login.html')
 
-@app.route('/dashboard')
-def dashboard():
+@app.route('/base')
+def base():
     if 'user_email' not in session:
         flash("Faça login primeiro!", 'erro')
         return redirect(url_for('login'))
-    return render_template('dashboard.html')
+    return render_template('base.html')
 
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
+
+@app.route('/dashboard')
+def dashboard():
+   return render_template('dashboard.html')
+
+@app.route('/catalogo')
+def catalogo():
+    return render_template('catalogo.html')
+
+@app.route('/movimentacao')
+def movimentacao():
+    return render_template('movimentacao.html')
+
+@app.route('/relatorios')
+def relatorios():
+    return render_template('relatorios.html')
+
+@app.route('/usuarios')
+def usuarios():
+    return render_template('usuarios.html')
+
+@app.route('/novo_item')
+def novo_item():
+    return render_template('novo_item.html')
 
 if __name__ == '__main__':
   app.run(debug=True)

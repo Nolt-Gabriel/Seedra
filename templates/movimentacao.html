@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Movimentações{% endblock %}
+{% block header_subtitle %}Controle de Estoque{% endblock %}
+{% block header_title %}Registrar Movimentação{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    
+    <div class="soft-card rounded-[2rem] p-6 self-start">
+        <h3 class="text-xl font-extrabold text-seedra-leafDark mb-4">Novo Lançamento</h3>
+        <form action="{{ url_for('movimentacao') }}" method="POST" class="space-y-4 font-lato">
+            
+            <div class="form-control">
+                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Espécie</span></label>
+                <select class="select select-bordered rounded-2xl bg-white border-seedra-leafDark/20 w-full" required>
+                    <option disabled selected>Selecione a planta ou semente...</option>
+                    <option>Ipê Amarelo</option>
+                    <option>Pau-Brasil</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 my-4">
+                <label class="label cursor-pointer justify-start gap-3 p-4 rounded-2xl border border-seedra-leafLight/40 bg-seedra-leafLight/5 hover:bg-seedra-leafLight/10 transition">
+                    <input type="radio" name="tipo_mov" value="entrada" class="radio radio-success" checked />
+                    <span class="label-text font-bold text-seedra-leafDark"><i class="fa-solid fa-arrow-down mr-1"></i> Entrada</span>
+                </label>
+                <label class="label cursor-pointer justify-start gap-3 p-4 rounded-2xl border border-seedra-seedBrown/40 bg-seedra-seedBrown/5 hover:bg-seedra-seedBrown/10 transition">
+                    <input type="radio" name="tipo_mov" value="saida" class="radio radio-warning" />
+                    <span class="label-text font-bold text-seedra-seedBrown"><i class="fa-solid fa-arrow-up mr-1"></i> Saída</span>
+                </label>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="form-control">
+                    <label class="label"><span class="label-text font-bold text-seedra-leafDark">Quantidade</span></label>
+                    <input type="number" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required />
+                </div>
+                <div class="form-control">
+                    <label class="label"><span class="label-text font-bold text-seedra-leafDark">Data</span></label>
+                    <input type="date" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required />
+                </div>
+            </div>
+
+            <div class="form-control">
+                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Justificativa / Destino</span></label>
+                <input type="text" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" placeholder="Ex: Plantio no Bosque dos Namorados" required />
+            </div>
+
+            <button type="submit" class="btn btn-block rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white mt-4 shadow-card">Lançar Movimentação</button>
+        </form>
+    </div>
+
+    <div class="glass-card rounded-[2rem] p-6 h-full bg-organic">
+        <h3 class="text-xl font-extrabold text-seedra-leafDark mb-6">Últimas Atividades</h3>
+        <ul class="timeline timeline-vertical timeline-compact font-lato">
+            <li>
+                <div class="timeline-middle text-seedra-leafLight"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="timeline-end timeline-box bg-white/80 border-0 shadow-sm rounded-xl mb-4 ml-2">
+                    <span class="font-bold text-seedra-leafDark block">Entrada: 50 Sementes</span>
+                    <span class="text-sm text-slate-500">Ipê Amarelo • Coleta Regional</span>
+                    <p class="text-xs text-slate-400 mt-1">Hoje às 10:45 por Operador(a) Ana</p>
+                </div>
+                <hr class="bg-seedra-leafLight/30" />
+            </li>
+            <li>
+                <hr class="bg-seedra-leafLight/30" />
+                <div class="timeline-middle text-seedra-seedBrown"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                <div class="timeline-end timeline-box bg-white/80 border-0 shadow-sm rounded-xl mb-4 ml-2">
+                    <span class="font-bold text-seedra-seedBrown block">Saída: 12 Mudas</span>
+                    <span class="text-sm text-slate-500">Pau-Brasil • Plantio Setor Norte</span>
+                    <p class="text-xs text-slate-400 mt-1">Ontem às 15:30 por Operador(a) João</p>
+                </div>
+            </li>
+        </ul>
+        <a href="#" class="btn btn-ghost btn-sm text-seedra-leafMid mt-4 font-lato">Ver Histórico Completo</a>
+    </div>
+</div>
+{% endblock %}

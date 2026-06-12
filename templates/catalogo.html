@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Catálogo{% endblock %}
+{% block header_subtitle %}Acervo Geral{% endblock %}
+{% block header_title %}Catálogo de Espécies{% endblock %}
+
+{% block header_actions %}
+<a href="{{ url_for('novo_item') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+    <i class="fa-solid fa-plus"></i> Novo Cadastro
+</a>
+{% endblock %}
+
+{% block content %}
+<section class="soft-card rounded-[2rem] p-6">
+    
+    <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
+        <div class="flex-1 w-full flex gap-2">
+            <input type="text" placeholder="Buscar por nome científico ou comum..." class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/10 w-full max-w-md font-lato" />
+            <select class="select select-bordered rounded-2xl bg-white border-seedra-leafDark/10 font-lato">
+                <option selected>Todas as Categorias</option>
+                <option>Semente</option>
+                <option>Planta</option>
+            </select>
+        </div>
+        <div class="flex gap-2">
+            <button class="btn rounded-2xl bg-white text-seedra-leafDark border border-seedra-leafDark/10 hover:bg-seedra-seedSand hover:border-seedra-seedSand shadow-sm font-lato">
+                <i class="fa-solid fa-filter"></i> Filtrar
+            </button>
+            <button class="btn rounded-2xl bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 hover:border-red-300 shadow-sm font-lato">
+                <i class="fa-solid fa-triangle-exclamation"></i> Em Déficit
+            </button>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
+        <table class="table font-lato">
+            <thead class="bg-seedra-leafLight/10 text-seedra-leafDark">
+                <tr>
+                    <th>Nome Comum</th>
+                    <th>Nome Científico</th>
+                    <th>Categoria</th>
+                    <th>Qtd. Atual</th>
+                    <th>Status</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-bold text-seedra-leafDark">Ipê Amarelo</td>
+                    <td class="italic text-slate-500">Handroanthus albus</td>
+                    <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-bold">Semente</span></td>
+                    <td class="metric-value font-bold text-lg">150</td>
+                    <td><span class="badge border-0 bg-green-100 text-green-800">Estoque OK</span></td>
+                    <td class="text-center">
+                        <a href="{{ url_for('detalhes_item', id=1) }}" class="btn btn-sm btn-ghost text-seedra-leafMid rounded-xl"><i class="fa-solid fa-eye"></i></a>
+                    </td>
+                </tr>
+                <tr class="bg-red-50/50">
+                    <td class="font-bold text-seedra-leafDark">Pau-Brasil</td>
+                    <td class="italic text-slate-500">Paubrasilia echinata</td>
+                    <td><span class="badge border-0 bg-seedra-seedSand text-seedra-leafDark font-bold">Planta</span></td>
+                    <td class="metric-value font-bold text-lg text-red-600">4</td>
+                    <td><span class="badge border-0 bg-red-100 text-red-700 font-bold"><i class="fa-solid fa-circle-exclamation mr-1"></i> Déficit</span></td>
+                    <td class="text-center">
+                        <a href="{{ url_for('detalhes_item', id=2) }}" class="btn btn-sm btn-ghost text-seedra-leafMid rounded-xl"><i class="fa-solid fa-eye"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

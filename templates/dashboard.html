@@ -34,8 +34,8 @@
         <a class="btn btn-block justify-start bg-white/14 hover:bg-white/20 hover:text-white text-seedra-leafDark border-white/10 rounded-2xl">Visão geral</a>
         <a class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Monitoramento</a>
         <a class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Indicadores</a>
-        <a class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Projetos</a>
-        <a class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Relatórios</a>
+        <a href="#projetos" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Projetos</a>
+        <a href="{{ url_for('relatorios')}}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Relatórios</a>
       </nav>
 
       <div class="mt-auto rounded-[1.6rem] bg-gradient-to-br from-white/10 to-white/8 p-4 border border-white/10">
@@ -55,8 +55,8 @@
         <h2 class="text-2xl md:text-3xl font-extrabold text-seedra-leafDark">Acompanhamento ambiental com leveza visual</h2>
       </div>
       <div class="flex items-center gap-3">
-        <button class="btn rounded-2xl border-0 bg-white/70 hover:bg-white text-seedra-leafDark shadow-soft font-lato">Exportar</button>
-        <button class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">Novo registro</button>
+        <button class="btn rounded-2xl border-0 bg-white/70 hover:bg-white text-seedra-leafDark shadow-soft font-lato"><a href="{{ url_for('relatorios')}}">Exportar</a></button>
+        <button class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato"><a href="{{ url_for('movimentacao')}}">Novo registro</a></button>
       </div>
     </header>
 
@@ -210,7 +210,7 @@
         <div class="xl:col-span-2 soft-card rounded-[2rem] p-5">
           <div class="flex items-center justify-between gap-3">
             <div>
-              <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Projetos</p>
+              <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato" id="projetos">Projetos</p>
               <h3 class="text-2xl font-extrabold text-seedra-leafDark mt-2">Frentes de trabalho</h3>
             </div>
             <input type="text" placeholder="Buscar projeto" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/10 w-full max-w-xs font-lato" />
