@@ -32,3 +32,12 @@ O **SEEDRA** é uma aplicação desenvolvida para facilitar o gerenciamento e co
 - **Banco de Dados:** `flask-swlalchemy`
 - **Outras dependências:** `Flask, Tailwind`
 ---
+
+## Programadores 
+
+| Programadores | Função | Linguagens |
+| ------------- | ------ | --- |
+| **Nicholas** | Backend. Frontend & Documentação | Python, HTML & CSS
+|**Pedro Gabriel** | Frontend, Backend & Documentação | Html, Python, Figma & CSS
+|**Paulo Victor** | Frontend | Html, CSS
+|**Saulo** | Frontend | Html, CSS
