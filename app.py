@@ -7,7 +7,8 @@ import email
 from flask import Flask, render_template, request, url_for, redirect, flash, session
 from hash import hashear, validar_senha
 from db import db
-from models import Usuarios
+from models import Usuarios, Item, Movimentacao, deficit_limit 
+from datetime import date 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
@@ -118,6 +119,12 @@ def usuarios():
 
 @app.route('/novo_item')
 def novo_item():
+    
+    
+    '''
+    valor=
+    deficit_limit(valor)
+    '''
     return render_template('novo_item.html')
 
 if __name__ == '__main__':
