@@ -82,7 +82,7 @@ def login():
 
     if usuario:
       if validar_senha(usuario.senha, senha):
-        session['user_email'] = email
+        session['usuarios_id'] = email
         return redirect(url_for('base'))
         
       else:
@@ -97,7 +97,7 @@ def login():
 
 @app.route('/base')
 def base():
-    if 'user_email' not in session:
+    if 'usuarios_id' not in session:
         flash("Faça login primeiro!", 'erro')
         return redirect(url_for('login'))
     return render_template('base.html')
@@ -111,7 +111,7 @@ def logout():
 
 
 @app.route('/dashboard')
-# @login_required
+@login_required
 def dashboard():
    total_especies = Item.query.count()
    itens = Item.query.all()
@@ -120,13 +120,13 @@ def dashboard():
    return render_template('dashboard.html', total_especies=total_especies, itens_deficit=itens_deficit)
 
 @app.route('/catalogo', methods=['GET'])
-# @login_required
+@login_required
 def catalogo():
     itens = Item.query.all()
     return render_template('catalogo.html', itens=itens)
 
 @app.route('/catalogo/novo', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def novo_item():
 
     if request.method == 'POST':
@@ -137,14 +137,19 @@ def novo_item():
         categoria = request.form.get('categoria', '').strip()
         deficit_limit = request.form.get('limite_deficit', '').strip()
         obs = request.form.get('observacoes', '').strip()
+        data_cadastro = date.today()
+        
         
         novo = Item(
+           
            nome=nome, 
            quantidade=quantidade, 
            n_cientifico=n_cientifico, 
            categoria=categoria, 
            deficit_limit=deficit_limit, 
-           obs=obs)
+           obs=obs,
+           data_cadastro=data_cadastro)
+        
         db.session.add(novo)
         db.session.commit()
 
@@ -154,13 +159,13 @@ def novo_item():
     return render_template('novo_item.html')
 
 @app.route('/catalogo/<int:id>', methods=['GET'])
-# @login_required
+@login_required
 def detalhes_item(id):
     item = Item.query.get_or_404(id)
     return render_template('detalhes_item.html', item=item)
 
 @app.route('/catalogo/<int:id>/editar', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def editar_item(id):
     item = Item.query.get_or_404(id)
 
@@ -179,7 +184,7 @@ def editar_item(id):
     return render_template('editar_item.html', item=item)
 
 @app.route('/movimentacao')
-# @login_required
+@login_required
 def movimentacao():
     if request.method == 'POST':
         id_item = request.form.get('id_item', '').strip()
@@ -214,7 +219,7 @@ def movimentacao():
     return render_template('movimentacao.html', itens=itens, movimentacoes=movimentacoes)
 
 @app.route('/relatorios')
-# @login_required
+@login_required
 def relatorios():
     return render_template('relatorios.html')
 

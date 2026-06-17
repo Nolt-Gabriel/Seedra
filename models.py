@@ -24,6 +24,7 @@ class Item(db.Model):
     categoria = db.Column(db.String(20), nullable = False)
     deficit_limit = db.Column(db.Integer)
     obs = db.Column(db.Text)
+    data_cadastro = db.Column(db.Date, nullable = False)
 
     movimentacoes = db.relationship('Movimentacao', backref = 'Item', lazy = True)
 
@@ -38,7 +39,7 @@ class Movimentacao(db.Model):
     id_item = db.Column(db.Integer, db.ForeignKey(Item.id), nullable = False)
 
     id = db.Column(db.Integer, primary_key = True)
-    data_move = db.Column(db.String(10), nullable = False)
+    data_move = db.Column(db.Date, nullable = False)
     Typ = db.Column(db.String(5), nullable = False) 
     quantidade = db.Column(db.Integer, nullable = False)
     justificativa = db.Column(db.Text, nullable = False)
