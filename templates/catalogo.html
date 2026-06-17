@@ -45,26 +45,26 @@
                 </tr>
             </thead>
             <tbody>
+
+                {% for item in itens %}
                 <tr>
-                    <td class="font-bold text-seedra-leafDark">Ipê Amarelo</td>
-                    <td class="italic text-slate-500">Handroanthus albus</td>
-                    <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-bold">Semente</span></td>
-                    <td class="metric-value font-bold text-lg">150</td>
-                    <td><span class="badge border-0 bg-green-100 text-green-800">Estoque OK</span></td>
+                    <td class="font-bold text-seedra-leafDark">{{ item.nome }}</td>
+                    <td class="italic text-slate-500">{{ item.n_cientifico }}</td>
+                    <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-bold">{{ item.categoria}}</span></td>
+                    <td class="metric-value font-bold text-lg">{{ item.quantidade }}</td>
+                    <td><span class="badge border-0 {% if item.em_deficit() %} bg-red-100 text-red-800 {% else %} bg-green-100 text-green-800 {% endif %}">
+                        {% if item.em_deficit() %}
+                            Item em deficit
+                        {% else %}
+                            Item em Estoque
+                        {% endif %}
+                    </span></td>
                     <td class="text-center">
-                        <a href="{{ url_for('detalhes_item', id=1) }}" class="btn btn-sm btn-ghost text-seedra-leafMid rounded-xl"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ url_for('detalhes_item', id=item.id) }}" class="btn btn-sm btn-ghost text-seedra-leafMid rounded-xl"><i class="fa-solid fa-eye"></i></a>
                     </td>
                 </tr>
-                <tr class="bg-red-50/50">
-                    <td class="font-bold text-seedra-leafDark">Pau-Brasil</td>
-                    <td class="italic text-slate-500">Paubrasilia echinata</td>
-                    <td><span class="badge border-0 bg-seedra-seedSand text-seedra-leafDark font-bold">Planta</span></td>
-                    <td class="metric-value font-bold text-lg text-red-600">4</td>
-                    <td><span class="badge border-0 bg-red-100 text-red-700 font-bold"><i class="fa-solid fa-circle-exclamation mr-1"></i> Déficit</span></td>
-                    <td class="text-center">
-                        <a href="{{ url_for('detalhes_item', id=2) }}" class="btn btn-sm btn-ghost text-seedra-leafMid rounded-xl"><i class="fa-solid fa-eye"></i></a>
-                    </td>
-                </tr>
+                {% endfor %}
+
             </tbody>
         </table>
     </div>

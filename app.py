@@ -123,7 +123,8 @@ def dashboard():
 @login_required
 def catalogo():
     itens = Item.query.all()
-    return render_template('catalogo.html', itens=itens)
+    itens_def = sum(1 for item in itens if item.em_deficit())
+    return render_template('catalogo.html', itens=itens, itens_def=itens_def)
 
 @app.route('/catalogo/novo', methods=['GET', 'POST'])
 @login_required
@@ -162,6 +163,7 @@ def novo_item():
 @login_required
 def detalhes_item(id):
     item = Item.query.get_or_404(id)
+    # mov = Movimentacao.query.get_or_404(id)
     return render_template('detalhes_item.html', item=item)
 
 @app.route('/catalogo/<int:id>/editar', methods=['GET', 'POST'])
