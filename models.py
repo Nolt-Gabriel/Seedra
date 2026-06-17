@@ -43,6 +43,7 @@ class Movimentacao(db.Model):
     Typ = db.Column(db.String(5), nullable = False) 
     quantidade = db.Column(db.Integer, nullable = False)
     justificativa = db.Column(db.Text, nullable = False)
+    operador = db.Column(db.String(40), nullable = False)
 
  
 @event.listens_for(Item, "before_update")

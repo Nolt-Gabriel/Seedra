@@ -154,7 +154,7 @@ def novo_item():
         db.session.add(novo)
         db.session.commit()
 
-        flash("Item adicionado com sucesso!", 'sucess')
+        flash("Item adicionado com sucesso!", 'success')
         return redirect(url_for('catalogo'))
     
     return render_template('novo_item.html')
