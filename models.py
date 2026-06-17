@@ -27,6 +27,9 @@ class Item(db.Model):
 
     movimentacoes = db.relationship('Movimentacao', backref = 'Item', lazy = True)
 
+    def em_deficit(self):
+        return self.quantidade < self.deficit_limit
+
 
 class Movimentacao(db.Model):
 

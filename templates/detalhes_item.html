@@ -1,1 +1,132 @@
-{% Extends %}
+{% extends 'base.html' %}
+{% block title %}Detalhes: {{ item.nome_comum }} {% endblock %}
+{% block header_subtitle %}Ficha Técnica e Estoque{% endblock %}
+{% block header_title %}Detalhamento da Espécie{% endblock %}
+
+{% block header_actions %}
+<div class="flex gap-2">
+    <a href="{{ url_for('catalogo') }}" class=" inline-flex items-center justify-center px-4 py-2 text-sm font-medium btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+        <i class="fa-solid fa-arrow-left mr-2"></i> Voltar ao Catálogo
+    </a>
+    <a href="{{ url_for('editar_item', id=item.id) }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+        <i class="fa-solid fa-pen-to-square mr-2"></i> Editar Registro
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="lg:col-span-2 flex flex-col gap-6">
+        
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900">{{ item.nome_comum }}</h3>
+                    <p class="text-sm text-gray-500 italic mt-1">{{ item.nome_cientifico }}</p>
+                </div>
+                <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-semibold rounded-full border border-green-200">
+                    {{ item.categoria }}
+                </span>
+            </div>
+
+            <div class="border-t border-gray-100 pt-4 mt-4">
+                <h4 class="text-sm font-semibold text-gray-700 mb-2">Observações de Cuidado e Plantio</h4>
+                <p class="text-sm text-gray-600 leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-100">
+                    {% if item.observacoes %}
+                        {{ item.observacoes }}
+                    {% else %}
+                        <span class="text-gray-400 italic">Nenhuma observação registrada para esta espécie.</span>
+                    {% endif %}
+                </p>
+            </div>
+            
+            <div class="mt-6 text-xs text-gray-400">
+                Registrado no sistema em: {{ item.data_cadastro.strftime('%d/%m/%Y') }}
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Histórico de Movimentações</h3>
+                <a href="{{ url_for('movimentacao') }}" class="text-sm text-seedra-leafMid hover:text-seedra-leafDark font-medium hover:underline">Novo Lançamento</a>
+            </div>
+
+            {% if item.movimentacoes %}
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 mt-2">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th scope="col" class="px-4 py-2 font-semibold">Data</th>
+                                <th scope="col" class="px-4 py-2 font-semibold">Tipo</th>
+                                <th scope="col" class="px-4 py-2 font-semibold">Qtd</th>
+                                <th scope="col" class="px-4 py-2 font-semibold">Justificativa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for mov in item.movimentacoes|sort(attribute='data_movimentacao', reverse=true) %}
+                            <tr class="border-b border-gray-50 hover:bg-gray-50">
+                                <td class="px-4 py-3 whitespace-nowrap">{{ mov.data_movimentacao.strftime('%d/%m/%Y') }}</td>
+                                <td class="px-4 py-3">
+                                    {% if mov.tipo == 'entrada' %}
+                                        <span class="text-green-600 font-medium"><i class="fa-solid fa-arrow-down mr-1"></i> Entrada</span>
+                                    {% else %}
+                                        <span class="text-amber-600 font-medium"><i class="fa-solid fa-arrow-up mr-1"></i> Saída</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3 font-bold text-gray-900">{{ mov.quantidade }}</td>
+                                <td class="px-4 py-3 text-gray-600">{{ mov.justificativa }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-6 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                    <p class="text-sm text-gray-500">Nenhuma movimentação registrada para este item ainda.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-6">
+        
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 text-center">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Quantidade em Estoque</h3>
+            
+            <div class="text-5xl font-black {% if item.em_deficit() %}text-red-600{% else %}text-gray-900{% endif %} my-4">
+                {{ item.quantidade }}
+            </div>
+
+            {% if item.em_deficit() %}
+                <div class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200">
+                    <i class="fa-solid fa-circle-exclamation mr-2 animate-pulse"></i> Estoque em Déficit
+                </div>
+                <p class="text-xs text-red-500 mt-3 text-left">
+                    * A quantidade atual está abaixo do limite seguro estabelecido pelo instituto. É recomendada a reposição imediata.
+                </p>
+            {% else %}
+                <div class="inline-flex items-center px-3 py-1.5 bg-green-50 text-green-700 text-sm font-medium rounded-lg border border-green-200">
+                    <i class="fa-solid fa-check-circle mr-2"></i> Estoque Regular
+                </div>
+            {% endif %}
+
+            <div class="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center text-sm">
+                <span class="text-gray-500">Limite Crítico:</span>
+                <span class="font-bold text-gray-700">{{ item.limite_deficit }} unidades</span>
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+            <h4 class="text-sm font-semibold text-gray-900 mb-4">Ações Rápidas</h4>
+            <div class="space-y-3">
+                <a href="{{ url_for('movimentacao') }}" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fa-solid fa-plus-circle mr-2"></i> Registrar Entrada
+                </a>
+                <a href="{{ url_for('movimentacao') }}" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors">
+                    <i class="fa-solid fa-minus-circle mr-2"></i> Registrar Saída
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
