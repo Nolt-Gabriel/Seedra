@@ -128,13 +128,15 @@ def catalogo():
 @app.route('/catalogo/novo', methods=['GET', 'POST'])
 # @login_required
 def novo_item():
+
     if request.method == 'POST':
-        nome = request.form.get('nome', '').strip()
+
+        nome = request.form.get('nome_comum', '').strip()
         quantidade = request.form.get('quantidade', '').strip()
-        n_cientifico = request.form.get('n_cientifico', '').strip()
+        n_cientifico = request.form.get('nome_cientifico', '').strip()
         categoria = request.form.get('categoria', '').strip()
-        deficit_limit = request.form.get('deficit_limit', '').strip()
-        obs = request.form.get('obs', '').strip()
+        deficit_limit = request.form.get('limite_deficit', '').strip()
+        obs = request.form.get('observacoes', '').strip()
         
         novo = Item(
            nome=nome, 
@@ -163,15 +165,15 @@ def editar_item(id):
     item = Item.query.get_or_404(id)
 
     if request.method == 'POST':
-        item.nome = request.form.get('nome', '').strip()
+        item.nome = request.form.get('nome_comum', '').strip()
         item.quantidade = int(request.form.get('quantidade', '').strip())
-        item.n_cientifico = request.form.get('n_cientifico', '').strip()
+        item.n_cientifico = request.form.get('nome_cientifico', '').strip()
         item.categoria = request.form.get('categoria', '').strip()
-        item.deficit_limit = int(request.form.get('deficit_limit', '').strip())
-        item.obs = request.form.get('obs', '').strip()
+        item.deficit_limit = int(request.form.get('limite_deficit', '').strip())
+        item.obs = request.form.get('observacoes', '').strip()
 
         db.session.commit()
-        flash("Item atualizado com sucesso!", 'sucess')
+        flash("Item atualizado com sucesso!", 'success')
         return redirect(url_for('detalhes_item', id=item.id))
 
     return render_template('editar_item.html', item=item)
