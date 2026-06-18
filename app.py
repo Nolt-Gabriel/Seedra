@@ -10,9 +10,10 @@ from db import db
 from models import Usuarios, Item, Movimentacao, deficit_limit 
 from datetime import date, datetime 
 from functools import wraps
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '"sqlite:///database.db"') 
 app.config['SECRET_KEY'] = 'acre_viveiro_de_dinossauros'
 db.init_app(app)
 with app.app_context():
