@@ -32,6 +32,8 @@ def login_required(f):
 def home():
   return render_template('cadastro.html')
 
+# --------- CADASTRO ------------------------------
+
 @app.route('/cadastro', methods =['GET', 'POST'])
 def cadastro():
 
@@ -62,6 +64,8 @@ def cadastro():
       return redirect(url_for('login'))
   
   return render_template("cadastro.html")
+
+# ---------- LOGIN ------------------------------
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -106,7 +110,7 @@ def base():
 @app.route('/logout')
 def logout():
     session.pop('usuarios_id', None)
-    flash("Você saiu do sistema com sucesso!", 'sucess')
+    flash("Você saiu do sistema com sucesso!", 'success')
     return redirect(url_for('login'))
 
 
