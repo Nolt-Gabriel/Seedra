@@ -1,32 +1,48 @@
+// Interatividade do Cadastro.html
+{
+    // botao de 'em Deficit'
+    const item_deficit_table = document.querySelectorAll(".item_ok");
+    const btn_deficit = document.getElementById("btn_deficit");
 
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Balsamiq Sans', 'sans-serif'],
-            lato: ['Lato', 'sans-serif']
-          },
-          colors: {
-            seedra: {
-              leafDark: '#044b2d',
-              leafMid: '#587e49',
-              leafLight: '#78b863',
-              seedBrown: '#9a774c',
-              seedSand: '#ddd1ae',
-              seedMist: '#d9d6cc',
-              deepForest: '#001500',
-              stone: '#888784',
-              cloud: '#d9d9d9'
-            }
-          },
-          boxShadow: {
-            soft: '0 10px 30px rgba(4,75,45,0.10)',
-            card: '0 8px 24px rgba(0,21,0,0.08)'
-          },
-          backgroundImage: {
-            organic: 'radial-gradient(circle at top right, rgba(120,184,99,0.18), transparent 28%), radial-gradient(circle at bottom left, rgba(154,119,76,0.16), transparent 30%)'
-          }
-        }
-      }
-    }
-  
+    btn_deficit.addEventListener('click', () => {
+        item_deficit_table.forEach(item => {
+            item.classList.toggle("hidden");
+        });
+        btn_deficit.classList.toggle('bg-red-500');
+        btn_deficit.classList.toggle('text-white');
+        btn_deficit.classList.toggle('hover:bg-red-400');
+    });
+
+
+
+
+    // botao de filtro
+    const select_button = document.getElementById("filter_button");
+    const select_menu = document.getElementById("opt_menu");
+    
+
+    select_button.addEventListener('click', (e) => {
+
+        e.stopPropagation();
+        select_menu.classList.toggle('hidden');
+        select_button.classList.toggle('bg-[#587e49]');
+        select_button.classList.toggle('text-white');
+
+    })
+
+    // botão de categorias
+    const category_btn = document.getElementById('c_btn')
+    const category_list = document.getElementById('c_list')
+    const category_arrow = document.getElementById('c_arrow')
+
+    category_btn.addEventListener('click', (e) => {
+
+        e.stopPropagation();
+        category_list.classList.toggle('hidden');
+        category_btn.classList.toggle('bg-[#587e49]');
+        category_btn.classList.toggle('text-white');
+        category_arrow.classList.toggle('rotate-90');
+
+    })
+
+}
