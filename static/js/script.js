@@ -7,6 +7,7 @@
     btn_deficit.addEventListener('click', () => {
         item_deficit_table.forEach(item => {
             item.classList.toggle("hidden");
+            item.classList.toggle('transform-discrete');
         });
         btn_deficit.classList.toggle('bg-red-500');
         btn_deficit.classList.toggle('text-white');
@@ -29,15 +30,31 @@
         select_button.classList.toggle('text-white');
 
     })
+}
 
+{
     // botão de categorias
-    const category_btn = document.getElementById('c_btn')
-    const category_list = document.getElementById('c_list')
-    const category_arrow = document.getElementById('c_arrow')
+    const category_span = document.getElementById('content_span')
+
+    const category_btn = document.getElementById('c_btn');
+    const category_list = document.getElementById('c_list');
+    const category_arrow = document.getElementById('c_arrow');
+
+    const btn_category_all = document.getElementById('b_all');
+    const btn_category_planta = document.getElementById('b_planta');
+    const btn_category_semente = document.getElementById('b_semente');
+
+    const category_planta = document.querySelectorAll('.c_planta');
+    const category_semente = document.querySelectorAll('.c_semente');
+
+    const item_deficit_table_ok = document.querySelectorAll(".item_ok");
+    const item_deficit_table = document.querySelectorAll(".item_deficit");
+
 
     category_btn.addEventListener('click', (e) => {
 
         e.stopPropagation();
+
         category_list.classList.toggle('hidden');
         category_btn.classList.toggle('bg-[#587e49]');
         category_btn.classList.toggle('text-white');
@@ -45,4 +62,37 @@
 
     })
 
+    btn_category_all.addEventListener('click', (e) => {
+
+         e.stopPropagation();
+
+        category_planta.forEach(planta => {planta.classList.remove('hidden')});
+        category_semente.forEach(semente => {semente.classList.remove('hidden')});
+
+        category_span.textContent = 'Todas as Categorias'
+        category_list.classList.toggle('hidden');
+    })
+
+    btn_category_planta.addEventListener('click', (e) => {
+
+        e.stopPropagation();
+
+        category_semente.forEach(semente => {semente.classList.toggle('hidden');
+        });
+        category_planta.forEach(planta => {planta.classList.remove('hidden'); });
+        
+        category_span.textContent = "Plantas"
+        category_list.classList.toggle('hidden');
+    })
+
+    btn_category_semente.addEventListener('click', (e) => {
+        
+        e.stopPropagation();
+
+        category_semente.forEach(semente => {semente.classList.remove('hidden')});
+        category_planta.forEach(planta => {planta.classList.toggle('hidden')});
+
+        category_span.textContent = "Sementes"
+        category_list.classList.toggle('hidden');
+    })
 }

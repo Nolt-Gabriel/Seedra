@@ -21,24 +21,24 @@
 
                 <button id="c_btn" class="btn w-full flex justify-center rounded-xl bg-white font-lato text-seedra-leafDark border-seedra-leafDark/10 gap-4 hover:bg-seedra-leafMid hover:text-white">
 
-                    <span>Todas as Categorias</span>
+                    <span id="content_span" class="transition transition-transform easy-in-out">Todas as Categorias</span>
                     <i id="c_arrow" class="fa-solid fa-chevron-right transition-transform"></i>
 
                 </button>
 
                 <ul class="absolute hidden left-0 w-full bg-white border mt-3 z-10 text-center rounded-xl" id="c_list">
                     <li class="p-3 hover:bg-seedra-leafDark hover:text-white hover:rounded-t-xl" >
-                        <button class="block w-full">
+                        <button id="b_all" class="b_all block w-full">
                             Todas as Categorias
                         </button>
                     </li>
                     <li class="p-3 border-t hover:bg-seedra-leafDark hover:text-white">
-                        <button class="block w-full">
+                        <button type="button" id="b_planta" class="block w-full">
                             Plantas
                         </button>
                     </li>
                     <li class="p-3 border-t hover:bg-seedra-leafDark hover:text-white hover:rounded-b-xl">
-                        <button class="block w-full">
+                        <button id="b_semente" class="block w-full">
                             Sementes
                         </button>
                     </li>
@@ -98,7 +98,7 @@
             <tbody>
 
                 {% for item in itens %}
-                <tr class="{% if item.em_deficit() %}item_deficit{% else %}item_ok{% endif %}">
+                <tr class="{% if item.em_deficit() %}item_deficit{% else %}item_ok{% endif %} transition {% if item.categoria == 'Semente' %} c_semente {% else %} c_planta {% endif %}">
                     <td class="font-bold text-seedra-leafDark">{{ item.nome }}</td>
                     <td class="italic text-slate-500">{{ item.n_cientifico }}</td>
                     <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-bold">{{ item.categoria}}</span></td>
