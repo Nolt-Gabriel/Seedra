@@ -253,19 +253,20 @@ def movimentacao():
     movimentacoes = Movimentacao.query.all()
     itens_mov = Item.query.all()
 
-    for item in itens_mov:
+    if movimentacoes:
+        for item in itens_mov:
 
-         for mov in movimentacoes:
-            
-            if item.id == mov.id:
+            for mov in movimentacoes:
+                
+                if item.id == mov.id:
 
-                itens_mov_id = item.nome
+                    itens_mov_id = item.nome
                    
-
-
+        return render_template('movimentacao.html',itens=itens, movimentacoes=movimentacoes, itens_mov = itens_mov_id)
     
-       
-    return render_template('movimentacao.html',itens=itens, movimentacoes=movimentacoes, itens_mov = itens_mov_id)
+    else:
+       flash("Nenhuma movimentação encontrada!")
+       return render_template('movimentacao.html',itens=itens, movimentacoes=movimentacoes)
 
 @app.route('/relatorios')
 @login_required
