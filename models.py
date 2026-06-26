@@ -41,7 +41,7 @@ class Movimentacao(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     data_move = db.Column(db.Date, nullable = False)
-    Typ = db.Column(db.String(5), nullable = False) 
+    Typ = db.Column(db.String(10), nullable = False) 
     quantidade = db.Column(db.Integer, nullable = False)
     justificativa = db.Column(db.Text, nullable = False)
     operador = db.Column(db.String(40), nullable = False)
