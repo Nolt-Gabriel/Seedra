@@ -5,9 +5,10 @@
 import email
 
 from flask import Flask, render_template, request, url_for, redirect, flash, session
+from flask_login import current_user, LoginManager, UserMixin, login_user
 from hash import hashear, validar_senha
 from db import db
-from models import Usuarios, Item, Movimentacao, deficit_limit 
+from models import Usuarios, Item, Movimentacao
 from datetime import date, datetime 
 from functools import wraps
 import os
@@ -15,6 +16,17 @@ import os
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///database.db') 
 app.config['SECRET_KEY'] = 'acre_viveiro_de_dinossauros'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    # O Flask-Login passa o user_id como String, 
+    # por isso convertemos para int() se o seu ID no banco for numérico.
+    return Usuarios.query.get(int(user_id))
+
 db.init_app(app)
 with app.app_context():
   db.create_all()
@@ -88,6 +100,8 @@ def login():
     if usuario:
       if validar_senha(usuario.senha, senha):
         session['usuarios_id'] = email
+        resultado = login_user(usuario)
+        print(resultado)
         return redirect(url_for('base'))
         
       else:
@@ -96,6 +110,8 @@ def login():
     else:
       flash("Usuário não encontrado!", 'erro')
       return redirect(url_for('login'))
+    
+
     
   
   return render_template('login.html')
@@ -129,7 +145,10 @@ def dashboard():
 def catalogo():
     itens = Item.query.all()
     itens_def = sum(1 for item in itens if item.em_deficit())
-    return render_template('catalogo.html', itens=itens, itens_def=itens_def)
+
+    alfabetica = Item.query.order_by(Item.nome.asc()).all()
+
+    return render_template('catalogo.html', itens=itens, itens_def=itens_def, itens_alfabetica = alfabetica)
 
 @app.route('/catalogo/novo', methods=['GET', 'POST'])
 @login_required
@@ -190,40 +209,63 @@ def editar_item(id):
 
     return render_template('editar_item.html', item=item)
 
-@app.route('/movimentacao')
+@app.route('/movimentacao', methods = ['GET', 'POST'])
 @login_required
 def movimentacao():
     if request.method == 'POST':
         id_item = request.form.get('id_item', '').strip()
         data_move = request.form.get('data_move', '').strip()
-        Typ = request.form.get('Typ', '').strip()
+        Typ = request.form.get('tipo_mov', '').strip()
         quantidade = request.form.get('quantidade', '').strip()
         justificativa = request.form.get('justificativa', '').strip()
 
+        if not id_item or id_item == '':
+            flash('Por favor, selecione um item válido!', 'warning')
+            return redirect(url_for('movimentacao'))
+
+        print(id_item)
         nova_data_movimentacao = datetime.strptime(data_move, '%Y-%m-%d').date()
 
         nova_movimentacao = Movimentacao(
             id_item=int(id_item),
-            data_move=data_move,
+            data_move=nova_data_movimentacao,
             Typ=Typ,
             quantidade=int(quantidade),
-            justificativa=justificativa
+            justificativa=justificativa,
+            operador = current_user.email
         )
         db.session.add(nova_movimentacao)
-        db.session.commit()
+        
 
         item = Item.query.get(int(id_item))
         if Typ == 'Entrada':
             item.quantidade += int(quantidade)
         elif Typ == 'Saída':
             item.quantidade -= int(quantidade)
-
-        flash("Movimentação registrada com sucesso!", 'sucess')
-        return redirect(url_for('movimentacao'))
+        
     
+        db.session.commit()
+
+        flash("Movimentação registrada com sucesso!", 'success')
+        return redirect(url_for('movimentacao'))
+                                                                                                                                                                
     itens = Item.query.order_by(Item.nome).all()
-    movimentacoes = Movimentacao.query.order_by(Movimentacao.data_move.desc()).limit(15).all()
-    return render_template('movimentacao.html', itens=itens, movimentacoes=movimentacoes)
+    movimentacoes = Movimentacao.query.all()
+    itens_mov = Item.query.all()
+
+    for item in itens_mov:
+
+         for mov in movimentacoes:
+            
+            if item.id == mov.id:
+
+                itens_mov_id = item.nome
+                   
+
+
+    
+       
+    return render_template('movimentacao.html',itens=itens, movimentacoes=movimentacoes, itens_mov = itens_mov_id)
 
 @app.route('/relatorios')
 @login_required

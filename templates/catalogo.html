@@ -12,8 +12,10 @@
 
 {% block content %}
 <section class="soft-card rounded-[2rem] p-6">
-    
+    <!-- Botão De Categorias e Pesquisa e Filtrar-->
     <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
+
+        <!-- Pesquisa e Categorias -->
         <div class="flex-1 w-full flex gap-2">
             <input type="text" placeholder="Buscar por nome científico ou comum..." class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/10 w-full max-w-md font-lato" id="c_search" />
             
@@ -47,30 +49,31 @@
         </div>
         <div class="flex gap-2">
 
+            <!-- Filtrar e em déficit-->
             <div class="relative inline-block w-56 ">
 
                 <button class="w-full flex justify-center btn rounded-2xl bg-white text-seedra-leafDark border border-seedra-leafDark/10 hover:bg-seedra-leafMid hover:text-white hover:border-seedra-seedSand shadow-sm font-lato" id="filter_button">
-                    <i class="fa-solid fa-filter"></i> Filtrar
+                    <i id="filter_span" class="fa-solid fa-filter"></i> Filtrar
                 </button>
 
                 <ul class="hidden absolute left-0 w-full mt-3 bg-white border rounded-xl z-10" id="opt_menu">
                     <li class="p-3 hover:bg-seedra-leafDark hover:text-white hover:rounded-t-xl">
-                        <button type="button" class="opt_btn block w-full">
+                        <button id="filter_all" type="button" class="opt_btn block w-full">
                             Todas as Categorias
                         </button>
                     </li>
                     <li class="p-3 hover:bg-seedra-leafDark hover:text-white border-t">
-                        <button type="button" class="opt_btn block w-full">
+                        <button id="filter_AZ" type="button" class="opt_btn block w-full">
                             Ordem Alfabética (A-Z)
                         </button>
                     </li>
                     <li class="p-3 border-t hover:bg-seedra-leafDark hover:text-white">
-                        <button type="button" class="opt_btn block w-full">
+                        <button id="filter_ZA" type="button" class="opt_btn block w-full">
                             Ordem Alfabética (Z-A)
                         </button>
                     </li>
                     <li class="p-3 border-t hover:bg-seedra-leafDark hover:text-white hover:rounded-b-xl">
-                        <button class="opt_btn block w-full">
+                        <button id="filter_lastEntry" class="opt_btn block w-full">
                             Último Acesso
                         </button>
                     </li>
@@ -83,6 +86,7 @@
         </div>
     </div>
 
+    <!-- Botão Déficit e Tabela -->
     <div class="overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
         <table class="table font-lato">
             <thead class="bg-seedra-leafLight/10 text-seedra-leafDark">
@@ -98,7 +102,7 @@
             <tbody>
 
                 {% for item in itens %}
-                <tr class="{% if item.em_deficit() %}item_deficit{% else %}item_ok{% endif %} transition {% if item.categoria == 'Semente' %} c_semente {% else %} c_planta {% endif %}">
+                <tr id="list_order_normal" class="{% if item.em_deficit() %}item_deficit{% else %}item_ok{% endif %} transition {% if item.categoria == 'Semente' %} c_semente {% else %} c_planta {% endif %}">
                     <td class="font-bold text-seedra-leafDark">{{ item.nome }}</td>
                     <td class="italic text-slate-500">{{ item.n_cientifico }}</td>
                     <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-bold">{{ item.categoria}}</span></td>

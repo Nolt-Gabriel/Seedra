@@ -1,10 +1,11 @@
 from db import db
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from sqlalchemy import event
 from sqlalchemy.event import listens_for
 
 
-class Usuarios(db.Model):
+class Usuarios(db.Model, UserMixin):
 
     __tablename__ = 'usuarios'
 
@@ -46,9 +47,9 @@ class Movimentacao(db.Model):
     operador = db.Column(db.String(40), nullable = False)
 
  
-@event.listens_for(Item, "before_update")
-def deficit_limit(mapper, connection, target, valor):
+# @event.listens_for(Item, "before_update")
+# def deficit_limit(mapper, connection, target, valor):
 
-    if target.quantidade <= valor:
+#     if target.quantidade <= valor:
 
-        return "flash message"
+#         return "flash message"
