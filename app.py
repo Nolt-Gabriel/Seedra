@@ -218,6 +218,7 @@ def editar_item(id):
 def movimentacao():
     if request.method == 'POST':
         id_item = request.form.get('id_item', '').strip()
+        nome_item = request.form.get('nome_item', '').strip()
         data_move = request.form.get('data_move', '').strip()
         Typ = request.form.get('tipo_mov', '').strip()
         quantidade = request.form.get('quantidade', '').strip()
@@ -232,6 +233,7 @@ def movimentacao():
 
         nova_movimentacao = Movimentacao(
             id_item=int(id_item),
+            nome_item = nome_item,
             data_move=nova_data_movimentacao,
             Typ=Typ,
             quantidade=int(quantidade),
@@ -255,22 +257,16 @@ def movimentacao():
                                                                                                                                                                 
     itens = Item.query.order_by(Item.nome).all()
     movimentacoes = Movimentacao.query.all()
-    itens_mov = Item.query.all()
+    # itens_mov = Item.query.all()
+    usuario = current_user.email
 
     if movimentacoes:
-        for item in itens_mov:
-
-            for mov in movimentacoes:
-                
-                if item.id == mov.id:
-
-                    itens_mov_id = item.nome
                    
-        return render_template('movimentacao.html',itens=itens, movimentacoes=movimentacoes, itens_mov = itens_mov_id)
+        return render_template('movimentacao.html',itens=itens, movimentacoes=movimentacoes, user=usuario)
     
     else:
        flash("Nenhuma movimentação encontrada!")
-       return render_template('movimentacao.html',itens=itens, movimentacoes=movimentacoes)
+       return render_template('movimentacao.html',itens=itens,user=usuario)
 
 @app.route('/relatorios')
 @login_required

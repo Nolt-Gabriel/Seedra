@@ -40,6 +40,7 @@ class Movimentacao(db.Model):
     id_item = db.Column(db.Integer, db.ForeignKey(Item.id), nullable = False)
 
     id = db.Column(db.Integer, primary_key = True)
+    nome_item = db.Column(db.String(50), nullable= False)
     data_move = db.Column(db.Date, nullable = False)
     Typ = db.Column(db.String(10), nullable = False) 
     quantidade = db.Column(db.Integer, nullable = False)

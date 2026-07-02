@@ -136,6 +136,7 @@
 
     const spam_planta = document.getElementById("span_planta");
     const input_planta = document.getElementById("item_id");
+    const input_nome_planta = document.getElementById("item_nome");
 
     document.querySelectorAll(".opc_planta").forEach(botao => {
 
@@ -144,6 +145,7 @@
             e.stopPropagation();
             spam_planta.textContent = botao.dataset.nome;
             input_planta.value = botao.dataset.id;
+            input_nome_planta.value = botao.dataset.nome;
             
             lista_planta.classList.add('hidden');
 
