@@ -1,5 +1,9 @@
 
     tailwind.config = {
+
+      content: [
+        "./templates/**/*.html"
+      ],
       theme: {
         extend: {
           fontFamily: {

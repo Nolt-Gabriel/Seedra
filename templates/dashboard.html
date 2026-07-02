@@ -1,64 +1,20 @@
-<!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard SEEDRA</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
-  <link rel="icon" href="/static/seedot.gif" type="image/gif" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-  
-</head>
-<body class="font-sans">
-  <div class="dashboard-shell">
-    <aside class="sidebar p-5 lg:p-6 flex flex-col gap-6">
-      <div class="flex items-center gap-3">
-        <img src="/static/Logo-SEEDRA.png" alt="Logo SEEDRA" class="max-w-auto max-h-auto" width="64" height="64" />
-        <div>
-          <p class="text-xs uppercase tracking-[0.28em] text-white/60 font-lato">Painel</p>
-          <h1 class="text-2xl font-extrabold leading-tight">SEEDRA</h1>
-        </div>
-      </div>
+{% extends 'base.html' %}
 
-      <div class="rounded-[1.6rem] bg-white/10 p-4 border border-white/10">
-        <img src="/static/Letreiro_SEEDRA-removebg-preview.png" alt="Letreiro SEEDRA" class="w-full " width="218" height="57" />
-        <p class="mt-3 text-sm text-white/75 leading-6 font-lato">Sistema com estética natural, confortável e serena, inspirado nas cores das folhas, sementes e tons neutros da sua identidade visual.</p>
-      </div>
+{% block title %}Dashboard{% endblock %}
+{% set page_id = 'visao' %}
+{% block header_subtitle %}Painel Geral{% endblock %}
+{% block header_title %}Dashboard Orgânico{% endblock %}
 
-      <nav class="space-y-2">
-        <a class="btn btn-block justify-start bg-white/14 hover:bg-white/20 hover:text-white text-seedra-leafDark border-white/10 rounded-2xl">Visão geral</a>
-        <a class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Monitoramento</a>
-        <a class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Indicadores</a>
-        <a href="#projetos" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Projetos</a>
-        <a href="{{ url_for('relatorios')}}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl">Relatórios</a>
-      </nav>
-
-      <div class="mt-auto rounded-[1.6rem] bg-gradient-to-br from-white/10 to-white/8 p-4 border border-white/10">
-        <p class="text-xs uppercase tracking-[0.28em] text-white/60 mb-2 font-lato">Identidade</p>
-        <div class="flex items-center gap-2 text-sm text-white/85"><span class="leaf-dot"></span>Organização visual natural</div>
-        <div class="mt-4 grid grid-cols-3 gap-2">
-          <span class="h-10 rounded-xl" style="background:#044b2d"></span>
-          <span class="h-10 rounded-xl" style="background:#587e49"></span>
-          <span class="h-10 rounded-xl" style="background:#78b863"></span>
-        </div>
-      </div>
-    </aside>
-
-    <header class="topbar px-5 lg:px-8 flex items-center justify-between gap-4">
-      <div>
-        <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-semibold font-lato">Dashboard orgânico</p>
-        <h2 class="text-2xl md:text-3xl font-extrabold text-seedra-leafDark">Acompanhamento ambiental com leveza visual</h2>
-      </div>
-      <div class="flex items-center gap-3">
-        <button class="btn rounded-2xl border-0 bg-white/70 hover:bg-white text-seedra-leafDark shadow-soft font-lato"><a href="{{ url_for('relatorios')}}">Exportar</a></button>
-        <button class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato"><a href="{{ url_for('movimentacao')}}">Novo registro</a></button>
-      </div>
-    </header>
-
+{% block header_actions %}
+<a href="{{ url_for('relatorios') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+    <i class="fa-solid fa-plus"></i> Exportar
+</a>
+<a href="{{ url_for('movimentacao') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+    <i class="fa-solid fa-plus"></i> Novo registro
+</a>
+{% endblock %}
+{% block content %}
+    
     <main class="main">
       <section class="grid grid-cols-1 xl:grid-cols-3 gap-5">
         <div class="xl:col-span-2 glass-card rounded-[2rem] p-6 bg-organic">
@@ -262,6 +218,4 @@
         </div>
       </section>
     </main>
-  </div>
-</body>
-</html>
+{% endblock %}

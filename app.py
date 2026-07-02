@@ -121,7 +121,11 @@ def base():
     if 'usuarios_id' not in session:
         flash("Faça login primeiro!", 'erro')
         return redirect(url_for('login'))
-    return render_template('base.html')
+    
+    usuario = current_user.email
+    print(usuario)
+    
+    return render_template('base.html', user = usuario)
 
 @app.route('/logout')
 def logout():
@@ -183,7 +187,7 @@ def novo_item():
     
     return render_template('novo_item.html')
 
-@app.route('/catalogo/<int:id>', methods=['GET'])
+@app.route('/catalogo/<int:id>', methods=['GET', 'POST'])
 @login_required
 def detalhes_item(id):
     item = Item.query.get_or_404(id)
