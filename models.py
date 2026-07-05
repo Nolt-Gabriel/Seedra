@@ -27,27 +27,27 @@ class Item(db.Model):
     obs = db.Column(db.Text)
     data_cadastro = db.Column(db.Date, nullable = False)
 
-    movimentacoes = db.relationship('Movimentacao', backref = 'Item', lazy = True)
+    movimentacoes = db.relationship('Movimentacao', back_populates = 'item', lazy = True)
 
     def em_deficit(self):
         return self.quantidade < self.deficit_limit
+
 
 
 class Movimentacao(db.Model):
 
     __tablename__='movimentacao'
 
-    id_item = db.Column(db.Integer, db.ForeignKey(Item.id), nullable = False)
-
     id = db.Column(db.Integer, primary_key = True)
-    nome_item = db.Column(db.String(50), nullable= False)
+    id_item = db.Column(db.Integer, db.ForeignKey(Item.id), nullable = False)
     data_move = db.Column(db.Date, nullable = False)
     Typ = db.Column(db.String(10), nullable = False) 
     quantidade = db.Column(db.Integer, nullable = False)
     justificativa = db.Column(db.Text, nullable = False)
     operador = db.Column(db.String(40), nullable = False)
 
- 
+    item = db.relationship('Item', back_populates = 'movimentacoes', lazy = True)
+
 # @event.listens_for(Item, "before_update")
 # def deficit_limit(mapper, connection, target, valor):
 

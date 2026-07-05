@@ -72,7 +72,7 @@
                     <div class="timeline-middle text-seedra-leafLight"><i class="{% if mov.Typ == 'Entrada' %}fa-solid fa-circle-check {% else %} fa-solid fa-circle-arrow-up text-[#FF4500]/70 {% endif %}"></i></div>
                     <div class="timeline-end timeline-box bg-white/80 border-0 shadow-sm rounded-xl mb-4 ml-2">
                         <span class="font-bold text-seedra-leafDark block">{{mov.Typ}}: {{mov.quantidade}}</span>
-                        <span class="text-sm text-slate-500">{{mov.nome_item}} • {{mov.justificativa}}</span>
+                        <span class="text-sm text-slate-500">{{mov.item.nome}} • {{mov.justificativa}}</span>
                         <p class="text-xs text-slate-400 mt-1">{{mov.data_move}} por {{mov.operador}}</p>
                     </div>
                     
