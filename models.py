@@ -10,9 +10,11 @@ class Usuarios(db.Model, UserMixin):
     __tablename__ = 'usuarios'
 
     id = db.Column(db.Integer, primary_key = True)
+    nome = db.Column(db.String(50), nullable = False, unique = False)
     email = db.Column(db.String(50), nullable = False, unique = True)
     senha = db.Column(db.String(), nullable = False)
 
+    usuario_instituicoes = db.relationship('Usuario_Instituicoes', back_populates = 'usuario')
 
 class Item(db.Model):
 
@@ -39,7 +41,7 @@ class Movimentacao(db.Model):
     __tablename__='movimentacao'
 
     id = db.Column(db.Integer, primary_key = True)
-    id_item = db.Column(db.Integer, db.ForeignKey(Item.id), nullable = False)
+    id_item = db.Column(db.Integer, db.ForeignKey("item.id"), nullable = False)
     data_move = db.Column(db.Date, nullable = False)
     Typ = db.Column(db.String(10), nullable = False) 
     quantidade = db.Column(db.Integer, nullable = False)
@@ -48,9 +50,30 @@ class Movimentacao(db.Model):
 
     item = db.relationship('Item', back_populates = 'movimentacoes', lazy = True)
 
-# @event.listens_for(Item, "before_update")
-# def deficit_limit(mapper, connection, target, valor):
 
-#     if target.quantidade <= valor:
+class UsuarioInstituicoes(db.Model):
 
-#         return "flash message"
+    __tablename__='usuario_instituicoes'
+
+    id = db.Column(db.Integer, primary_key = True)
+    id_usuario = db.Column(db.Integer, db.ForeignKey("usuario.id"), nullable = False)
+    id_instituicoes = db.Column(db.Integer, db.ForeignKey("instituicao.id") ,  nullable = False)
+
+    usuario = db.relationship('Usuario', back_populates = 'usuario_instituicoes', lazy = True)
+    instituicao = db.relationship("Instituicao", back_populates="usuario_instituicoes")
+
+    __table_args__ = (
+        db.UniqueConstraint("id_usuario", "id_instituicao"),
+    )
+
+class Instituicoes(db.Model):
+
+    __tablename__ = 'instituicoes'
+
+    id = db.Column(db.Integer, primary_key = True)
+    nome = db.Column(db.String(50), nullable = False, unique = True)
+    cnpj = db.Column(db.String(20), unique = True)
+    endereco = db.Column(db.String(100), nullable = False)
+    telefone = db.Column(db.String(20), nullable = False)
+
+    usuario_instituicoes = db.relationship('Usuario_Instituicoes', back_populates = 'instituicao')
