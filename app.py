@@ -87,11 +87,11 @@ def login():
     senha = request.form.get('senha', '').strip()
 
     if not email or not senha:
-      flash("Preencha todos os campos!", 'erro')
+      flash("Preencha todos os campos!", 'login_error')
       return redirect(url_for('login'))
     
     if '@' not in email:
-      flash("Email inválido!", 'erro')
+      flash("Email inválido!", 'login_error')
       return render_template('login.html')
 
     usuario = Usuarios.query.filter_by(email=email).first()
@@ -105,10 +105,10 @@ def login():
         return redirect(url_for('base'))
         
       else:
-        flash("Senha Incorreta!", 'erro')
+        flash("Email ou senha incorreto!", 'login_error')
         return redirect(url_for('login'))
     else:
-      flash("Usuário não encontrado!", 'erro')
+      flash("Usuário não encontrado!", 'login_error')
       return redirect(url_for('login'))
     
 
@@ -130,7 +130,7 @@ def base():
 @app.route('/logout')
 def logout():
     session.pop('usuarios_id', None)
-    flash("Você saiu do sistema com sucesso!", 'success')
+    flash("Você saiu do sistema com sucesso!", 'login')
     return redirect(url_for('login'))
 
 
