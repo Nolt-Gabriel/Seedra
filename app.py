@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, url_for, redirect, flash, ses
 from flask_login import current_user, LoginManager, UserMixin, login_user
 from hash import hashear, validar_senha
 from db import db
-from models import Usuarios, Item, Movimentacao
+from models import Usuarios, Item, Movimentacao, Instituicoes, UsuarioInstituicoes
 from datetime import date, datetime 
 from functools import wraps
 import os
@@ -54,18 +54,18 @@ def cadastro():
     email = request.form.get('email', '').strip()
 
     if not email or not senha:
-        flash("Preencha todos os campos!", 'erro')
+        flash("Preencha todos os campos!", 'cadastro')
         return render_template("cadastro.html") 
 
     
     if '@' not in email:
-        flash("Email inválido!", 'erro')
+        flash("Email inválido!", 'cadastro')
         return render_template("cadastro.html")
 
     usuario_existente = Usuarios.query.filter_by(email=email).first()
 
     if usuario_existente:
-      flash("Usuário já existe.", 'erro')
+      flash("Usuário já existe.", 'cadastro')
       return redirect(url_for('cadastro'))
 
     else:
@@ -116,6 +116,40 @@ def login():
   
   return render_template('login.html')
 
+# ---------- CADASTRO_EMPRESAS ------------------------------
+
+@app.route('/cadastro_empresas', methods=['GET', 'POST'])
+def cadastro_empresas():
+
+  if request.method == 'POST':
+    nome_empresa = request.form.get('nome_empresa', '').strip()
+    cnpj = request.form.get('cnpj', '').strip()
+    endereco = request.form.get('endereco', '').strip()
+    telefone = request.form.get('telefone', '').strip()
+    senha = request.form.get('senha', '').strip()
+
+    if not nome_empresa or cnpj or endereco or telefone:
+      flash("Preencha todos os campos!", 'empresas_error')
+      return redirect(url_for('cadastro_empresas'))
+    
+    empresas_existente = Instituicoes.query.filter_by(cnpj=cnpj).first()
+
+    if empresas_existente:
+      flash("Empresa já existe.", 'empresas_error')
+      return redirect(url_for('cadastro'))
+
+    else:
+      senha_hash = hashear(senha)
+      nova_empresa = Instituicoes(cnpj=cnpj, senha=senha_hash, endereco=endereco, nome=nome_empresa, telefone=telefone)
+      db.session.add(nova_empresa)
+      db.session.commit()
+      return redirect(url_for('dashboard'))
+    
+  
+  return render_template('cadastro_empresas.html')
+
+
+
 @app.route('/base')
 def base():
     if 'usuarios_id' not in session:
@@ -154,6 +188,8 @@ def catalogo():
 
     return render_template('catalogo.html', itens=itens, itens_def=itens_def, itens_alfabetica = alfabetica)
 
+
+
 @app.route('/catalogo/novo', methods=['GET', 'POST'])
 @login_required
 def novo_item():
@@ -182,7 +218,7 @@ def novo_item():
         db.session.add(novo)
         db.session.commit()
 
-        flash("Item adicionado com sucesso!", 'success')
+        flash("Item adicionado com sucesso!", 'catalogo')
         return redirect(url_for('catalogo'))
     
     return render_template('novo_item.html')

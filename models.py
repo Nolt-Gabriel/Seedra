@@ -71,6 +71,7 @@ class Instituicoes(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(50), nullable = False, unique = True)
+    senha = db.Column(db.String(), nullable = False, unique = False)
     cnpj = db.Column(db.String(20), unique = True)
     endereco = db.Column(db.String(100), nullable = False)
     telefone = db.Column(db.String(20), nullable = False)

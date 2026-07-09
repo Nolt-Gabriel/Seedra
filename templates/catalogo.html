@@ -124,5 +124,17 @@
             </tbody>
         </table>
     </div>
+            {% with messages = get_flashed_messages(category_filter=["catalogo"], with_categories=true) %}
+                {% if messages %}
+                    <div class="mt-4">
+                    {% for categoria, mensagem in messages %}
+                        <div class="p-3 rounded-lg text-sm font-medium text-center    bg-green-50 text-green-700 border border-green-100">
+                            {{ mensagem }}
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
 </section>
 {% endblock %}
