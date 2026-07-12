@@ -52,6 +52,7 @@ def home():
 def cadastro():
 
   if request.method == 'POST':
+    nome = request.form.get('nome', '').strip()
     senha = request.form.get('senha', '').strip()
     email = request.form.get('email', '').strip()
 
@@ -72,7 +73,7 @@ def cadastro():
 
     else:
       senha_hash = hashear(senha)
-      novo_usuario = Usuarios(email=email, senha=senha_hash)
+      novo_usuario = Usuarios(email=email, senha=senha_hash, nome=nome)
       db.session.add(novo_usuario)
       db.session.commit()
       return redirect(url_for('login'))

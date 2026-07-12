@@ -6,216 +6,219 @@
 {% block header_title %}Dashboard Orgânico{% endblock %}
 
 {% block header_actions %}
-<a href="{{ url_for('relatorios') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
-    <i class="fa-solid fa-plus"></i> Exportar
-</a>
-<a href="{{ url_for('movimentacao') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
-    <i class="fa-solid fa-plus"></i> Novo registro
-</a>
+
 {% endblock %}
 {% block content %}
     
-    <main class="main">
-      <section class="grid grid-cols-1 xl:grid-cols-3 gap-5">
-        <div class="xl:col-span-2 glass-card rounded-[2rem] p-6 bg-organic">
-          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div>
-              <span class="badge border-0 bg-seedra-seedSand text-seedra-leafDark rounded-full px-4 py-3 font-lato">Painel principal</span>
-              <h3 class="mt-4 text-3xl md:text-4xl font-extrabold text-seedra-leafDark leading-tight">Uma interface simples, acolhedora e conectada à ideia de crescimento.</h3>
-              <p class="mt-3 text-base leading-7 text-slate-700 max-w-2xl font-lato">O layout usa transparências suaves, formas arredondadas e a paleta da sua marca para transmitir natureza, cuidado e estabilidade em um dashboard fácil de navegar.</p>
+
+    <div class="flex justify-end gap-2 mb-4">
+      <a href="{{ url_for('relatorios') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+        <i class="fa-solid fa-plus"></i> Exportar
+      </a>
+      <a href="{{ url_for('movimentacao') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+          <i class="fa-solid fa-plus"></i> Novo registro
+      </a>
+    </div>
+    <section class="grid grid-cols-1 xl:grid-cols-3 gap-5">
+      <div class="xl:col-span-2 glass-card rounded-[2rem] p-6 bg-organic">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div>
+            <span class="badge border-0 bg-seedra-seedSand text-seedra-leafDark rounded-full px-4 py-3 font-lato">Painel principal</span>
+            <h3 class="mt-4 text-3xl md:text-4xl font-extrabold text-seedra-leafDark leading-tight">Uma interface simples, acolhedora e conectada à ideia de crescimento.</h3>
+            <p class="mt-3 text-base leading-7 text-slate-700 max-w-2xl font-lato">O layout usa transparências suaves, formas arredondadas e a paleta da sua marca para transmitir natureza, cuidado e estabilidade em um dashboard fácil de navegar.</p>
+          </div>
+          <div class="w-full max-w-xs">
+            <div class="soft-card rounded-[1.8rem] p-4">
+              <p class="text-xs uppercase tracking-[0.28em] text-seedra-leafMid font-bold font-lato">Marca aplicada</p>
+              <img src="/static/img/Logo_completa_SEEDRA-removebg-preview.png" alt="Símbolo SEEDRA" class="mt-3 mx-auto w-42 h-42 object-cover rounded-[1.6rem] bg-white" />
             </div>
-            <div class="w-full max-w-xs">
-              <div class="soft-card rounded-[1.8rem] p-4">
-                <p class="text-xs uppercase tracking-[0.28em] text-seedra-leafMid font-bold font-lato">Marca aplicada</p>
-                <img src="/static/Logo_completa_SEEDRA-removebg-preview.png" alt="Símbolo SEEDRA" class="mt-3 mx-auto w-42 h-42 object-cover rounded-[1.6rem] bg-white" />
+          </div>
+        </div>
+      </div>
+
+      <div class="soft-card rounded-[2rem] p-5">
+        <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Resumo vivo</p>
+        <div class="mt-5 space-y-4">
+          <div class="rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
+            <p class="text-sm text-slate-500 font-lato">Áreas acompanhadas</p>
+            <p class="metric-value text-3xl font-extrabold text-seedra-leafDark">24</p>
+          </div>
+          <div class="rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
+            <p class="text-sm text-slate-500 font-lato">Mudas em análise</p>
+            <p class="metric-value text-3xl font-extrabold text-seedra-seedBrown">1.284</p>
+          </div>
+          <div class="rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
+            <p class="text-sm text-slate-500 font-lato">Saúde média</p>
+            <p class="metric-value text-3xl font-extrabold text-seedra-leafMid">92%</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-5 mt-5">
+      <div class="soft-card rounded-[1.8rem] p-5">
+        <p class="text-sm text-slate-500 font-lato">Cobertura vegetal</p>
+        <div class="mt-3 flex items-end justify-between">
+          <h4 class="metric-value text-3xl font-extrabold text-seedra-leafDark">78%</h4>
+          <span class="badge bg-seedra-leafLight/20 text-seedra-leafDark border-0 font-lato">+6,4%</span>
+        </div>
+        <progress class="progress progress-success mt-4 h-3" value="78" max="100"></progress>
+      </div>
+
+      <div class="soft-card rounded-[1.8rem] p-5">
+        <p class="text-sm text-slate-500 font-lato">Umidade do solo</p>
+        <div class="mt-3 flex items-end justify-between">
+          <h4 class="metric-value text-3xl font-extrabold text-seedra-seedBrown">61%</h4>
+          <span class="badge bg-seedra-seedSand text-seedra-leafDark border-0 font-lato">Estável</span>
+        </div>
+        <progress class="progress mt-4 h-3" value="61" max="100" style="color:#9a774c"></progress>
+      </div>
+
+      <div class="soft-card rounded-[1.8rem] p-5">
+        <p class="text-sm text-slate-500 font-lato">Áreas prioritárias</p>
+        <div class="mt-3 flex items-end justify-between">
+          <h4 class="metric-value text-3xl font-extrabold text-seedra-leafMid">08</h4>
+          <span class="badge bg-white text-seedra-leafDark border border-seedra-leafDark/10 font-lato">Monitorar</span>
+        </div>
+        <div class="mt-4 h-3 rounded-full bg-seedra-seedMist overflow-hidden"><div class="h-full w-2/5 rounded-full bg-seedra-leafMid"></div></div>
+      </div>
+
+      <div class="soft-card rounded-[1.8rem] p-5">
+        <p class="text-sm text-slate-500 font-lato">Eficiência de recuperação</p>
+        <div class="mt-3 flex items-end justify-between">
+          <h4 class="metric-value text-3xl font-extrabold text-seedra-leafDark">89%</h4>
+          <span class="badge bg-seedra-leafDark text-white border-0 font-lato">Ótimo</span>
+        </div>
+        <div class="mt-4 h-3 rounded-full bg-seedra-seedMist overflow-hidden"><div class="h-full w-[89%] rounded-full bg-seedra-leafDark"></div></div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 xl:grid-cols-5 gap-5 mt-5">
+      <div class="xl:col-span-3 soft-card rounded-[2rem] p-5">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Paleta da marca</p>
+            <h3 class="text-2xl font-extrabold text-seedra-leafDark mt-2">Cores que sustentam a experiência</h3>
+          </div>
+          <span class="badge rounded-full border-0 bg-seedra-leafDark text-white px-4 py-3 font-lato">Visual confortável</span>
+        </div>
+
+        <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <article class="rounded-[1.5rem] overflow-hidden border border-seedra-leafDark/10 bg-white">
+            <img src="/static/img/Cores_Folhas.png" alt="Paleta de folhas" class="max-w-auto h-auto object-cover" width="auto" height="105" loading="lazy" />
+            <div class="p-4">
+              <h4 class="font-bold text-seedra-leafDark">Folhas</h4>
+              <p class="text-sm text-slate-600 mt-1 font-lato">Verdes profundos e vivos para transmitir saúde, vida e continuidade.</p>
+            </div>
+          </article>
+
+          <article class="rounded-[1.5rem] overflow-hidden border border-seedra-leafDark/10 bg-white">
+            <img src="/static/img/Cores_Semente.png" alt="Paleta de sementes" class="w-full h-auto object-cover" width="470" height="105" loading="lazy" />
+            <div class="p-4">
+              <h4 class="font-bold text-seedra-leafDark">Sementes</h4>
+              <p class="text-sm text-slate-600 mt-1 font-lato">Tons terrosos e suaves que deixam a interface mais humana e orgânica.</p>
+            </div>
+          </article>
+
+          <article class="rounded-[1.5rem] overflow-hidden border border-seedra-leafDark/10 bg-white">
+            <img src="/static/img/Cores_Neutras.png" alt="Paleta neutra" class="w-full h-auto object-cover" width="470" height="105" loading="lazy" />
+            <div class="p-4">
+              <h4 class="font-bold text-seedra-leafDark">Neutras</h4>
+              <p class="text-sm text-slate-600 mt-1 font-lato">Base leve para equilibrar o painel e manter boa leitura em blocos de dados.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="xl:col-span-2 soft-card rounded-[2rem] p-5">
+        <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Atividades recentes</p>
+        <div class="mt-5 space-y-4">
+          <div class="rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <h4 class="font-bold text-seedra-leafDark">Mapeamento atualizado</h4>
+                <p class="text-sm text-slate-500 font-lato">Setor Norte • 12 min atrás</p>
               </div>
+              <div class="radial-progress text-seedra-leafMid font-lato" style="--value:76; --size:3.2rem; --thickness:0.32rem;">76%</div>
             </div>
           </div>
-        </div>
-
-        <div class="soft-card rounded-[2rem] p-5">
-          <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Resumo vivo</p>
-          <div class="mt-5 space-y-4">
-            <div class="rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
-              <p class="text-sm text-slate-500 font-lato">Áreas acompanhadas</p>
-              <p class="metric-value text-3xl font-extrabold text-seedra-leafDark">24</p>
-            </div>
-            <div class="rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
-              <p class="text-sm text-slate-500 font-lato">Mudas em análise</p>
-              <p class="metric-value text-3xl font-extrabold text-seedra-seedBrown">1.284</p>
-            </div>
-            <div class="rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
-              <p class="text-sm text-slate-500 font-lato">Saúde média</p>
-              <p class="metric-value text-3xl font-extrabold text-seedra-leafMid">92%</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-5 mt-5">
-        <div class="soft-card rounded-[1.8rem] p-5">
-          <p class="text-sm text-slate-500 font-lato">Cobertura vegetal</p>
-          <div class="mt-3 flex items-end justify-between">
-            <h4 class="metric-value text-3xl font-extrabold text-seedra-leafDark">78%</h4>
-            <span class="badge bg-seedra-leafLight/20 text-seedra-leafDark border-0 font-lato">+6,4%</span>
-          </div>
-          <progress class="progress progress-success mt-4 h-3" value="78" max="100"></progress>
-        </div>
-
-        <div class="soft-card rounded-[1.8rem] p-5">
-          <p class="text-sm text-slate-500 font-lato">Umidade do solo</p>
-          <div class="mt-3 flex items-end justify-between">
-            <h4 class="metric-value text-3xl font-extrabold text-seedra-seedBrown">61%</h4>
-            <span class="badge bg-seedra-seedSand text-seedra-leafDark border-0 font-lato">Estável</span>
-          </div>
-          <progress class="progress mt-4 h-3" value="61" max="100" style="color:#9a774c"></progress>
-        </div>
-
-        <div class="soft-card rounded-[1.8rem] p-5">
-          <p class="text-sm text-slate-500 font-lato">Áreas prioritárias</p>
-          <div class="mt-3 flex items-end justify-between">
-            <h4 class="metric-value text-3xl font-extrabold text-seedra-leafMid">08</h4>
-            <span class="badge bg-white text-seedra-leafDark border border-seedra-leafDark/10 font-lato">Monitorar</span>
-          </div>
-          <div class="mt-4 h-3 rounded-full bg-seedra-seedMist overflow-hidden"><div class="h-full w-2/5 rounded-full bg-seedra-leafMid"></div></div>
-        </div>
-
-        <div class="soft-card rounded-[1.8rem] p-5">
-          <p class="text-sm text-slate-500 font-lato">Eficiência de recuperação</p>
-          <div class="mt-3 flex items-end justify-between">
-            <h4 class="metric-value text-3xl font-extrabold text-seedra-leafDark">89%</h4>
-            <span class="badge bg-seedra-leafDark text-white border-0 font-lato">Ótimo</span>
-          </div>
-          <div class="mt-4 h-3 rounded-full bg-seedra-seedMist overflow-hidden"><div class="h-full w-[89%] rounded-full bg-seedra-leafDark"></div></div>
-        </div>
-      </section>
-
-      <section class="grid grid-cols-1 xl:grid-cols-5 gap-5 mt-5">
-        <div class="xl:col-span-3 soft-card rounded-[2rem] p-5">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Paleta da marca</p>
-              <h3 class="text-2xl font-extrabold text-seedra-leafDark mt-2">Cores que sustentam a experiência</h3>
-            </div>
-            <span class="badge rounded-full border-0 bg-seedra-leafDark text-white px-4 py-3 font-lato">Visual confortável</span>
-          </div>
-
-          <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <article class="rounded-[1.5rem] overflow-hidden border border-seedra-leafDark/10 bg-white">
-              <img src="/static/Cores_Folhas.png" alt="Paleta de folhas" class="max-w-auto h-auto object-cover" width="auto" height="105" loading="lazy" />
-              <div class="p-4">
-                <h4 class="font-bold text-seedra-leafDark">Folhas</h4>
-                <p class="text-sm text-slate-600 mt-1 font-lato">Verdes profundos e vivos para transmitir saúde, vida e continuidade.</p>
+          <div class="rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <h4 class="font-bold text-seedra-leafDark">Nova leitura do solo</h4>
+                <p class="text-sm text-slate-500 font-lato">Campo experimental • 35 min atrás</p>
               </div>
-            </article>
-
-            <article class="rounded-[1.5rem] overflow-hidden border border-seedra-leafDark/10 bg-white">
-              <img src="/static/Cores_Semente.png" alt="Paleta de sementes" class="w-full h-auto object-cover" width="470" height="105" loading="lazy" />
-              <div class="p-4">
-                <h4 class="font-bold text-seedra-leafDark">Sementes</h4>
-                <p class="text-sm text-slate-600 mt-1 font-lato">Tons terrosos e suaves que deixam a interface mais humana e orgânica.</p>
-              </div>
-            </article>
-
-            <article class="rounded-[1.5rem] overflow-hidden border border-seedra-leafDark/10 bg-white">
-              <img src="/static/Cores_Neutras.png" alt="Paleta neutra" class="w-full h-auto object-cover" width="470" height="105" loading="lazy" />
-              <div class="p-4">
-                <h4 class="font-bold text-seedra-leafDark">Neutras</h4>
-                <p class="text-sm text-slate-600 mt-1 font-lato">Base leve para equilibrar o painel e manter boa leitura em blocos de dados.</p>
-              </div>
-            </article>
+              <span class="badge rounded-full border-0 bg-seedra-seedSand text-seedra-leafDark px-4 py-3 font-lato">Concluído</span>
+            </div>
           </div>
-        </div>
-
-        <div class="xl:col-span-2 soft-card rounded-[2rem] p-5">
-          <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Atividades recentes</p>
-          <div class="mt-5 space-y-4">
-            <div class="rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <h4 class="font-bold text-seedra-leafDark">Mapeamento atualizado</h4>
-                  <p class="text-sm text-slate-500 font-lato">Setor Norte • 12 min atrás</p>
-                </div>
-                <div class="radial-progress text-seedra-leafMid font-lato" style="--value:76; --size:3.2rem; --thickness:0.32rem;">76%</div>
+          <div class="rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <h4 class="font-bold text-seedra-leafDark">Painel de reflorestamento</h4>
+                <p class="text-sm text-slate-500 font-lato">Indicadores revisados hoje</p>
               </div>
-            </div>
-            <div class="rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <h4 class="font-bold text-seedra-leafDark">Nova leitura do solo</h4>
-                  <p class="text-sm text-slate-500 font-lato">Campo experimental • 35 min atrás</p>
-                </div>
-                <span class="badge rounded-full border-0 bg-seedra-seedSand text-seedra-leafDark px-4 py-3 font-lato">Concluído</span>
-              </div>
-            </div>
-            <div class="rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <h4 class="font-bold text-seedra-leafDark">Painel de reflorestamento</h4>
-                  <p class="text-sm text-slate-500 font-lato">Indicadores revisados hoje</p>
-                </div>
-                <button class="btn btn-sm rounded-full bg-seedra-leafDark hover:bg-seedra-leafMid text-white border-0 font-lato">Abrir</button>
-              </div>
+              <button class="btn btn-sm rounded-full bg-seedra-leafDark hover:bg-seedra-leafMid text-white border-0 font-lato">Abrir</button>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5 pb-4">
-        <div class="xl:col-span-2 soft-card rounded-[2rem] p-5">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato" id="projetos">Projetos</p>
-              <h3 class="text-2xl font-extrabold text-seedra-leafDark mt-2">Frentes de trabalho</h3>
-            </div>
-            <input type="text" placeholder="Buscar projeto" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/10 w-full max-w-xs font-lato" />
+    <section class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5 pb-4">
+      <div class="xl:col-span-2 soft-card rounded-[2rem] p-5">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato" id="projetos">Projetos</p>
+            <h3 class="text-2xl font-extrabold text-seedra-leafDark mt-2">Frentes de trabalho</h3>
           </div>
-
-          <div class="mt-5 overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
-            <table class="table font-lato">
-              <thead>
-                <tr class="text-seedra-leafDark">
-                  <th>Projeto</th>
-                  <th>Área</th>
-                  <th>Status</th>
-                  <th>Progresso</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="font-semibold">Parque das Dunas</td>
-                  <td>12,4 ha</td>
-                  <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-lato">Em evolução</span></td>
-                  <td><progress class="progress progress-success h-2 w-28" value="74" max="100"></progress></td>
-                </tr>
-                <tr>
-                  <td class="font-semibold">Núcleo Semente Viva</td>
-                  <td>8,1 ha</td>
-                  <td><span class="badge border-0 bg-seedra-seedSand text-seedra-leafDark font-lato">Atenção</span></td>
-                  <td><progress class="progress h-2 w-28" value="58" max="100" style="color:#9a774c"></progress></td>
-                </tr>
-                <tr>
-                  <td class="font-semibold">Viveiro</td>
-                  <td>5,9 ha</td>
-                  <td><span class="badge border-0 bg-seedra-leafDark text-white font-lato">Estável</span></td>
-                  <td><progress class="progress progress-success h-2 w-28" value="91" max="100"></progress></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <input type="text" placeholder="Buscar projeto" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/10 w-full max-w-xs font-lato" />
         </div>
 
-        <div class="soft-card rounded-[2rem] p-5">
-          <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Direção visual</p>
-          <div class="mt-4 rounded-[1.5rem] bg-white p-4 border border-seedra-leafDark/10">
-            <ul class="space-y-3 text-sm leading-6 text-slate-600 font-lato">
-              <li><span class="font-bold text-seedra-leafDark">Formas suaves:</span> cantos amplos e blocos acolhedores.</li>
-              <li><span class="font-bold text-seedra-leafDark">Leveza:</span> superfícies claras com transparência discreta.</li>
-              <li><span class="font-bold text-seedra-leafDark">Naturalidade:</span> verdes, areia e tons terrosos.</li>
-              <li><span class="font-bold text-seedra-leafDark">Simplicidade:</span> leitura rápida e poucos excessos visuais.</li>
-            </ul>
-          </div>
+        <div class="mt-5 overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
+          <table class="table font-lato">
+            <thead>
+              <tr class="text-seedra-leafDark">
+                <th>Projeto</th>
+                <th>Área</th>
+                <th>Status</th>
+                <th>Progresso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-semibold">Parque das Dunas</td>
+                <td>12,4 ha</td>
+                <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-lato">Em evolução</span></td>
+                <td><progress class="progress progress-success h-2 w-28" value="74" max="100"></progress></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Núcleo Semente Viva</td>
+                <td>8,1 ha</td>
+                <td><span class="badge border-0 bg-seedra-seedSand text-seedra-leafDark font-lato">Atenção</span></td>
+                <td><progress class="progress h-2 w-28" value="58" max="100" style="color:#9a774c"></progress></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Viveiro</td>
+                <td>5,9 ha</td>
+                <td><span class="badge border-0 bg-seedra-leafDark text-white font-lato">Estável</span></td>
+                <td><progress class="progress progress-success h-2 w-28" value="91" max="100"></progress></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </section>
-    </main>
+      </div>
+
+      <div class="soft-card rounded-[2rem] p-5">
+        <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Direção visual</p>
+        <div class="mt-4 rounded-[1.5rem] bg-white p-4 border border-seedra-leafDark/10">
+          <ul class="space-y-3 text-sm leading-6 text-slate-600 font-lato">
+            <li><span class="font-bold text-seedra-leafDark">Formas suaves:</span> cantos amplos e blocos acolhedores.</li>
+            <li><span class="font-bold text-seedra-leafDark">Leveza:</span> superfícies claras com transparência discreta.</li>
+            <li><span class="font-bold text-seedra-leafDark">Naturalidade:</span> verdes, areia e tons terrosos.</li>
+            <li><span class="font-bold text-seedra-leafDark">Simplicidade:</span> leitura rápida e poucos excessos visuais.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
 {% endblock %}

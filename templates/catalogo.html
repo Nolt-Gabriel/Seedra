@@ -5,14 +5,15 @@
 {% block header_subtitle %}Acervo Geral{% endblock %}
 {% block header_title %}Catálogo de Espécies{% endblock %}
 
-{% block header_actions %}
-<a href="{{ url_for('novo_item') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
-    <i class="fa-solid fa-plus"></i> Novo Cadastro
-</a>
-{% endblock %}
+
 
 {% block content %}
-<section class="soft-card rounded-[2rem] p-6">
+<div class="flex justify-end mb-4">
+    <a href="{{ url_for('novo_item') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+        <i class="fa-solid fa-plus"></i> Novo Cadastro
+    </a>
+</div>
+<section class="mt-5 soft-card rounded-[2rem] p-6">
     <!-- Botão De Categorias e Pesquisa e Filtrar-->
     <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
 
