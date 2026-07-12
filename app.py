@@ -7,7 +7,7 @@ import email
 from flask import Flask, render_template, request, url_for, redirect, flash, session
 from flask_login import current_user, LoginManager, UserMixin, login_user
 from hash import hashear, validar_senha
-from db import db
+from db import db, migrate
 from models import Usuarios, Item, Movimentacao, Instituicoes, UsuarioInstituicoes
 from datetime import date, datetime 
 from functools import wraps
@@ -30,6 +30,8 @@ def load_user(user_id):
 db.init_app(app)
 with app.app_context():
   db.create_all()
+
+migrate.init_app(app, db)
 
 def login_required(f):
   @wraps(f)
