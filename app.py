@@ -56,7 +56,7 @@ def cadastro():
     senha = request.form.get('senha', '').strip()
     email = request.form.get('email', '').strip()
 
-    if not email or not senha:
+    if not email or not senha or not nome:
         flash("Preencha todos os campos!", 'cadastro')
         return render_template("cadastro.html") 
 
@@ -105,7 +105,7 @@ def login():
         session['usuarios_id'] = email
         resultado = login_user(usuario)
         print(resultado)
-        return redirect(url_for('base'))
+        return redirect(url_for('dashboard'))
         
       else:
         flash("Email ou senha incorreto!", 'login_error')
@@ -131,7 +131,7 @@ def cadastro_empresas():
     telefone = request.form.get('telefone', '').strip()
     senha = request.form.get('senha', '').strip()
 
-    if not nome_empresa or cnpj or endereco or telefone:
+    if not nome_empresa or not cnpj or not endereco or not telefone or not senha:
       flash("Preencha todos os campos!", 'empresas_error')
       return redirect(url_for('cadastro_empresas'))
     
