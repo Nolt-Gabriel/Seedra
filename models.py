@@ -22,10 +22,10 @@ class Item(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(50), nullable = False, unique = True)
-    quantidade = db.Column(db.Integer, nullable = True)
+    quantidade = db.Column(db.Integer, nullable = False, default = 0)
     n_cientifico = db.Column(db.String(50), nullable = False , unique = True)
     categoria = db.Column(db.String(20), nullable = False)
-    deficit_limit = db.Column(db.Integer)
+    deficit_limit = db.Column(db.Integer, nullable = False, default = 0)
     obs = db.Column(db.Text)
     data_cadastro = db.Column(db.Date, nullable = False)
 
@@ -66,7 +66,7 @@ class UsuarioInstituicoes(db.Model):
         db.UniqueConstraint("id_usuario", "id_instituicoes"),
     )
 
-class Instituicoes(db.Model):
+class Instituicao(db.Model):
 
     __tablename__ = 'instituicoes'
 

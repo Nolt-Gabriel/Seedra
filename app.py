@@ -4,18 +4,23 @@
 
 import email
 
-from flask import Flask, render_template, request, url_for, redirect, flash, session
-from flask_login import current_user, LoginManager, UserMixin, login_user
-from hash import hashear, validar_senha
-from db import db, migrate
-from models import Usuarios, Item, Movimentacao, Instituicoes, UsuarioInstituicoes
+from flask import Flask, render_template, request, url_for, redirect, flash, session, Blueprint
+from flask_login import current_user, LoginManager
+from hash import hashear
+from db import db
+from models import Usuarios, Item, Movimentacao
 from datetime import date, datetime 
-from functools import wraps
+from controllers.login import bp_login, login_required
 import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///database.db') 
 app.config['SECRET_KEY'] = 'acre_viveiro_de_dinossauros'
+
+
+db.init_app(app)
+with app.app_context():
+  db.create_all()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -45,6 +50,8 @@ def login_required(f):
 @app.route('/')
 def home():
   return render_template('cadastro.html')
+
+app.register_blueprint(bp_login, url_prefix = "/login")
 
 # --------- CADASTRO ------------------------------
 
@@ -80,44 +87,7 @@ def cadastro():
   
   return render_template("cadastro.html")
 
-# ---------- LOGIN ------------------------------
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-
-  if request.method == 'POST':
-    email = request.form.get('email', '').strip()
-    senha = request.form.get('senha', '').strip()
-
-    if not email or not senha:
-      flash("Preencha todos os campos!", 'login_error')
-      return redirect(url_for('login'))
-    
-    if '@' not in email:
-      flash("Email inválido!", 'login_error')
-      return render_template('login.html')
-
-    usuario = Usuarios.query.filter_by(email=email).first()
-
-
-    if usuario:
-      if validar_senha(usuario.senha, senha):
-        session['usuarios_id'] = email
-        resultado = login_user(usuario)
-        print(resultado)
-        return redirect(url_for('dashboard'))
-        
-      else:
-        flash("Email ou senha incorreto!", 'login_error')
-        return redirect(url_for('login'))
-    else:
-      flash("Usuário não encontrado!", 'login_error')
-      return redirect(url_for('login'))
-    
-
-    
-  
-  return render_template('login.html')
 
 # ---------- CADASTRO_EMPRESAS ------------------------------
 
