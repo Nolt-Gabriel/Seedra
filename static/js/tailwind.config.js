@@ -20,7 +20,9 @@
               seedMist: '#d9d6cc',
               deepForest: '#001500',
               stone: '#888784',
-              cloud: '#d9d9d9'
+              cloud: '#d9d9d9',
+              bg: '#cffce6',
+              moss: '#2d6a4f',
             }
           },
           boxShadow: {

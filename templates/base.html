@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SEEDRA - {% block title %}Painel{% endblock %}</title>
   <link rel="stylesheet" href="/static/css/style.css" />
-  <link rel="icon" href="/static/seedot.gif" type="image/gif" />
+  <link rel="icon" href="/static/img/Logo-SEEDRA.png" type="image/png" />
   <script src="/static/js/tailwind.config.js" defer></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
@@ -30,11 +30,15 @@
       
       {% block nav %}
         <nav class="space-y-2 mt-4">
-          <a href="{{ url_for('catalogo') }}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl {{ '!text-seedra-leafDark border-white bg-white' if page_id =='catalogo' else 'btn-ghost text-white/80 hover:bg-white/10' }}"><i class="fa-solid fa-magnifying-glass w-5"></i> Catálogo e Acervo</a>
-          <a href="{{ url_for('movimentacao') }}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl {{ '!text-seedra-leafDark border-white bg-white' if page_id =='movimentacoes' else 'btn-ghost text-white/80 hover:bg-white/10' }}"><i class="fa-solid fa-arrow-right-arrow-left w-5"></i> Movimentações</a>
-          <a href="{{ url_for('relatorios') }}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl {{ '!text-seedra-leafDark border-white bg-white' if page_id =='relatorios' else 'btn-ghost text-white/80 hover:bg-white/10' }}"><i class="fa-solid fa-file-lines w-5"></i> Relatórios</a>
-          <a href="{{ url_for('usuarios') }}" class="btn btn-block justify-start btn-ghost text-white/80 hover:bg-white/10 rounded-2xl {{ '!text-seedra-leafDark border-white bg-white' if page_id =='usuarios' else 'btn-ghost text-white/80 hover:bg-white/10' }}"><i class="fa-solid fa-users w-5"></i> Usuários</a>
           <a href="{{ url_for('dashboard') }}" class="btn btn-block justify-start  hover:bg-white/20 hover:text-white  rounded-2xl {{ 'text-seedra-leafDark border-white/10 bg-white/14' if page_id =='visao' else 'btn-ghost text-white/80 hover:bg-white/10' }}"><i class="fa-solid fa-chart-pie w-5"></i> Visão geral</a>
+
+          <a href="{{ url_for('catalogo') }}" class="btn btn-block justify-start  hover:bg-white/20 hover:text-white  rounded-2xl {{ 'text-seedra-leafDark border-white/10 bg-white/14' if page_id =='catalogo' else 'btn-ghost text-white/80 hover:bg-white/10' }}"><i class="fa-solid fa-magnifying-glass w-5"></i>Catálogo e Acervo</a>
+          
+          <a href="{{ url_for('movimentacao') }}" class="btn btn-block justify-start  hover:bg-white/20 hover:text-white  rounded-2xl {{ 'text-seedra-leafDark border-white/10 bg-white/14' if page_id =='movimentacoes' else 'btn-ghost text-white/80 hover:bg-white/10' }}"><i class="fa-solid fa-arrow-right-arrow-left w-5"></i>Movimentações</a>
+
+          <a href="{{ url_for('relatorios') }}" class="btn btn-block justify-start  hover:bg-white/20 hover:text-white  rounded-2xl {{ 'text-seedra-leafDark border-white/10 bg-white/14' if page_id =='relatorios' else 'btn-ghost text-white/80 hover:bg-white/10' }}"><i class="fa-solid fa-file-lines w-5"></i>Relatórios</a>
+
+          <a href="{{ url_for('usuarios') }}" class="btn btn-block justify-start  hover:bg-white/20 hover:text-white  rounded-2xl {{ 'text-seedra-leafDark border-white/10 bg-white/14' if page_id =='usuarios' else 'btn-ghost text-white/80 hover:bg-white/10' }}"><i class="fa-solid fa-users w-5"></i>Usuários</a>
         </nav>
       {% endblock %}
       <div class="mt-auto">
@@ -49,7 +53,7 @@
       </div>
       <div class="flex items-center gap-3">
         {% block header_actions %}{% endblock %}
-        <span>{% if current_user.is_authenticated %}{{current_user.email}} {% else%} {% endif %}</span>
+        <span>{% if current_user.is_authenticated %}{{current_user.nome}} {% else%} {% endif %}</span>
         <div class="avatar placeholder ml-4">
           <div class="bg-seedra-leafMid text-white rounded-full w-10">
             <span>PG</span>

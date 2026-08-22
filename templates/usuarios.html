@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Usuários{% endblock %}
+
+{% set page_id = 'usuarios'%}
+{% block header_subtitle %}Controle dos Usuários{% endblock %}
+{% block header_title %}Verificar usuários e empresas{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-end mb-4">
+    <a href="{{ url_for('cadastro_empresas') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+        <i class="fa-solid fa-plus"></i> Nova Empresa
+    </a>
+</div>
+<section class="mt-5 soft-card rounded-[2rem] p-6">
+    <div class="overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
+        <table class="table font-lato">
+            <thead class="bg-seedra-leafLight/10 text-seedra-leafDark">
+                <tr>
+                    <th>Nome da empresa</th>
+                    <th>CNPJ</th>
+                    <th>Endereço</th>
+                    <th>Telefone</th>
+                        
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for inst in instituicoes %}
+                
+                    <td class="font-bold text-seedra-leafDark">{{ inst.nome }}</td>
+                    <td class="italic text-slate-500">{{ inst.cnpj }}</td>
+                    <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-bold">{{ inst.endereco}}</span></td>
+                    <td class="metric-value font-bold text-lg">{{ inst.telefone }}</td>
+                    
+                
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}

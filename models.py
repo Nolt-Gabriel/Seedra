@@ -10,11 +10,11 @@ class Usuarios(db.Model, UserMixin):
     __tablename__ = 'usuarios'
 
     id = db.Column(db.Integer, primary_key = True)
-    nome = db.Column(db.String(50), nullable = False, unique = False)
+    nome = db.Column(db.String(50), nullable = False)
     email = db.Column(db.String(50), nullable = False, unique = True)
     senha = db.Column(db.String(), nullable = False)
 
-    usuario_instituicoes = db.relationship('UsuarioInstituicoes', back_populates = 'usuario')
+    usuario_instituicoes = db.relationship('UsuarioInstituicoes', back_populates = 'usuarios')
 
 class Item(db.Model):
 
@@ -59,8 +59,8 @@ class UsuarioInstituicoes(db.Model):
     id_usuario = db.Column(db.Integer, db.ForeignKey("usuarios.id"), nullable = False)
     id_instituicoes = db.Column(db.Integer, db.ForeignKey("instituicoes.id") ,  nullable = False)
 
-    usuario = db.relationship('Usuarios', back_populates = 'usuario_instituicoes', lazy = True)
-    instituicao = db.relationship("Instituicao", back_populates="usuario_instituicoes")
+    usuarios = db.relationship('Usuarios', back_populates = 'usuario_instituicoes', lazy = True)
+    instituicoes = db.relationship("Instituicoes", back_populates="usuario_instituicoes")
 
     __table_args__ = (
         db.UniqueConstraint("id_usuario", "id_instituicoes"),
@@ -72,8 +72,9 @@ class Instituicao(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(50), nullable = False, unique = True)
+    senha = db.Column(db.String(), nullable = False, unique = False)
     cnpj = db.Column(db.String(20), unique = True)
     endereco = db.Column(db.String(100), nullable = False)
     telefone = db.Column(db.String(20), nullable = False)
 
-    usuario_instituicoes = db.relationship('UsuarioInstituicoes', back_populates = 'instituicao')
+    usuario_instituicoes = db.relationship('UsuarioInstituicoes', back_populates = 'instituicoes')

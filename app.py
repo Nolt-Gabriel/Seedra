@@ -32,6 +32,21 @@ def load_user(user_id):
     # por isso convertemos para int() se o seu ID no banco for numérico.
     return Usuarios.query.get(int(user_id))
 
+db.init_app(app)
+with app.app_context():
+  db.create_all()
+
+migrate.init_app(app, db)
+
+def login_required(f):
+  @wraps(f)
+  def decorated_function(*args, **kwargs):
+      if 'usuarios_id' not in session:
+         flash("Faça login primeiro!", 'erro')
+         return redirect(url_for('login'))
+      return f(*args, **kwargs)
+  return decorated_function
+
 @app.route('/')
 def home():
   return render_template('cadastro.html')
@@ -44,32 +59,67 @@ app.register_blueprint(bp_login, url_prefix = "/login")
 def cadastro():
 
   if request.method == 'POST':
+    nome = request.form.get('nome', '').strip()
     senha = request.form.get('senha', '').strip()
     email = request.form.get('email', '').strip()
 
-    if not email or not senha:
-        flash("Preencha todos os campos!", 'erro')
+    if not email or not senha or not nome:
+        flash("Preencha todos os campos!", 'cadastro')
         return render_template("cadastro.html") 
 
     
     if '@' not in email:
-        flash("Email inválido!", 'erro')
+        flash("Email inválido!", 'cadastro')
         return render_template("cadastro.html")
 
     usuario_existente = Usuarios.query.filter_by(email=email).first()
 
     if usuario_existente:
-      flash("Usuário já existe.", 'erro')
+      flash("Usuário já existe.", 'cadastro')
       return redirect(url_for('cadastro'))
 
     else:
       senha_hash = hashear(senha)
-      novo_usuario = Usuarios(email=email, senha=senha_hash)
+      novo_usuario = Usuarios(email=email, senha=senha_hash, nome=nome)
       db.session.add(novo_usuario)
       db.session.commit()
       return redirect(url_for('login'))
   
   return render_template("cadastro.html")
+
+
+
+# ---------- CADASTRO_EMPRESAS ------------------------------
+
+@app.route('/cadastro_empresas', methods=['GET', 'POST'])
+def cadastro_empresas():
+
+  if request.method == 'POST':
+    nome_empresa = request.form.get('nome_empresa', '').strip()
+    cnpj = request.form.get('cnpj', '').strip()
+    endereco = request.form.get('endereco', '').strip()
+    telefone = request.form.get('telefone', '').strip()
+    senha = request.form.get('senha', '').strip()
+
+    if not nome_empresa or not cnpj or not endereco or not telefone or not senha:
+      flash("Preencha todos os campos!", 'empresas_error')
+      return redirect(url_for('cadastro_empresas'))
+    
+    empresas_existente = Instituicoes.query.filter_by(cnpj=cnpj).first()
+
+    if empresas_existente:
+      flash("Empresa já existe.", 'empresas_error')
+      return redirect(url_for('cadastro'))
+
+    else:
+      senha_hash = hashear(senha)
+      nova_empresa = Instituicoes(cnpj=cnpj, senha=senha_hash, endereco=endereco, nome=nome_empresa, telefone=telefone)
+      db.session.add(nova_empresa)
+      db.session.commit()
+      return redirect(url_for('dashboard'))
+    
+  
+  return render_template('cadastro_empresas.html')
 
 
 
@@ -87,7 +137,7 @@ def base():
 @app.route('/logout')
 def logout():
     session.pop('usuarios_id', None)
-    flash("Você saiu do sistema com sucesso!", 'success')
+    flash("Você saiu do sistema com sucesso!", 'login')
     return redirect(url_for('login'))
 
 
@@ -110,6 +160,8 @@ def catalogo():
     alfabetica = Item.query.order_by(Item.nome.asc()).all()
 
     return render_template('catalogo.html', itens=itens, itens_def=itens_def, itens_alfabetica = alfabetica)
+
+
 
 @app.route('/catalogo/novo', methods=['GET', 'POST'])
 @login_required
@@ -139,7 +191,7 @@ def novo_item():
         db.session.add(novo)
         db.session.commit()
 
-        flash("Item adicionado com sucesso!", 'success')
+        flash("Item adicionado com sucesso!", 'catalogo')
         return redirect(url_for('catalogo'))
     
     return render_template('novo_item.html')

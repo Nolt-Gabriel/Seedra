@@ -5,14 +5,15 @@
 {% block header_subtitle %}Acervo Geral{% endblock %}
 {% block header_title %}Catálogo de Espécies{% endblock %}
 
-{% block header_actions %}
-<a href="{{ url_for('novo_item') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
-    <i class="fa-solid fa-plus"></i> Novo Cadastro
-</a>
-{% endblock %}
+
 
 {% block content %}
-<section class="soft-card rounded-[2rem] p-6">
+<div class="flex justify-end mb-4">
+    <a href="{{ url_for('novo_item') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+        <i class="fa-solid fa-plus"></i> Novo Cadastro
+    </a>
+</div>
+<section class="mt-5 soft-card rounded-[2rem] p-6">
     <!-- Botão De Categorias e Pesquisa e Filtrar-->
     <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
 
@@ -24,7 +25,7 @@
 
                 <button id="c_btn" class="btn w-full flex justify-center rounded-xl bg-white font-lato text-seedra-leafDark border-seedra-leafDark/10 gap-4 hover:bg-seedra-leafMid hover:text-white">
 
-                    <span id="content_span" class="transition transition-transform easy-in-out">Todas as Categorias</span>
+                    <span id="content_span" class=" transition-transform easy-in-out">Todas as Categorias</span>
                     <i id="c_arrow" class="fa-solid fa-chevron-right transition-transform"></i>
 
                 </button>
@@ -124,5 +125,17 @@
             </tbody>
         </table>
     </div>
+            {% with messages = get_flashed_messages(category_filter=["catalogo"], with_categories=true) %}
+                {% if messages %}
+                    <div class="mt-4">
+                    {% for categoria, mensagem in messages %}
+                        <div class="p-3 rounded-lg text-sm font-medium text-center    bg-green-50 text-green-700 border border-green-100">
+                            {{ mensagem }}
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
 </section>
 {% endblock %}
