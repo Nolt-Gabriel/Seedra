@@ -7,8 +7,8 @@ import email
 from flask import Flask, render_template, request, url_for, redirect, flash, session, Blueprint
 from flask_login import current_user, LoginManager
 from hash import hashear
-from db import db
-from models import Usuarios, Item, Movimentacao
+from db import db, migrate
+from models import Usuarios, Item, Movimentacao, Instituicao
 from datetime import date, datetime 
 from controllers.login import bp_login, login_required
 import os
@@ -32,20 +32,9 @@ def load_user(user_id):
     # por isso convertemos para int() se o seu ID no banco for numérico.
     return Usuarios.query.get(int(user_id))
 
-db.init_app(app)
-with app.app_context():
-  db.create_all()
 
 migrate.init_app(app, db)
 
-def login_required(f):
-  @wraps(f)
-  def decorated_function(*args, **kwargs):
-      if 'usuarios_id' not in session:
-         flash("Faça login primeiro!", 'erro')
-         return redirect(url_for('login'))
-      return f(*args, **kwargs)
-  return decorated_function
 
 @app.route('/')
 def home():
@@ -83,7 +72,7 @@ def cadastro():
       novo_usuario = Usuarios(email=email, senha=senha_hash, nome=nome)
       db.session.add(novo_usuario)
       db.session.commit()
-      return redirect(url_for('login'))
+      return redirect(url_for('login.login'))
   
   return render_template("cadastro.html")
 
@@ -105,7 +94,7 @@ def cadastro_empresas():
       flash("Preencha todos os campos!", 'empresas_error')
       return redirect(url_for('cadastro_empresas'))
     
-    empresas_existente = Instituicoes.query.filter_by(cnpj=cnpj).first()
+    empresas_existente = Instituicao.query.filter_by(cnpj=cnpj).first()
 
     if empresas_existente:
       flash("Empresa já existe.", 'empresas_error')
@@ -113,7 +102,7 @@ def cadastro_empresas():
 
     else:
       senha_hash = hashear(senha)
-      nova_empresa = Instituicoes(cnpj=cnpj, senha=senha_hash, endereco=endereco, nome=nome_empresa, telefone=telefone)
+      nova_empresa = Instituicao(cnpj=cnpj, senha=senha_hash, endereco=endereco, nome=nome_empresa, telefone=telefone)
       db.session.add(nova_empresa)
       db.session.commit()
       return redirect(url_for('dashboard'))
@@ -127,7 +116,7 @@ def cadastro_empresas():
 def base():
     if 'usuarios_id' not in session:
         flash("Faça login primeiro!", 'erro')
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
     
     usuario = current_user.email
     print(usuario)
@@ -138,7 +127,7 @@ def base():
 def logout():
     session.pop('usuarios_id', None)
     flash("Você saiu do sistema com sucesso!", 'login')
-    return redirect(url_for('login'))
+    return redirect(url_for('login.login'))
 
 
 

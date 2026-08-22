@@ -60,7 +60,7 @@ class UsuarioInstituicoes(db.Model):
     id_instituicoes = db.Column(db.Integer, db.ForeignKey("instituicoes.id") ,  nullable = False)
 
     usuarios = db.relationship('Usuarios', back_populates = 'usuario_instituicoes', lazy = True)
-    instituicoes = db.relationship("Instituicoes", back_populates="usuario_instituicoes")
+    instituicoes = db.relationship("Instituicao", back_populates="usuario_instituicoes")
 
     __table_args__ = (
         db.UniqueConstraint("id_usuario", "id_instituicoes"),
