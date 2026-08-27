@@ -7,8 +7,8 @@ import email
 from flask import Flask, render_template, request, url_for, redirect, flash, session, Blueprint
 from flask_login import current_user, LoginManager
 from hash import hashear
-from db import db
-from models import Usuarios, Item, Movimentacao
+from db import db, migrate
+from models import Usuarios, Item, Movimentacao, Instituicao
 from datetime import date, datetime 
 from controllers.login import bp_login, login_required
 import os
@@ -38,14 +38,6 @@ with app.app_context():
 
 migrate.init_app(app, db)
 
-def login_required(f):
-  @wraps(f)
-  def decorated_function(*args, **kwargs):
-      if 'usuarios_id' not in session:
-         flash("Faça login primeiro!", 'erro')
-         return redirect(url_for('login'))
-      return f(*args, **kwargs)
-  return decorated_function
 
 @app.route('/')
 def home():
@@ -105,7 +97,7 @@ def cadastro_empresas():
       flash("Preencha todos os campos!", 'empresas_error')
       return redirect(url_for('cadastro_empresas'))
     
-    empresas_existente = Instituicoes.query.filter_by(cnpj=cnpj).first()
+    empresas_existente = Instituicao.query.filter_by(cnpj=cnpj).first()
 
     if empresas_existente:
       flash("Empresa já existe.", 'empresas_error')
@@ -113,7 +105,7 @@ def cadastro_empresas():
 
     else:
       senha_hash = hashear(senha)
-      nova_empresa = Instituicoes(cnpj=cnpj, senha=senha_hash, endereco=endereco, nome=nome_empresa, telefone=telefone)
+      nova_empresa = Instituicao(cnpj=cnpj, senha=senha_hash, endereco=endereco, nome=nome_empresa, telefone=telefone)
       db.session.add(nova_empresa)
       db.session.commit()
       return redirect(url_for('dashboard'))
