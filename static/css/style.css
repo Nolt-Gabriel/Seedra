@@ -39,7 +39,7 @@
     .sidebar {
       grid-row: 1 / -1;
       overflow-y: auto;
-      background: linear-gradient(180deg, rgba(4,75,45,0.95), rgba(88,126,73,0.94));
+      background: linear-gradient(180deg, rgba(88,126,73,0.94), rgba(4,75,45,0.95));
       color: #f7f5ef;
       border-right: 1px solid rgba(255,255,255,0.08);
     }

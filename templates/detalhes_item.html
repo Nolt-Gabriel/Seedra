@@ -88,9 +88,9 @@
         </div>
     </div>
 
-    <div class="flex flex-col gap-6">
+    <div class="lg:col-span-2 flex gap-6 w-full">
         
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 text-center">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 text-center flex-1">
             <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Quantidade em Estoque</h3>
             
             <div class="text-5xl font-black {% if item.em_deficit() %}text-red-600{% else %}text-gray-900{% endif %} my-4">
@@ -116,9 +116,9 @@
             </div>
         </div>
 
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-            <h4 class="text-sm font-semibold text-gray-900 mb-4">Ações Rápidas</h4>
-            <div class="space-y-3">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 flex-1">
+            <h4 class="text-sm font-semibold text-gray-900 mb-10">Ações Rápidas</h4>
+            <div class="space-y-6">
                 <a href="{{ url_for('movimentacao') }}" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
                     <i class="fa-solid fa-plus-circle mr-2"></i> Registrar Entrada
                 </a>
@@ -127,7 +127,12 @@
                 </a>
             </div>
         </div>
-
     </div>
+    <div class="lg:col-span-2 flex ">
+        <button class="btn bg-red-600 text-white hover:bg-red-800 px-20 w-full">
+            Excluir
+        </button>
+    </div>
+
 </div>
 {% endblock %}

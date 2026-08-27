@@ -32,10 +32,6 @@ def load_user(user_id):
     # por isso convertemos para int() se o seu ID no banco for numérico.
     return Usuarios.query.get(int(user_id))
 
-db.init_app(app)
-with app.app_context():
-  db.create_all()
-
 migrate.init_app(app, db)
 
 
