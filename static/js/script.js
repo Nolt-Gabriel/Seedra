@@ -156,3 +156,25 @@
     
 }
 
+
+//botao excluir em catalogo/<item:id>
+
+
+function excluirItem(id) {
+
+    console.log("ID recebido: ", id);
+    fetch(`/excluir_item/${id}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+
+        if(response.ok) {
+            alert("Item excluido com sucesso!");
+            window.location.href = "/catalogo";
+        } else {
+            alert("Erro ao excluir o item")
+        }
+    });
+}
+
+

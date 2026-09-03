@@ -129,7 +129,7 @@
         </div>
     </div>
     <div class="lg:col-span-2 flex ">
-        <button class="btn bg-red-600 text-white hover:bg-red-800 px-20 w-full">
+        <button data-id="{{ item.id }}" onclick="excluirItem(this.dataset.id)" class="btn bg-red-600 text-white hover:bg-red-800 px-20 w-full">
             Excluir
         </button>
     </div>

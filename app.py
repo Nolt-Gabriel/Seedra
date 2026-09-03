@@ -71,7 +71,7 @@ def cadastro():
       novo_usuario = Usuarios(email=email, senha=senha_hash, nome=nome)
       db.session.add(novo_usuario)
       db.session.commit()
-      return redirect(url_for('login'))
+      return redirect(url_for('login.login'))
   
   return render_template("cadastro.html")
 
@@ -115,7 +115,7 @@ def cadastro_empresas():
 def base():
     if 'usuarios_id' not in session:
         flash("Faça login primeiro!", 'erro')
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
     
     usuario = current_user.email
     print(usuario)
@@ -126,7 +126,7 @@ def base():
 def logout():
     session.pop('usuarios_id', None)
     flash("Você saiu do sistema com sucesso!", 'login')
-    return redirect(url_for('login'))
+    return redirect(url_for('login.login'))
 
 
 
@@ -269,6 +269,23 @@ def relatorios():
 @app.route('/usuarios')
 def usuarios():
     return render_template('usuarios.html')
+
+@app.route('/excluir_item/<int:id>', methods = ['DELETE'])
+def excluir_item(id):
+
+   
+    item = Item.query.get_or_404(id)
+
+    if not item:
+
+       return "Item não encontrado", 404
+
+    db.session.delete(item)
+    db.session.commit()
+
+    return "Item excluido com sucesso", 200   
+
+   
 
 if __name__ == '__main__':
   app.run(debug=True)
