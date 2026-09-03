@@ -2,12 +2,12 @@
  
 > Sistema de fácil acesso para catalogar e detalhar espécies de plantas e sementes, com controle de quantidade e informações completas de cultivo e cuidado.
 
-<img align="center" src=./static/Logo-SEEDRA.png>
-<img align="left" src=./static/Logo-SEEDRA.png>
-<img align="right" src=./static/Logo-SEEDRA.png>
-<img align="right" src=./static/Logo-SEEDRA.png>
-<img align="right" src=./static/Logo-SEEDRA.png>
-<img align="right" src=./static/Logo-SEEDRA.png>
+<img align="center" src=./static/css/Logo-SEEDRA.png>
+<img align="left" src=./static/css/Logo-SEEDRA.png>
+<img align="right" src=./static/css/Logo-SEEDRA.png>
+<img align="right" src=./static/css/Logo-SEEDRA.png>
+<img align="right" src=./static/css/Logo-SEEDRA.png>
+<img align="right" src=./static/css/Logo-SEEDRA.png>
 
 ---
  
