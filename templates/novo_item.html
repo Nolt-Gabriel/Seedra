@@ -8,7 +8,7 @@
 <div class="max-w-4xl mx-auto soft-card rounded-[2rem] p-8">
     <h3 class="text-2xl font-extrabold text-seedra-leafDark mb-6">Ficha da Planta / Semente</h3>
     
-    <form action="{{ url_for('novo_item') }}" method="POST" class="space-y-6 font-lato">
+    <form action="{{ url_for('catalogo.novo_item') }}" method="POST" class="space-y-6 font-lato">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="form-control">
                 <label class="label"><span class="label-text font-bold text-seedra-leafDark">Nome Comum</span></label>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="pt-4 flex justify-end gap-3 border-t border-seedra-leafDark/10 mt-6 pt-6">
-            <a href="{{ url_for('catalogo') }}" class="btn btn-ghost rounded-2xl text-slate-500">Cancelar</a>
+            <a href="{{ url_for('catalogo.catalogo') }}" class="btn btn-ghost rounded-2xl text-slate-500">Cancelar</a>
             <button type="submit" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white shadow-card">Salvar Registro</button>
         </div>
     </form>

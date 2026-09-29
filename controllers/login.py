@@ -31,7 +31,7 @@ def login():
     
     if '@' not in email:
       flash("Email inválido!", 'erro')
-      return render_template('login.html')
+      return redirect(url_for('login.login'))
 
     usuario = Usuarios.query.filter_by(email=email).first()
 
@@ -42,7 +42,7 @@ def login():
         resultado = login_user(usuario)
         print(resultado)
         print(current_user.nome)
-        return redirect(url_for('base'))
+        return redirect(url_for('base.base'))
         
       else:
         flash("Senha Incorreta!", 'erro')

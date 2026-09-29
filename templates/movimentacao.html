@@ -11,7 +11,7 @@
     
     <div class="soft-card rounded-[2rem] p-6 self-start">
         <h3 class="text-xl font-extrabold text-seedra-leafDark mb-4">Novo Lançamento</h3>
-        <form action="{{ url_for('movimentacao') }}" method="POST" class="space-y-4 font-lato">
+        <form action="{{ url_for('movimentacao.movimentacao') }}" method="POST" class="space-y-4 font-lato">
             
             <div class="relative inline-block w-[540px]">
 
@@ -34,7 +34,7 @@
 
             <div class="grid grid-cols-2 gap-4 my-4">
                 <label class="label cursor-pointer justify-start gap-3 p-4 rounded-2xl border border-seedra-leafLight/40 bg-seedra-leafLight/5 hover:bg-seedra-leafLight/10 transition">
-                    <input type="radio" name="tipo_mov" value="Entrada" class="radio radio-success" checked />
+                    <input type="radio" name="tipo_mov" value="Entrada" class="radio radio-success" checked/>
                     <span class="label-text font-bold text-seedra-leafDark"><i class="fa-solid fa-arrow-down mr-1"></i> Entrada</span>
                 </label>
                 <label class="label cursor-pointer justify-start gap-3 p-4 rounded-2xl border border-seedra-seedBrown/40 bg-seedra-seedBrown/5 hover:bg-seedra-seedBrown/10 transition">

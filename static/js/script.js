@@ -161,7 +161,7 @@
 function excluirItem(id) {
 
     console.log("ID recebido: ", id);
-    fetch(`/excluir_item/${id}`, {
+    fetch(`/catalogo/excluir_item/${id}`, {
         method: 'DELETE'
     })
     .then(response => {

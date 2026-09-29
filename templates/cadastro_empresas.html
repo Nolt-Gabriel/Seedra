@@ -41,7 +41,7 @@
                     <p class="text-sm text-gray-500 mt-1">Junte-se à plataforma SEEDRA</p>
                 </div>
 
-                <form action="{{ url_for('cadastro_empresas') }}" method="POST" class="space-y-5">
+                <form action="{{ url_for('cadastro_empresas.cadastro_empresas') }}" method="POST" class="space-y-5">
                     <div>
                         <label for="nome_empresa" class="block text-sm font-medium text-gray-700 mb-1">Nome da empresa</label>
                         <input type="text" id="nome_empresa" name="nome_empresa" placeholder="Empresa X" required

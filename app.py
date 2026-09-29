@@ -4,14 +4,22 @@
 
 import email
 
-from flask import Flask, render_template, request, url_for, redirect, flash, session, Blueprint
-from flask_login import current_user, LoginManager
-from hash import hashear
+from flask import Flask, render_template
+from flask_login import LoginManager
 from db import db, migrate
-from models import Usuarios, Item, Movimentacao, Instituicao
-from datetime import date, datetime 
-from controllers.login import bp_login, login_required
+from models import Usuarios
+from controllers.login import bp_login
+from controllers.cadastro import bp_cadastro
+from controllers.cadastro_empresas import bp_cdempresas
+from controllers.base import bp_base
+from controllers.logout import bp_logout
+from controllers.dashboard import bp_dashboard
+from controllers.catalogo import bp_catalogo
+from controllers.movimentacoes import bp_movimentacao
+from controllers.relatorios import bp_relatorios
+from controllers.usuarios import bp_usuarios
 import os
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///database.db') 
@@ -40,255 +48,15 @@ def home():
   return render_template('cadastro.html')
 
 app.register_blueprint(bp_login, url_prefix = "/login")
-
-
-# Modularizar tudo daqui pra baixo
-
-# --------- CADASTRO ------------------------------
-
-@app.route('/cadastro', methods =['GET', 'POST'])
-def cadastro():
-
-  if request.method == 'POST':
-    nome = request.form.get('nome', '').strip()
-    senha = request.form.get('senha', '').strip()
-    email = request.form.get('email', '').strip()
-
-    if not email or not senha or not nome:
-        flash("Preencha todos os campos!", 'cadastro')
-        return render_template("cadastro.html") 
-
-    
-    if '@' not in email:
-        flash("Email inválido!", 'cadastro')
-        return render_template("cadastro.html")
-
-    usuario_existente = Usuarios.query.filter_by(email=email).first()
-
-    if usuario_existente:
-      flash("Usuário já existe.", 'cadastro')
-      return redirect(url_for('cadastro'))
-
-    else:
-      senha_hash = hashear(senha)
-      novo_usuario = Usuarios(email=email, senha=senha_hash, nome=nome)
-      db.session.add(novo_usuario)
-      db.session.commit()
-      return redirect(url_for('login.login'))
-  
-  return render_template("cadastro.html")
-
-
-
-# ---------- CADASTRO_EMPRESAS ------------------------------
-
-@app.route('/cadastro_empresas', methods=['GET', 'POST'])
-def cadastro_empresas():
-
-  if request.method == 'POST':
-    nome_empresa = request.form.get('nome_empresa', '').strip()
-    cnpj = request.form.get('cnpj', '').strip()
-    endereco = request.form.get('endereco', '').strip()
-    telefone = request.form.get('telefone', '').strip()
-    senha = request.form.get('senha', '').strip()
-
-    if not nome_empresa or not cnpj or not endereco or not telefone or not senha:
-      flash("Preencha todos os campos!", 'empresas_error')
-      return redirect(url_for('cadastro_empresas'))
-    
-    empresas_existente = Instituicao.query.filter_by(cnpj=cnpj).first()
-
-    if empresas_existente:
-      flash("Empresa já existe.", 'empresas_error')
-      return redirect(url_for('cadastro'))
-
-    else:
-      senha_hash = hashear(senha)
-      nova_empresa = Instituicao(cnpj=cnpj, senha=senha_hash, endereco=endereco, nome=nome_empresa, telefone=telefone)
-      db.session.add(nova_empresa)
-      db.session.commit()
-      return redirect(url_for('dashboard'))
-    
-  
-  return render_template('cadastro_empresas.html')
-
-
-
-@app.route('/base')
-def base():
-    if 'usuarios_id' not in session:
-        flash("Faça login primeiro!", 'erro')
-        return redirect(url_for('login.login'))
-    
-    usuario = current_user.email
-    print(usuario)
-    
-    return render_template('base.html', user = usuario)
-
-@app.route('/logout')
-def logout():
-    session.pop('usuarios_id', None)
-    flash("Você saiu do sistema com sucesso!", 'login')
-    return redirect(url_for('login.login'))
-
-
-
-@app.route('/dashboard')
-@login_required
-def dashboard():
-   total_especies = Item.query.count()
-   itens = Item.query.all()
-   itens_deficit = sum(1 for item in itens if item.em_deficit())
-
-   return render_template('dashboard.html', total_especies=total_especies, itens_deficit=itens_deficit)
-
-@app.route('/catalogo', methods=['GET'])
-@login_required
-def catalogo():
-    itens = Item.query.all()
-    itens_def = sum(1 for item in itens if item.em_deficit())
-
-    alfabetica = Item.query.order_by(Item.nome.asc()).all()
-
-    return render_template('catalogo.html', itens=itens, itens_def=itens_def, itens_alfabetica = alfabetica)
-
-
-
-@app.route('/catalogo/novo', methods=['GET', 'POST'])
-@login_required
-def novo_item():
-
-    if request.method == 'POST':
-
-        nome = request.form.get('nome_comum', '').strip()
-        quantidade = request.form.get('quantidade', '').strip()
-        n_cientifico = request.form.get('nome_cientifico', '').strip()
-        categoria = request.form.get('categoria', '').strip()
-        deficit_limit = request.form.get('limite_deficit', '').strip()
-        obs = request.form.get('observacoes', '').strip()
-        data_cadastro = date.today()
-        
-        
-        novo = Item(
-           
-           nome=nome, 
-           quantidade=quantidade, 
-           n_cientifico=n_cientifico, 
-           categoria=categoria, 
-           deficit_limit=deficit_limit, 
-           obs=obs,
-           data_cadastro=data_cadastro)
-        
-        db.session.add(novo)
-        db.session.commit()
-
-        flash("Item adicionado com sucesso!", 'catalogo')
-        return redirect(url_for('catalogo'))
-    
-    return render_template('novo_item.html')
-
-@app.route('/catalogo/<int:id>', methods=['GET', 'POST'])
-@login_required
-def detalhes_item(id):
-    item = Item.query.get_or_404(id)
-    # mov = Movimentacao.query.get_or_404(id)
-    return render_template('detalhes_item.html', item=item)
-
-@app.route('/catalogo/<int:id>/editar', methods=['GET', 'POST'])
-@login_required
-def editar_item(id):
-    item = Item.query.get_or_404(id)
-
-    if request.method == 'POST':
-        item.nome = request.form.get('nome_comum', '').strip()
-        item.quantidade = int(request.form.get('quantidade', '').strip())
-        item.n_cientifico = request.form.get('nome_cientifico', '').strip()
-        item.categoria = request.form.get('categoria', '').strip()
-        item.deficit_limit = int(request.form.get('limite_deficit', '').strip())
-        item.obs = request.form.get('observacoes', '').strip()
-
-        db.session.commit()
-        flash("Item atualizado com sucesso!", 'success')
-        return redirect(url_for('detalhes_item', id=item.id))
-
-    return render_template('editar_item.html', item=item)
-
-@app.route('/movimentacao', methods = ['GET', 'POST'])
-@login_required
-def movimentacao():
-    if request.method == 'POST':
-        id_item = request.form.get('id_item', '').strip()
-        data_move = request.form.get('data_move', '').strip()
-        Typ = request.form.get('tipo_mov', '').strip()
-        quantidade = request.form.get('quantidade', '').strip()
-        justificativa = request.form.get('justificativa', '').strip()
-
-        if not id_item or id_item == '':
-            flash('Por favor, selecione um item válido!', 'warning')
-            return redirect(url_for('movimentacao'))
-
-        print(id_item)
-        nova_data_movimentacao = datetime.strptime(data_move, '%Y-%m-%d').date()
-
-        nova_movimentacao = Movimentacao(
-            id_item=int(id_item),
-            data_move=nova_data_movimentacao,
-            Typ=Typ,
-            quantidade=int(quantidade),
-            justificativa=justificativa,
-            operador = current_user.email
-        )
-        db.session.add(nova_movimentacao)
-        
-
-        item = Item.query.get(int(id_item))
-        if Typ == 'Entrada':
-            item.quantidade += int(quantidade)
-        elif Typ == 'Saída':
-            item.quantidade -= int(quantidade)
-        
-    
-        db.session.commit()
-
-        flash("Movimentação registrada com sucesso!", 'success')
-        return redirect(url_for('movimentacao'))
-                                                                                                                                                                
-    itens = Item.query.order_by(Item.nome).all()
-    movimentacoes = Movimentacao.query.all()
-
-    if movimentacoes:
-                   
-        return render_template('movimentacao.html',itens=itens, movimentacoes=movimentacoes)
-    
-    else:
-       flash("Nenhuma movimentação encontrada!")
-       return render_template('movimentacao.html',itens=itens)
-
-@app.route('/relatorios')
-@login_required
-def relatorios():
-    return render_template('relatorios.html')
-
-@app.route('/usuarios')
-def usuarios():
-    return render_template('usuarios.html')
-
-@app.route('/excluir_item/<int:id>', methods = ['DELETE'])
-def excluir_item(id):
-
-   
-    item = Item.query.get_or_404(id)
-
-    if not item:
-
-       return "Item não encontrado", 404
-
-    db.session.delete(item)
-    db.session.commit()
-
-    return "Item excluido com sucesso", 200   
-
-   
+app.register_blueprint(bp_cadastro, url_prefix = "/cadastro")
+app.register_blueprint(bp_cdempresas, url_prefix = "/cadastro_empresas")
+app.register_blueprint(bp_base, url_prefix = "/base")
+app.register_blueprint(bp_logout, url_prefix = "/logout")
+app.register_blueprint(bp_dashboard, url_prefix = "/dashboard")
+app.register_blueprint(bp_catalogo, url_prefix = "/catalogo")
+app.register_blueprint(bp_movimentacao, url_prefix = "/movimentacao")
+app.register_blueprint(bp_relatorios, url_prefix = "/relatorios")
+app.register_blueprint(bp_usuarios, url_prefix = "/usuarios")
 
 if __name__ == '__main__':
   app.run(debug=True)

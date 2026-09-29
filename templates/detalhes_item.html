@@ -5,10 +5,10 @@
 
 {% block header_actions %}
 <div class="flex gap-2">
-    <a href="{{ url_for('catalogo') }}" class=" inline-flex items-center justify-center px-4 py-2 text-sm font-medium btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+    <a href="{{ url_for('catalogo.catalogo') }}" class=" inline-flex items-center justify-center px-4 py-2 text-sm font-medium btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
         <i class="fa-solid fa-arrow-left mr-2"></i> Voltar ao Catálogo
     </a>
-    <a href="{{ url_for('editar_item', id=item.id) }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+    <a href="{{ url_for('catalogo.editar_item', id=item.id) }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
         <i class="fa-solid fa-pen-to-square mr-2"></i> Editar Registro
     </a>
     </div>
@@ -48,7 +48,7 @@
         <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold text-gray-900">Histórico de Movimentações</h3>
-                <a href="{{ url_for('movimentacao') }}" class="text-sm text-seedra-leafMid hover:text-seedra-leafDark font-medium hover:underline">Novo Lançamento</a>
+                <a href="{{ url_for('movimentacao.movimentacao') }}" class="text-sm text-seedra-leafMid hover:text-seedra-leafDark font-medium hover:underline">Novo Lançamento</a>
             </div>
 
             {% if item.movimentacoes %}
@@ -119,10 +119,10 @@
         <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 flex-1">
             <h4 class="text-sm font-semibold text-gray-900 mb-10">Ações Rápidas</h4>
             <div class="space-y-6">
-                <a href="{{ url_for('movimentacao') }}" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                <a href="{{ url_for('movimentacao.movimentacao') }}" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
                     <i class="fa-solid fa-plus-circle mr-2"></i> Registrar Entrada
                 </a>
-                <a href="{{ url_for('movimentacao') }}" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors">
+                <a href="{{ url_for('movimentacao.movimentacao') }}" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors">
                     <i class="fa-solid fa-minus-circle mr-2"></i> Registrar Saída
                 </a>
             </div>
