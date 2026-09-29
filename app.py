@@ -41,6 +41,9 @@ def home():
 
 app.register_blueprint(bp_login, url_prefix = "/login")
 
+
+# Modularizar tudo daqui pra baixo
+
 # --------- CADASTRO ------------------------------
 
 @app.route('/cadastro', methods =['GET', 'POST'])

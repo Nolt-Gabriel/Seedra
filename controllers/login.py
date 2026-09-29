@@ -1,5 +1,5 @@
 from flask import render_template, Blueprint, redirect, url_for, flash, session, request
-from flask_login import login_user
+from flask_login import login_user, current_user
 from models import Usuarios
 from hash import validar_senha
 from functools import wraps
@@ -41,6 +41,7 @@ def login():
         session['usuarios_id'] = email
         resultado = login_user(usuario)
         print(resultado)
+        print(current_user.nome)
         return redirect(url_for('base'))
         
       else:

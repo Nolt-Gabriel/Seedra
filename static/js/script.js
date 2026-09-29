@@ -158,8 +158,6 @@
 
 
 //botao excluir em catalogo/<item:id>
-
-
 function excluirItem(id) {
 
     console.log("ID recebido: ", id);
