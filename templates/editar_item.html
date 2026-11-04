@@ -1,65 +1,72 @@
 {% extends 'base.html' %}
 
-{% block title %}Editar: {{ item.nome_comum }}{% endblock %}
+{% block title %}Editar: {{ item.nome }}{% endblock %}
+{% set page_id = 'catalogo' %}
 {% block header_subtitle %}Acervo Geral{% endblock %}
 {% block header_title %}Editar Espécie{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto clean-card p-8">
-    
-    <div class="flex justify-between items-center border-b border-gray-100 pb-4 mb-6">
-        <h3 class="text-xl font-bold text-gray-800">Atualizar Ficha Técnica</h3>
-        <a href="{{ url_for('catalogo.detalhes_item', id=item.id) }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">
-            <i class="fa-solid fa-arrow-left mr-1"></i> Cancelar
+{% set campo = 'w-full px-4 py-3 text-gray-700 placeholder:text-gray-400 bg-white/70 border border-seedra-leafDark/15 rounded-xl focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm' %}
+{% set rotulo = 'block text-sm font-bold text-seedra-leafDark mb-1.5' %}
+
+<div class="max-w-4xl mx-auto soft-card rounded-[2rem] p-6 sm:p-8">
+
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-seedra-leafDark/10 pb-5 mb-6">
+        <div class="flex items-center gap-4">
+            <span class="w-12 h-12 shrink-0 rounded-2xl grid place-items-center bg-seedra-leafLight/20 text-seedra-leafDark text-xl"><i class="fa-solid fa-pen-to-square"></i></span>
+            <div>
+                <h3 class="text-2xl font-extrabold text-seedra-leafDark">Atualizar Ficha Técnica</h3>
+                <p class="text-sm text-slate-500 font-lato">{{ item.nome }}</p>
+            </div>
+        </div>
+        <a href="{{ url_for('catalogo.detalhes_item', id=item.id) }}" class="btn btn-sm btn-ghost rounded-xl text-slate-500 hover:text-seedra-leafDark font-lato">
+            <i class="fa-solid fa-arrow-left"></i> Cancelar
         </a>
     </div>
-    
-    <form action="{{ url_for('catalogo.editar_item', id=item.id) }}" method="POST" class="space-y-6">
-        
+
+    <form action="{{ url_for('catalogo.editar_item', id=item.id) }}" method="POST" class="space-y-6 font-lato">
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nome Comum</label>
-                <input type="text" name="nome_comum" value="{{ item.nome_comum }}" required 
-                    class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm" />
+                <label for="nome_comum" class="{{ rotulo }}">Nome Comum</label>
+                <input type="text" id="nome_comum" name="nome_comum" value="{{ item.nome }}" required class="{{ campo }}" />
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nome Científico</label>
-                <input type="text" name="nome_cientifico" value="{{ item.nome_cientifico }}" required 
-                    class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm italic" />
+                <label for="nome_cientifico" class="{{ rotulo }}">Nome Científico</label>
+                <input type="text" id="nome_cientifico" name="nome_cientifico" value="{{ item.n_cientifico }}" required class="{{ campo }} italic" />
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
-                <select name="categoria" required class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+                <label for="categoria" class="{{ rotulo }}">Categoria</label>
+                <select id="categoria" name="categoria" required class="{{ campo }}">
                     <option value="Semente" {% if item.categoria == 'Semente' %}selected{% endif %}>Semente</option>
                     <option value="Planta" {% if item.categoria == 'Planta' %}selected{% endif %}>Planta</option>
                 </select>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Qtd. em Estoque</label>
-                <input type="number" name="quantidade" min="0" value="{{ item.quantidade }}" required 
-                    class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm" />
+                <label for="quantidade" class="{{ rotulo }}">Qtd. em Estoque</label>
+                <input type="number" id="quantidade" name="quantidade" min="0" value="{{ item.quantidade }}" required class="{{ campo }}" />
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
+                <label for="limite_deficit" class="{{ rotulo }}">
                     Limite p/ Déficit
-                    <i class="fa-solid fa-circle-info text-gray-400 ml-1" title="Abaixo deste valor, o sistema emitirá alerta"></i>
+                    <i class="fa-solid fa-circle-info text-slate-400 ml-1" title="Abaixo deste valor, o sistema emitirá alerta"></i>
                 </label>
-                <input type="number" name="limite_deficit" min="1" value="{{ item.limite_deficit }}" required 
-                    class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm" />
+                <input type="number" id="limite_deficit" name="limite_deficit" min="1" value="{{ item.deficit_limit }}" required class="{{ campo }}" />
             </div>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Observações de Cuidado / Plantio</label>
-            <textarea name="observacoes" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm h-32">{{ item.observacoes }}</textarea>
+            <label for="observacoes" class="{{ rotulo }}">Observações de Cuidado / Plantio</label>
+            <textarea id="observacoes" name="observacoes" class="{{ campo }} h-32 resize-y">{{ item.obs or '' }}</textarea>
         </div>
 
-        <div class="pt-4 flex justify-end gap-3 border-t border-gray-100">
-            <button type="submit" class="px-6 py-2.5 bg-seedra-leafDark hover:bg-seedra-leafMid text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
-                Guardar Alterações
+        <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 border-t border-seedra-leafDark/10 pt-6">
+            <a href="{{ url_for('catalogo.detalhes_item', id=item.id) }}" class="btn btn-ghost rounded-2xl text-slate-500">Cancelar</a>
+            <button type="submit" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white shadow-md shadow-seedra-leafDark/20">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar alterações
             </button>
         </div>
     </form>

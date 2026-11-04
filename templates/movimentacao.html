@@ -7,79 +7,145 @@
 {% block header_title %}Registrar Movimentação{% endblock %}
 
 {% block content %}
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    
-    <div class="soft-card rounded-[2rem] p-6 self-start">
-        <h3 class="text-xl font-extrabold text-seedra-leafDark mb-4">Novo Lançamento</h3>
-        <form action="{{ url_for('movimentacao.movimentacao') }}" method="POST" class="space-y-4 font-lato">
-            
-            <div class="relative inline-block w-[540px]">
+{% set campo = 'w-full px-4 py-3 text-gray-700 placeholder:text-gray-400 bg-white/70 border border-seedra-leafDark/15 rounded-xl focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm' %}
+{% set rotulo = 'block text-sm font-bold text-seedra-leafDark mb-1.5' %}
 
-                <button id="btn_lista_planta" type="button" class="btn w-full">
-                    <span id="span_planta">Selecione a Planta ou Semente...</span>
-                </button>
+<div class="grid grid-cols-1 xl:grid-cols-5 gap-5">
 
-                <input type="hidden" name="id_item" id="item_id">
-                <input type="hidden" name="nome_item" id="item_nome">
+    <!-- Formulário -->
+    <div class="xl:col-span-3 soft-card rounded-[2rem] p-6 sm:p-8 self-start">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="w-12 h-12 shrink-0 rounded-2xl grid place-items-center bg-seedra-leafLight/20 text-seedra-leafDark text-xl"><i class="fa-solid fa-arrow-right-arrow-left"></i></span>
+            <div>
+                <h3 class="text-2xl font-extrabold text-seedra-leafDark">Novo lançamento</h3>
+                <p class="text-sm text-slate-500 font-lato">Registre a entrada ou a saída de uma espécie do acervo.</p>
+            </div>
+        </div>
 
-                <ul id="lista_planta" class="absolute hidden left-0 top-10 p-2 w-full mt-3 bg-white border rounded-xl z-10">
-                    {% for item in itens%}
-                    <li class="hover:text-seedra-leafLight">
-                        <button type="button" class="opc_planta p-3 w-full text-start" data-id="{{item.id}}" data-nome="{{item.nome}}">{{ item.nome }}</button>
-                    </li>
-                    {% endfor %}
-                </ul>
+        <form id="form_mov" action="{{ url_for('movimentacao.movimentacao') }}" method="POST" class="space-y-5 font-lato">
 
+            <!-- Seleção da planta/semente -->
+            <div>
+                <span class="{{ rotulo }}">Planta ou semente</span>
+                <div class="relative w-full">
+
+                    <button id="btn_lista_planta" type="button" class="w-full flex items-center justify-between gap-3 px-4 py-3 text-sm text-left bg-white/70 border border-seedra-leafDark/15 rounded-xl text-gray-700 hover:bg-white focus:ring-2 focus:ring-seedra-leafLight outline-none transition-all">
+                        <span class="flex items-center gap-3 min-w-0">
+                            <i class="fa-solid fa-seedling text-seedra-leafMid"></i>
+                            <span id="span_planta" class="truncate">Selecione a Planta ou Semente...</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
+                    </button>
+
+                    <input type="hidden" name="id_item" id="item_id">
+                    <input type="hidden" name="nome_item" id="item_nome">
+
+                    <ul id="lista_planta" class="absolute hidden left-0 top-full p-2 w-full mt-2 bg-white border border-seedra-leafDark/10 shadow-lg rounded-2xl z-10 max-h-64 overflow-y-auto">
+                        {% for item in itens%}
+                        <li class="hover:text-seedra-leafMid">
+                            <button type="button" class="opc_planta p-3 w-full text-start rounded-xl text-sm font-bold text-seedra-leafDark hover:bg-seedra-leafLight/10" data-id="{{item.id}}" data-nome="{{item.nome}}">{{ item.nome }}</button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <p id="aviso_item" class="hidden mt-2 text-sm font-bold text-red-600"><i class="fa-solid fa-circle-exclamation mr-1"></i>Selecione uma planta ou semente antes de lançar.</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 my-4">
-                <label class="label cursor-pointer justify-start gap-3 p-4 rounded-2xl border border-seedra-leafLight/40 bg-seedra-leafLight/5 hover:bg-seedra-leafLight/10 transition">
-                    <input type="radio" name="tipo_mov" value="Entrada" class="radio radio-success" checked/>
-                    <span class="label-text font-bold text-seedra-leafDark"><i class="fa-solid fa-arrow-down mr-1"></i> Entrada</span>
-                </label>
-                <label class="label cursor-pointer justify-start gap-3 p-4 rounded-2xl border border-seedra-seedBrown/40 bg-seedra-seedBrown/5 hover:bg-seedra-seedBrown/10 transition">
-                    <input type="radio" name="tipo_mov" value="Saída" class="radio radio-warning" />
-                    <span class="label-text font-bold text-seedra-seedBrown"><i class="fa-solid fa-arrow-up mr-1"></i> Saída</span>
-                </label>
-            </div>
-
+            <!-- Tipo -->
             <div class="grid grid-cols-2 gap-4">
-                <div class="form-control">
-                    <label class="label"><span class="label-text font-bold text-seedra-leafDark">Quantidade</span></label>
-                    <input type="number" name="quantidade" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required />
+                <label class="cursor-pointer">
+                    <input type="radio" name="tipo_mov" value="Entrada" class="peer sr-only" checked />
+                    <span class="flex items-center justify-center gap-2 p-4 rounded-2xl border border-seedra-leafDark/15 bg-white/60 font-bold text-slate-500 transition peer-checked:border-seedra-leafLight peer-checked:bg-seedra-leafLight/15 peer-checked:text-seedra-leafDark peer-focus-visible:ring-2 peer-focus-visible:ring-seedra-leafLight">
+                        <i class="fa-solid fa-arrow-down"></i> Entrada
+                    </span>
+                </label>
+                <label class="cursor-pointer">
+                    <input type="radio" name="tipo_mov" value="Saída" class="peer sr-only" />
+                    <span class="flex items-center justify-center gap-2 p-4 rounded-2xl border border-seedra-leafDark/15 bg-white/60 font-bold text-slate-500 transition peer-checked:border-seedra-seedBrown peer-checked:bg-seedra-seedBrown/10 peer-checked:text-seedra-seedBrown peer-focus-visible:ring-2 peer-focus-visible:ring-seedra-seedBrown">
+                        <i class="fa-solid fa-arrow-up"></i> Saída
+                    </span>
+                </label>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="quantidade" class="{{ rotulo }}">Quantidade</label>
+                    <input type="number" id="quantidade" name="quantidade" min="1" class="{{ campo }}" required />
                 </div>
-                <div class="form-control">
-                    <label class="label"><span class="label-text font-bold text-seedra-leafDark">Data</span></label>
-                    <input type="date" name="data_move" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required />
+                <div>
+                    <label for="data_move" class="{{ rotulo }}">Data</label>
+                    <input type="date" id="data_move" name="data_move" class="{{ campo }}" required />
                 </div>
             </div>
 
-            <div class="form-control">
-                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Justificativa / Destino</span></label>
-                <input type="text" name="justificativa" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" placeholder="Ex: Plantio no Bosque dos Namorados" required />
+            <div>
+                <label for="justificativa" class="{{ rotulo }}">Justificativa / Destino</label>
+                <input type="text" id="justificativa" name="justificativa" class="{{ campo }}" placeholder="Ex: Plantio no Bosque dos Namorados" required />
             </div>
 
-            <button type="submit" class="btn btn-block rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white mt-4 shadow-card">Lançar Movimentação</button>
+            <button type="submit" class="w-full bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-bold py-3 rounded-xl transition-colors mt-2 shadow-md shadow-seedra-leafDark/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-seedra-leafLight">
+                <i class="fa-solid fa-check mr-2"></i>Lançar movimentação
+            </button>
         </form>
     </div>
 
-    <div class="glass-card rounded-[2rem] p-6 h-full bg-organic">
-        <h3 class="text-xl font-extrabold text-seedra-leafDark mb-6">Últimas Atividades</h3>
-        <ul class="timeline timeline-vertical timeline-compact font-lato">
+    <!-- Últimas atividades -->
+    <div class="xl:col-span-2 soft-card rounded-[2rem] p-6 sm:p-8">
+        <div class="flex items-center justify-between gap-3 mb-5">
+            <h3 class="text-xl font-extrabold text-seedra-leafDark">Últimas atividades</h3>
+            <span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-lato">{{ movimentacoes|list|length }}</span>
+        </div>
 
+        <ul class="space-y-3 font-lato">
             {% for mov in movimentacoes %}
-                <li>
-                    <div class="timeline-middle text-seedra-leafLight"><i class="{% if mov.Typ == 'Entrada' %}fa-solid fa-circle-check {% else %} fa-solid fa-circle-arrow-up text-[#FF4500]/70 {% endif %}"></i></div>
-                    <div class="timeline-end timeline-box bg-white/80 border-0 shadow-sm rounded-xl mb-4 ml-2">
-                        <span class="font-bold text-seedra-leafDark block">{{mov.Typ}}: {{mov.quantidade}}</span>
-                        <span class="text-sm text-slate-500">{{mov.item.nome}} • {{mov.justificativa}}</span>
-                        <p class="text-xs text-slate-400 mt-1">{{mov.data_move}} por {{mov.operador}}</p>
+                <li class="flex gap-4 rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
+                    <span class="w-10 h-10 shrink-0 rounded-2xl grid place-items-center {% if mov.Typ == 'Entrada' %}bg-green-100 text-green-700{% else %}bg-orange-100 text-orange-600{% endif %}">
+                        <i class="fa-solid {% if mov.Typ == 'Entrada' %}fa-arrow-down{% else %}fa-arrow-up{% endif %}"></i>
+                    </span>
+                    <div class="min-w-0">
+                        <p class="font-bold text-seedra-leafDark">{{ mov.Typ }}: <span class="metric-value">{{ mov.quantidade }}</span></p>
+                        <p class="text-sm text-slate-500">{{ mov.item.nome }} • {{ mov.justificativa }}</p>
+                        <p class="text-xs text-slate-400 mt-1"><i class="fa-regular fa-calendar mr-1"></i>{{ mov.data_move.strftime('%d/%m/%Y') }} por {{ mov.operador }}</p>
                     </div>
-                    
+                </li>
+            {% else %}
+                <li class="text-center py-8 rounded-[1.4rem] border border-dashed border-seedra-leafDark/20 bg-white/60">
+                    <i class="fa-solid fa-clock-rotate-left text-2xl text-seedra-leafLight"></i>
+                    <p class="mt-2 text-sm text-slate-500">Nenhuma movimentação registrada ainda.</p>
                 </li>
             {% endfor %}
         </ul>
-        <a href="#" class="btn btn-ghost btn-sm text-seedra-leafMid mt-4 font-lato">Ver Histórico Completo</a>
+
+        <a href="#" class="btn btn-ghost btn-sm text-seedra-leafMid mt-4 font-lato">Ver histórico completo</a>
     </div>
 </div>
+
+<script>
+  // Pequenos ajustes do formulário (não interferem no script.js)
+  (function () {
+    const form = document.getElementById('form_mov');
+    const itemId = document.getElementById('item_id');
+    const aviso = document.getElementById('aviso_item');
+    const data = document.getElementById('data_move');
+
+    // Data de hoje como padrão
+    if (data && !data.value) {
+      const h = new Date();
+      data.value = h.getFullYear() + '-' + String(h.getMonth() + 1).padStart(2, '0') + '-' + String(h.getDate()).padStart(2, '0');
+    }
+
+    // Impede enviar sem escolher a planta/semente
+    form.addEventListener('submit', function (e) {
+      if (!itemId.value) {
+        e.preventDefault();
+        aviso.classList.remove('hidden');
+        document.getElementById('btn_lista_planta').focus();
+      }
+    });
+
+    document.querySelectorAll('.opc_planta').forEach(function (b) {
+      b.addEventListener('click', function () { aviso.classList.add('hidden'); });
+    });
+  })();
+</script>
 {% endblock %}

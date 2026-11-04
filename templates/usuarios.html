@@ -6,14 +6,26 @@
 {% block header_subtitle %}Controle dos Usuários{% endblock %}
 {% block header_title %}Verificar usuários e empresas{% endblock %}
 
-{% block content %}
+{% block header_actions %}
+  <a href="{{ url_for('cadastro_empresas.cadastro_empresas') }}" class="btn btn-sm md:btn-md rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+    <i class="fa-solid fa-plus"></i><span class="hidden sm:inline">Nova empresa</span>
+  </a>
+{% endblock %}
 
-<div class="flex justify-end mb-4">
-    <a href="{{ url_for('cadastro_empresas.cadastro_empresas') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
-        <i class="fa-solid fa-plus"></i> Nova Empresa
-    </a>
-</div>
-<section class="mt-5 soft-card rounded-[2rem] p-6">
+{% block content %}
+{% set lista = instituicoes|list %}
+
+<section class="soft-card rounded-[2rem] p-6">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+        <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Empresas</p>
+            <h3 class="text-2xl font-extrabold text-seedra-leafDark mt-2">Instituições cadastradas</h3>
+        </div>
+        <span class="badge border-0 rounded-full bg-seedra-leafLight/20 text-seedra-leafDark px-4 py-3 font-lato">
+            {{ lista|length }} {{ 'empresa' if lista|length == 1 else 'empresas' }}
+        </span>
+    </div>
+
     <div class="overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
         <table class="table font-lato">
             <thead class="bg-seedra-leafLight/10 text-seedra-leafDark">
@@ -22,24 +34,34 @@
                     <th>CNPJ</th>
                     <th>Endereço</th>
                     <th>Telefone</th>
-                        
                 </tr>
             </thead>
             <tbody>
 
                 {% for inst in instituicoes %}
-                
-                    <td class="font-bold text-seedra-leafDark">{{ inst.nome }}</td>
-                    <td class="italic text-slate-500">{{ inst.cnpj }}</td>
-                    <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-bold">{{ inst.endereco}}</span></td>
-                    <td class="metric-value font-bold text-lg">{{ inst.telefone }}</td>
-                    
-                
+                <tr class="hover:bg-seedra-leafLight/10">
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 shrink-0 rounded-2xl grid place-items-center bg-seedra-leafLight/20 text-seedra-leafDark"><i class="fa-regular fa-building"></i></span>
+                            <span class="font-bold text-seedra-leafDark">{{ inst.nome }}</span>
+                        </div>
+                    </td>
+                    <td class="italic text-slate-500 whitespace-nowrap">{{ inst.cnpj }}</td>
+                    <td class="text-slate-600"><i class="fa-solid fa-location-dot text-seedra-leafMid mr-2"></i>{{ inst.endereco }}</td>
+                    <td class="metric-value font-bold whitespace-nowrap text-seedra-leafDark"><i class="fa-solid fa-phone text-seedra-leafMid mr-2 text-sm"></i>{{ inst.telefone }}</td>
+                </tr>
                 {% endfor %}
 
             </tbody>
         </table>
     </div>
-</section>
 
+    {% if not lista %}
+    <div class="mt-4 text-center py-10 rounded-[1.5rem] border border-dashed border-seedra-leafDark/20 bg-white/60 font-lato">
+        <i class="fa-regular fa-building text-3xl text-seedra-leafLight"></i>
+        <p class="mt-3 font-bold text-seedra-leafDark">Nenhuma empresa cadastrada ainda</p>
+        <p class="text-sm text-slate-500">Use o botão "Nova empresa" para adicionar a primeira.</p>
+    </div>
+    {% endif %}
+</section>
 {% endblock %}
