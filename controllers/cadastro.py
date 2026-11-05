@@ -31,7 +31,9 @@ def cadastro():
 
     else:
       senha_hash = hashear(senha)
-      novo_usuario = Usuarios(email=email, senha=senha_hash, nome=nome)
+      novo_usuario = Usuarios(email=email,
+                              senha=senha_hash,
+                              nome=nome)
       db.session.add(novo_usuario)
       db.session.commit()
       return redirect(url_for('login.login'))

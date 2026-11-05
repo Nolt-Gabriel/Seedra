@@ -1,9 +1,6 @@
 # Toda vez que abrir o arquivo ja existente, utilizar -> . venv/bin/activate
 # Comandos Flask -> pip install flask; flask run --debug
 # Se for primeira vez abrindo o espaço virtual -> python -m venv venv -> . venv/bin/activate
-
-import email
-
 from flask import Flask, render_template
 from flask_login import LoginManager
 from db import db, migrate

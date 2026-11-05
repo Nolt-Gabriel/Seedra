@@ -59,6 +59,8 @@ class UsuarioInstituicoes(db.Model):
     id_usuario = db.Column(db.Integer, db.ForeignKey("usuarios.id"), nullable = False)
     id_instituicoes = db.Column(db.Integer, db.ForeignKey("instituicoes.id") ,  nullable = False)
 
+    papel = db.Column(db.String(10), nullable = False)
+
     usuarios = db.relationship('Usuarios', back_populates = 'usuario_instituicoes', lazy = True)
     instituicoes = db.relationship("Instituicao", back_populates="usuario_instituicoes")
 
