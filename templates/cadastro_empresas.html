@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEEDRA - Cadastro</title>
 
-    <link rel="icon" href="{{ url_for('static', filename='seedot.gif') }}" type="image/gif" />
+    <link rel="icon" href="/static/img/logo-seedra-icone.png" type="image/png" />
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,14 +94,13 @@
 
     <main class="flex min-h-screen flex-col lg:flex-row-reverse">
 
-        <!-- Painel de marca (lado direito no desktop) -->
         <section class="brand-panel relative hidden lg:flex lg:w-2/5 flex-col justify-between overflow-hidden text-white p-12 rounded-l-[2.5rem]">
             <span class="leaf w-80 h-80 -top-20 -left-20 -rotate-12"></span>
             <span class="leaf w-56 h-56 bottom-28 -right-14 rotate-45"></span>
             <span class="leaf w-36 h-36 top-1/2 left-12 -rotate-[100deg]"></span>
 
             <div class="relative">
-                <i class="fa-solid fa-leaf text-4xl text-white"></i>
+                <img src="/static/img/logo-seedra-folha.svg" alt="Logo SEEDRA" class="h-10">
             </div>
 
             <div class="relative">
@@ -127,12 +126,11 @@
             </ul>
         </section>
 
-        <!-- Formulário -->
         <section class="flex flex-1 items-center justify-center p-6 sm:p-10">
             <div class="card-enter soft-card w-full max-w-xl rounded-3xl p-8 sm:p-10">
 
                 <div class="flex items-center gap-3 mb-8 lg:hidden">
-                    <i class="fa-solid fa-leaf text-3xl text-seedra-leafDark"></i>
+                    <img src="/static/img/logo-seedra-folha.svg" alt="Logo SEEDRA" class="h-10">
                     <span class="font-brand text-2xl font-bold text-seedra-leafDark">SEEDRA</span>
                 </div>
 
@@ -217,7 +215,7 @@
     </main>
 
     <script>
-      // Mostrar/ocultar senha
+
       const toggle = document.getElementById('toggleSenha');
       const campoSenha = document.getElementById('senha');
       toggle.addEventListener('click', () => {
@@ -226,7 +224,6 @@
         toggle.querySelector('i').className = mostrar ? 'fa-regular fa-eye-slash text-sm' : 'fa-regular fa-eye text-sm';
       });
 
-      // Máscaras opcionais (só formatam o texto digitado)
       function aplicarMascara(id, formatar) {
         const el = document.getElementById(id);
         el.addEventListener('input', () => { el.value = formatar(el.value.replace(/\D/g, '')); });

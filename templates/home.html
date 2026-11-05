@@ -6,16 +6,13 @@
   <meta name="description" content="SEEDRA — catálogo e gerenciamento de espécies vegetais, sementes e informações de cultivo.">
   <title>SEEDRA — Natureza organizada por dados</title>
 
-  <!-- Tailwind CSS v4 via browser CDN (desenvolvimento). Em produção, compile o Tailwind. -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <!-- DaisyUI opcional: os componentes desta página usam CSS próprio para preservar a identidade visual. -->
   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-  <link rel="icon" href="{{ url_for('static', filename='img/Logo-SEEDRA.png') }}" type="image/png">
+  <link rel="icon" href="/static/img/logo-seedra-icone.png" type="image/png">
 
-  <!-- Este bloco substitui o home.css. Se preferir, mova-o para static/css/home.css e linke como antes. -->
   <style>
     :root {
       --leaf-dark: #044b2d;
@@ -246,7 +243,7 @@
   <header class="site-header">
     <div class="nav-wrap">
       <a class="brand" href="#inicio" aria-label="SEEDRA - início">
-        <img src="{{ url_for('static', filename='img/Logo-SEEDRA.png') }}" alt="">
+        <img src="/static/img/logo-seedra-folha.svg" alt="Logo SEEDRA">
         <span class="brand-word">SEEDRA</span>
       </a>
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
@@ -403,7 +400,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <img src="{{ url_for('static', filename='img/Logo-SEEDRA.png') }}" alt="">
+        <img src="/static/img/logo-seedra-icone.png" alt="Logo SEEDRA">
         <span>SEEDRA</span>
       </div>
       <div class="footer-note">Sistema de Reflorestamento e Estudo de Dados Ambientais<br>Organização, informação e cuidado com o mundo vegetal.</div>

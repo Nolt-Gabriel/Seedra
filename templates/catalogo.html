@@ -17,7 +17,6 @@
 {% for i in lista %}{% if i.em_deficit() %}{% set ns.deficit = ns.deficit + 1 %}{% endif %}{% endfor %}
 {% set total_sementes = lista|selectattr('categoria', 'equalto', 'Semente')|list|length %}
 
-<!-- Resumo -->
 <section class="grid grid-cols-2 xl:grid-cols-4 gap-4">
     <div class="soft-card rounded-[1.6rem] p-4 flex items-center gap-4">
         <span class="w-11 h-11 shrink-0 rounded-2xl grid place-items-center bg-seedra-leafLight/20 text-seedra-leafDark"><i class="fa-solid fa-layer-group"></i></span>
@@ -50,10 +49,8 @@
 </section>
 
 <section class="mt-5 soft-card rounded-[2rem] p-6">
-    <!-- Pesquisa, categorias, filtro e déficit -->
     <div class="flex flex-col xl:flex-row gap-3 xl:items-center xl:justify-between mb-6">
 
-        <!-- Pesquisa e Categorias -->
         <div class="flex flex-col sm:flex-row gap-3 flex-1">
             <div class="relative w-full max-w-md">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
@@ -81,7 +78,6 @@
             </div>
         </div>
 
-        <!-- Filtrar e déficit -->
         <div class="flex flex-col sm:flex-row gap-3">
             <div class="relative w-full sm:w-60">
                 <button id="filter_button" type="button" class="w-full flex justify-center btn rounded-2xl bg-white text-seedra-leafDark border border-seedra-leafDark/15 hover:bg-seedra-leafMid hover:text-white hover:border-seedra-leafMid shadow-none font-lato">
@@ -110,7 +106,6 @@
         </div>
     </div>
 
-    <!-- Tabela -->
     <div class="overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
         <table class="table font-lato">
             <thead class="bg-seedra-leafLight/10 text-seedra-leafDark">

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEEDRA - Login</title>
 
-    <link rel="icon" href="/static/img/Logo-SEEDRA.png" type="image/png" />
+    <link rel="icon" href="/static/img/logo-seedra-icone.png" type="image/png" />
     <script src="/static/js/tailwind.config.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
@@ -39,7 +39,6 @@
     </script>
 
     <style>
-      /* Mesmas variáveis e fundo do style.css do painel (sem o overflow:hidden) */
       :root {
         --leaf-dark: #044b2d;
         --leaf-mid: #587e49;
@@ -67,7 +66,6 @@
         box-shadow: 0 8px 24px rgba(0, 21, 0, 0.06), 0 30px 60px rgba(4, 75, 45, 0.08);
       }
 
-      /* Painel de marca */
       .brand-panel {
         background:
           radial-gradient(circle at 15% 10%, rgba(120,184,99,0.35), transparent 35%),
@@ -75,7 +73,6 @@
           linear-gradient(160deg, #587e49 0%, #044b2d 70%, #001500 130%);
       }
 
-      /* Folhas decorativas feitas só com CSS */
       .leaf {
         position: absolute;
         border-radius: 0 100% 0 100%;
@@ -100,19 +97,18 @@
 
     <main class="flex min-h-screen flex-col lg:flex-row">
 
-        <!-- Painel de marca -->
         <section class="brand-panel relative hidden lg:flex lg:w-3/5 flex-col justify-between overflow-hidden text-white p-12 xl:p-16 rounded-r-[2.5rem]">
             <span class="leaf w-96 h-96 -top-24 -right-24 rotate-12"></span>
             <span class="leaf w-64 h-64 bottom-24 -left-16 -rotate-45"></span>
             <span class="leaf w-40 h-40 top-1/2 right-16 rotate-[100deg]"></span>
 
             <div class="relative flex items-center gap-3">
-                <img src="/static/img/Logo-SEEDRA-removebg-preview.png" alt="Logo SEEDRA" class="h-14">
+                <img src="/static/img/logo-seedra-folha.svg" alt="Logo SEEDRA" class="h-14">
             </div>
 
             <div class="relative max-w-xl">
                 <h1 class="font-brand text-5xl xl:text-6xl font-bold leading-tight mb-5">Bem-vindo ao</h1>
-                <img src="/static/img/Letreiro-SEEDRA-br.png" alt="SEEDRA" class="h-24 xl:h-28 mb-8">
+                <img src="/static/img/Seedra-br.png" alt="SEEDRA" class="h-24 xl:h-28 mb-8">
                 <p class="text-lg xl:text-xl leading-relaxed text-white/85">
                     A plataforma de gerenciamento e catálogo de sementes e plantas para profissionais e entusiastas do mundo vegetal. Organize suas espécies com uma interface leve e intuitiva.
                 </p>
@@ -138,12 +134,11 @@
             </div>
         </section>
 
-        <!-- Formulário -->
         <section class="flex flex-1 items-center justify-center p-6 sm:p-10">
             <div class="card-enter soft-card w-full max-w-md rounded-3xl p-8 sm:p-10">
 
                 <div class="flex items-center gap-3 mb-8 lg:hidden">
-                    <i class="fa-solid fa-leaf text-3xl text-seedra-leafDark"></i>
+                    <img src="/static/img/logo-seedra-folha.svg" alt="Logo SEEDRA" class="h-10">
                     <span class="font-brand text-2xl font-bold text-seedra-leafDark">SEEDRA</span>
                 </div>
 

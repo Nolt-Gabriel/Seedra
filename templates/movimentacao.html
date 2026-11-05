@@ -12,7 +12,6 @@
 
 <div class="grid grid-cols-1 xl:grid-cols-5 gap-5">
 
-    <!-- Formulário -->
     <div class="xl:col-span-3 soft-card rounded-[2rem] p-6 sm:p-8 self-start">
         <div class="flex items-center gap-4 mb-6">
             <span class="w-12 h-12 shrink-0 rounded-2xl grid place-items-center bg-seedra-leafLight/20 text-seedra-leafDark text-xl"><i class="fa-solid fa-arrow-right-arrow-left"></i></span>
@@ -24,7 +23,6 @@
 
         <form id="form_mov" action="{{ url_for('movimentacao.movimentacao') }}" method="POST" class="space-y-5 font-lato">
 
-            <!-- Seleção da planta/semente -->
             <div>
                 <span class="{{ rotulo }}">Planta ou semente</span>
                 <div class="relative w-full">
@@ -51,7 +49,6 @@
                 <p id="aviso_item" class="hidden mt-2 text-sm font-bold text-red-600"><i class="fa-solid fa-circle-exclamation mr-1"></i>Selecione uma planta ou semente antes de lançar.</p>
             </div>
 
-            <!-- Tipo -->
             <div class="grid grid-cols-2 gap-4">
                 <label class="cursor-pointer">
                     <input type="radio" name="tipo_mov" value="Entrada" class="peer sr-only" checked />
@@ -89,7 +86,6 @@
         </form>
     </div>
 
-    <!-- Últimas atividades -->
     <div class="xl:col-span-2 soft-card rounded-[2rem] p-6 sm:p-8">
         <div class="flex items-center justify-between gap-3 mb-5">
             <h3 class="text-xl font-extrabold text-seedra-leafDark">Últimas atividades</h3>
@@ -121,20 +117,17 @@
 </div>
 
 <script>
-  // Pequenos ajustes do formulário (não interferem no script.js)
   (function () {
     const form = document.getElementById('form_mov');
     const itemId = document.getElementById('item_id');
     const aviso = document.getElementById('aviso_item');
     const data = document.getElementById('data_move');
 
-    // Data de hoje como padrão
     if (data && !data.value) {
       const h = new Date();
       data.value = h.getFullYear() + '-' + String(h.getMonth() + 1).padStart(2, '0') + '-' + String(h.getDate()).padStart(2, '0');
     }
 
-    // Impede enviar sem escolher a planta/semente
     form.addEventListener('submit', function (e) {
       if (!itemId.value) {
         e.preventDefault();

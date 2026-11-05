@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SEEDRA - {% block title %}Painel{% endblock %}</title>
   <link rel="stylesheet" href="/static/css/style.css" />
-  <link rel="icon" href="/static/img/Logo-SEEDRA.png" type="image/png" />
+  <link rel="icon" href="/static/img/logo-seedra-icone.png" type="image/png" />
   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="/static/js/tailwind.config.js" defer></script>
@@ -16,7 +16,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Estilos do shell (menu, avatar). Se preferir, mova este bloco para static/css/style.css -->
   <style>
     .brand-badge {
       width: 48px; height: 48px; flex: none; border-radius: 16px; display: grid; place-items: center;
@@ -63,7 +62,9 @@
 
     <aside class="sidebar p-5 lg:p-6 flex flex-col gap-6">
       <a href="{{ url_for('dashboard.dashboard') }}" class="flex items-center gap-3" aria-label="SEEDRA - Visão geral">
-        <span class="brand-badge"><i class="fa-solid fa-leaf text-2xl text-white"></i></span>
+        <span class="brand-badge">
+          <img src="/static/img/logo-seedra-folha-branca.svg" alt="Logo SEEDRA" class="h-10">
+        </span>
         <div>
           <p class="text-xs uppercase tracking-[0.28em] text-white/60 font-lato">Painel</p>
           <h1 class="text-2xl font-extrabold leading-tight">SEEDRA</h1>
