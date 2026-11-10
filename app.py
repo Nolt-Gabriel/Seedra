@@ -20,6 +20,7 @@ from controllers.usuarios import bp_usuarios
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///database.db')
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True, 'pool_recycle': 280}
 
 secret_key = os.environ.get('SECRET_KEY')
 if not secret_key:
@@ -47,7 +48,6 @@ login_manager.login_view = 'login.login'
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(Usuarios, int(user_id))
-
 
 @app.route('/')
 def home():

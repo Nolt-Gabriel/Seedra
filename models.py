@@ -12,7 +12,7 @@ class Usuarios(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(50), nullable = False)
     email = db.Column(db.String(50), nullable = False, unique = True)
-    senha = db.Column(db.String(), nullable = False)
+    senha = db.Column(db.String(255), nullable = False)   
 
     usuario_instituicoes = db.relationship('UsuarioInstituicoes', back_populates = 'usuarios')
 
@@ -46,7 +46,7 @@ class Movimentacao(db.Model):
     Typ = db.Column(db.String(10), nullable = False) 
     quantidade = db.Column(db.Integer, nullable = False)
     justificativa = db.Column(db.Text, nullable = False)
-    operador = db.Column(db.String(40), nullable = False)
+    operador = db.Column(db.String(50), nullable = False)   
 
     item = db.relationship('Item', back_populates = 'movimentacoes', lazy = True)
 
@@ -58,8 +58,6 @@ class UsuarioInstituicoes(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     id_usuario = db.Column(db.Integer, db.ForeignKey("usuarios.id"), nullable = False)
     id_instituicoes = db.Column(db.Integer, db.ForeignKey("instituicoes.id") ,  nullable = False)
-
-    papel = db.Column(db.String(10), nullable = False)
 
     usuarios = db.relationship('Usuarios', back_populates = 'usuario_instituicoes', lazy = True)
     instituicoes = db.relationship("Instituicao", back_populates="usuario_instituicoes")
@@ -74,7 +72,7 @@ class Instituicao(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(50), nullable = False, unique = True)
-    senha = db.Column(db.String(), nullable = False, unique = False)
+    senha = db.Column(db.String(255), nullable = False, unique = False) 
     cnpj = db.Column(db.String(20), unique = True)
     endereco = db.Column(db.String(100), nullable = False)
     telefone = db.Column(db.String(20), nullable = False)
