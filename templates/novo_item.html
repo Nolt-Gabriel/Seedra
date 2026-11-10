@@ -1,55 +1,67 @@
 {% extends 'base.html' %}
 
 {% block title %}Novo Cadastro{% endblock %}
+{% set page_id = 'catalogo' %}
 {% block header_subtitle %}Acervo Geral{% endblock %}
 {% block header_title %}Cadastrar Espécie{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto soft-card rounded-[2rem] p-8">
-    <h3 class="text-2xl font-extrabold text-seedra-leafDark mb-6">Ficha da Planta / Semente</h3>
-    
+{% set campo = 'w-full px-4 py-3 text-gray-700 placeholder:text-gray-400 bg-white/70 border border-seedra-leafDark/15 rounded-xl focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm' %}
+{% set rotulo = 'block text-sm font-bold text-seedra-leafDark mb-1.5' %}
+
+<div class="max-w-4xl mx-auto soft-card rounded-[2rem] p-6 sm:p-8">
+    <div class="flex items-center gap-4 mb-8">
+        <span class="w-12 h-12 shrink-0 rounded-2xl grid place-items-center bg-seedra-leafLight/20 text-seedra-leafDark text-xl"><i class="fa-solid fa-seedling"></i></span>
+        <div>
+            <h3 class="text-2xl font-extrabold text-seedra-leafDark">Ficha da Planta / Semente</h3>
+            <p class="text-sm text-slate-500 font-lato">Preencha os dados da nova espécie do acervo.</p>
+        </div>
+    </div>
+
     <form action="{{ url_for('catalogo.novo_item') }}" method="POST" class="space-y-6 font-lato">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="form-control">
-                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Nome Comum</span></label>
-                <input type="text" name="nome_comum" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required placeholder="Ex: Ipê Amarelo" />
+            <div>
+                <label for="nome_comum" class="{{ rotulo }}">Nome Comum</label>
+                <input type="text" id="nome_comum" name="nome_comum" class="{{ campo }}" required placeholder="Ex: Ipê Amarelo" />
             </div>
-            <div class="form-control">
-                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Nome Científico</span></label>
-                <input type="text" name="nome_cientifico" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20 italic" required placeholder="Ex: Handroanthus albus" />
+            <div>
+                <label for="nome_cientifico" class="{{ rotulo }}">Nome Científico</label>
+                <input type="text" id="nome_cientifico" name="nome_cientifico" class="{{ campo }} italic" required placeholder="Ex: Handroanthus albus" />
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="form-control">
-                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Categoria</span></label>
-                <select name="categoria" class="select select-bordered rounded-2xl bg-white border-seedra-leafDark/20" required>
-                    <option disabled selected>Selecione...</option>
+            <div>
+                <label for="categoria" class="{{ rotulo }}">Categoria</label>
+                <select id="categoria" name="categoria" class="{{ campo }}" required>
+                    <option value="" disabled selected>Selecione...</option>
                     <option value="Semente">Semente</option>
                     <option value="Planta">Planta</option>
                 </select>
             </div>
-            <div class="form-control">
-                <label class="label"><span class="label-text font-bold text-seedra-leafDark">Qtd. Inicial</span></label>
-                <input type="number" name="quantidade" min="0" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required />
+            <div>
+                <label for="quantidade" class="{{ rotulo }}">Qtd. Inicial</label>
+                <input type="number" id="quantidade" name="quantidade" min="0" class="{{ campo }}" required />
             </div>
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text font-bold text-seedra-leafDark">Limite p/ Déficit</span>
-                    <span class="label-text-alt text-slate-500 tooltip" data-tip="Sistema avisará quando o estoque for menor que este valor"><i class="fa-solid fa-circle-info"></i></span>
+            <div>
+                <label for="limite_deficit" class="{{ rotulo }}">
+                    Limite p/ Déficit
+                    <i class="fa-solid fa-circle-info text-slate-400 ml-1" title="Sistema avisará quando o estoque for menor que este valor"></i>
                 </label>
-                <input type="number" name="limite_deficit" min="1" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/20" required placeholder="Ex: 10" />
+                <input type="number" id="limite_deficit" name="limite_deficit" min="1" class="{{ campo }}" required placeholder="Ex: 10" />
             </div>
         </div>
 
-        <div class="form-control">
-            <label class="label"><span class="label-text font-bold text-seedra-leafDark">Observações de Cuidado / Plantio</span></label>
-            <textarea name="observacoes" class="textarea textarea-bordered rounded-2xl bg-white border-seedra-leafDark/20 h-24" placeholder="Ex: Necessita de exposição direta ao sol e solo úmido."></textarea>
+        <div>
+            <label for="observacoes" class="{{ rotulo }}">Observações de Cuidado / Plantio</label>
+            <textarea id="observacoes" name="observacoes" class="{{ campo }} h-28 resize-y" placeholder="Ex: Necessita de exposição direta ao sol e solo úmido."></textarea>
         </div>
 
-        <div class="pt-4 flex justify-end gap-3 border-t border-seedra-leafDark/10 mt-6 pt-6">
+        <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 border-t border-seedra-leafDark/10 pt-6">
             <a href="{{ url_for('catalogo.catalogo') }}" class="btn btn-ghost rounded-2xl text-slate-500">Cancelar</a>
-            <button type="submit" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white shadow-card">Salvar Registro</button>
+            <button type="submit" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white shadow-md shadow-seedra-leafDark/20">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar registro
+            </button>
         </div>
     </form>
 </div>

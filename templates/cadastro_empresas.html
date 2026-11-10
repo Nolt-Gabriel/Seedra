@@ -4,96 +4,244 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEEDRA - Cadastro</title>
-    
-    <link rel="icon" href="{{ url_for('static', filename='seedot.gif') }}" type="image/gif" />
+
+    <link rel="icon" href="/static/img/logo-seedra-icone.png" type="image/png" />
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: { sans: ['Inter', 'sans-serif'] },
+            fontFamily: {
+              sans: ['Lato', 'sans-serif'],
+              brand: ['Balsamiq Sans', 'sans-serif']
+            },
             colors: {
               seedra: {
-                leafDark: '#0a3b24', 
-                leafMid: '#2d6a4f', 
-                leafLight: '#52b788',
-                bg: '#f8faf9'
+                leafDark: '#044b2d',
+                leafMid: '#587e49',
+                leafLight: '#78b863',
+                brown: '#9a774c',
+                sand: '#ddd1ae',
+                mist: '#d9d6cc',
+                forest: '#001500'
               }
             }
           }
         }
       }
     </script>
+
+    <style>
+      :root {
+        --leaf-dark: #044b2d;
+        --leaf-mid: #587e49;
+        --leaf-light: #78b863;
+        --surface-strong: rgba(255, 252, 246, 0.92);
+        --line: rgba(4, 75, 45, 0.10);
+      }
+
+      body {
+        font-family: 'Lato', sans-serif;
+        color: #183124;
+        background:
+          radial-gradient(circle at top left, rgba(120,184,99,0.18), transparent 20%),
+          radial-gradient(circle at bottom right, rgba(154,119,76,0.14), transparent 24%),
+          linear-gradient(135deg, #f4f0e8 0%, #eef4ea 40%, #f7f4ef 100%);
+      }
+
+      .font-brand { font-family: 'Balsamiq Sans', sans-serif; }
+
+      .soft-card {
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+        box-shadow: 0 8px 24px rgba(0, 21, 0, 0.06), 0 30px 60px rgba(4, 75, 45, 0.08);
+      }
+
+      .brand-panel {
+        background:
+          radial-gradient(circle at 85% 10%, rgba(120,184,99,0.35), transparent 35%),
+          radial-gradient(circle at 10% 95%, rgba(154,119,76,0.35), transparent 40%),
+          linear-gradient(200deg, #587e49 0%, #044b2d 70%, #001500 130%);
+      }
+
+      .leaf {
+        position: absolute;
+        border-radius: 100% 0 100% 0;
+        background: linear-gradient(135deg, rgba(120,184,99,0.28), rgba(120,184,99,0.04));
+        border: 1px solid rgba(255,255,255,0.10);
+        pointer-events: none;
+      }
+
+      .field-icon { transition: color .2s; }
+      .field:focus-within .field-icon { color: var(--leaf-mid); }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .card-enter { animation: card-enter .6s ease-out both; }
+        @keyframes card-enter {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: none; }
+        }
+      }
+    </style>
 </head>
-<body class="bg-white font-sans min-h-screen">
-    
-    <main class="flex min-h-screen">
-        <section class="w-1/3 bg-seedra-leafDark bg-organic rounded-r-lg"></section>
-        <section class="w-1/3 flex items-center justify-center bg-white p-8 sm:p-10">
-            <div class="w-full max-w-md p-8">
-                <div class="text-center mb-8">
-                    <h1 class="text-2xl font-bold text-gray-800">Adicione sua empresa</h1>
-                    <p class="text-sm text-gray-500 mt-1">Junte-se à plataforma SEEDRA</p>
+<body class="min-h-screen">
+
+    <main class="flex min-h-screen flex-col lg:flex-row-reverse">
+
+        <section class="brand-panel relative hidden lg:flex lg:w-2/5 flex-col justify-between overflow-hidden text-white p-12 rounded-l-[2.5rem]">
+            <span class="leaf w-80 h-80 -top-20 -left-20 -rotate-12"></span>
+            <span class="leaf w-56 h-56 bottom-28 -right-14 rotate-45"></span>
+            <span class="leaf w-36 h-36 top-1/2 left-12 -rotate-[100deg]"></span>
+
+            <div class="relative">
+                <img src="/static/img/logo-seedra-folha.svg" alt="Logo SEEDRA" class="h-10">
+            </div>
+
+            <div class="relative">
+                <h1 class="font-brand text-4xl xl:text-5xl font-bold leading-tight mb-5">Sua empresa no SEEDRA</h1>
+                <p class="text-lg leading-relaxed text-white/85 max-w-md">
+                    Cadastre sua empresa para organizar o acervo de sementes e plantas, registrar movimentações e gerar relatórios em um só lugar.
+                </p>
+            </div>
+
+            <ul class="relative space-y-3 max-w-md">
+                <li class="flex items-center gap-3 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-sm px-4 py-3">
+                    <i class="fa-solid fa-magnifying-glass text-seedra-sand w-5 text-center"></i>
+                    <span class="text-sm font-bold">Catálogo e acervo centralizados</span>
+                </li>
+                <li class="flex items-center gap-3 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-sm px-4 py-3">
+                    <i class="fa-solid fa-arrow-right-arrow-left text-seedra-sand w-5 text-center"></i>
+                    <span class="text-sm font-bold">Movimentações registradas</span>
+                </li>
+                <li class="flex items-center gap-3 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-sm px-4 py-3">
+                    <i class="fa-solid fa-file-lines text-seedra-sand w-5 text-center"></i>
+                    <span class="text-sm font-bold">Relatórios prontos para exportar</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="flex flex-1 items-center justify-center p-6 sm:p-10">
+            <div class="card-enter soft-card w-full max-w-xl rounded-3xl p-8 sm:p-10">
+
+                <div class="flex items-center gap-3 mb-8 lg:hidden">
+                    <img src="/static/img/logo-seedra-folha.svg" alt="Logo SEEDRA" class="h-10">
+                    <span class="font-brand text-2xl font-bold text-seedra-leafDark">SEEDRA</span>
+                </div>
+
+                <div class="mb-8">
+                    <h1 class="font-brand text-4xl font-bold text-seedra-leafDark">Adicione sua empresa</h1>
+                    <p class="text-sm text-gray-500 mt-2">Junte-se à plataforma SEEDRA</p>
                 </div>
 
                 <form action="{{ url_for('cadastro_empresas.cadastro_empresas') }}" method="POST" class="space-y-5">
                     <div>
-                        <label for="nome_empresa" class="block text-sm font-medium text-gray-700 mb-1">Nome da empresa</label>
-                        <input type="text" id="nome_empresa" name="nome_empresa" placeholder="Empresa X" required
-                            class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+                        <label for="nome_empresa" class="block text-sm font-bold text-seedra-forest/80 mb-1.5">Nome da empresa</label>
+                        <div class="field relative">
+                            <i class="field-icon fa-regular fa-building absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="text" id="nome_empresa" name="nome_empresa" placeholder="Empresa X" required autocomplete="organization"
+                                class="w-full pl-11 pr-4 py-3 text-gray-700 placeholder:text-gray-400 bg-white/70 border border-seedra-mist rounded-xl focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+                        </div>
                     </div>
-                    
-                    <div>
-                        <label for="cnpj" class="block text-sm font-medium text-gray-700 mb-1">CNPJ</label>
-                        <input type="text" id="cnpj" name="cnpj" placeholder="XX.XXX.XXX/XXXX-XX" required
-                            class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label for="cnpj" class="block text-sm font-bold text-seedra-forest/80 mb-1.5">CNPJ</label>
+                            <div class="field relative">
+                                <i class="field-icon fa-regular fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                <input type="text" id="cnpj" name="cnpj" placeholder="XX.XXX.XXX/XXXX-XX" required inputmode="numeric"
+                                    class="w-full pl-11 pr-4 py-3 text-gray-700 placeholder:text-gray-400 bg-white/70 border border-seedra-mist rounded-xl focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="telefone" class="block text-sm font-bold text-seedra-forest/80 mb-1.5">Telefone</label>
+                            <div class="field relative">
+                                <i class="field-icon fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                <input type="text" id="telefone" name="telefone" placeholder="(XX) X XXXX-XXXX" required inputmode="tel" autocomplete="tel"
+                                    class="w-full pl-11 pr-4 py-3 text-gray-700 placeholder:text-gray-400 bg-white/70 border border-seedra-mist rounded-xl focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+                            </div>
+                        </div>
                     </div>
 
                     <div>
-                        <label for="endereco" class="block text-sm font-medium text-gray-700 mb-1">Endereço</label>
-                        <input type="text" id="endereco" name="endereco" placeholder="Rua exemplo, XX" required
-                            class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+                        <label for="endereco" class="block text-sm font-bold text-seedra-forest/80 mb-1.5">Endereço</label>
+                        <div class="field relative">
+                            <i class="field-icon fa-solid fa-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="text" id="endereco" name="endereco" placeholder="Rua exemplo, XX" required autocomplete="street-address"
+                                class="w-full pl-11 pr-4 py-3 text-gray-700 placeholder:text-gray-400 bg-white/70 border border-seedra-mist rounded-xl focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+                        </div>
                     </div>
 
                     <div>
-                        <label for="telefone" class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
-                        <input type="text" id="telefone" name="telefone" placeholder="(XX) X XXXX-XXXX" required
-                            class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+                        <label for="senha" class="block text-sm font-bold text-seedra-forest/80 mb-1.5">Senha</label>
+                        <div class="field relative">
+                            <i class="field-icon fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="password" id="senha" name="senha" placeholder="Crie uma senha segura!" required autocomplete="new-password"
+                                class="w-full pl-11 pr-12 py-3 text-gray-700 placeholder:text-gray-400 bg-white/70 border border-seedra-mist rounded-xl focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
+                            <button type="button" id="toggleSenha" aria-label="Mostrar ou ocultar senha"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg text-gray-400 hover:text-seedra-leafMid hover:bg-seedra-leafLight/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-seedra-leafLight transition-colors">
+                                <i class="fa-regular fa-eye text-sm"></i>
+                            </button>
+                        </div>
                     </div>
 
-                    <div>
-                        <label for="senha" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
-                        <input type="password" id="senha" name="senha" placeholder="Crie uma senha segura!" required
-                            class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all text-sm">
-                    </div>
-
-                    <button type="submit" class="w-full bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-medium py-2.5 rounded-lg transition-colors mt-2 shadow-sm">
-                        Finalizar Cadastro
+                    <button type="submit"
+                        class="w-full bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-bold py-3 rounded-xl transition-colors mt-2 shadow-md shadow-seedra-leafDark/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-seedra-leafLight">
+                        <i class="fa-solid fa-seedling mr-2"></i>Finalizar cadastro
                     </button>
                 </form>
 
                 {% with messages = get_flashed_messages(category_filter=["cadastro_empresas", "empresas_error"], with_categories=true) %}
                     {% if messages %}
-                        <div class="mt-4">
+                        <div class="mt-5 space-y-2">
                         {% for categoria, mensagem in messages %}
-                            <div class="p-3 rounded-lg text-sm font-medium text-center {% if categoria == 'empresas_error' %}bg-red-50 text-red-700 border border-red-100{% else %}bg-green-50 text-green-700 border border-green-100{% endif %}">
-                                {{ mensagem }}
+                            <div class="flex items-start gap-2 p-3 rounded-xl text-sm font-bold {% if categoria == 'empresas_error' %}bg-red-50 text-red-700 border border-red-100{% else %}bg-green-50 text-green-700 border border-green-100{% endif %}">
+                                <i class="fa-solid {% if categoria == 'empresas_error' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %} mt-0.5"></i>
+                                <span>{{ mensagem }}</span>
                             </div>
                         {% endfor %}
                         </div>
                     {% endif %}
                 {% endwith %}
-
-                
             </div>
         </section>
-        <section class="w-1/3 bg-seedra-leafDark bg-organic rounded-l-lg"></section>
+
     </main>
-    
+
+    <script>
+
+      const toggle = document.getElementById('toggleSenha');
+      const campoSenha = document.getElementById('senha');
+      toggle.addEventListener('click', () => {
+        const mostrar = campoSenha.type === 'password';
+        campoSenha.type = mostrar ? 'text' : 'password';
+        toggle.querySelector('i').className = mostrar ? 'fa-regular fa-eye-slash text-sm' : 'fa-regular fa-eye text-sm';
+      });
+
+      function aplicarMascara(id, formatar) {
+        const el = document.getElementById(id);
+        el.addEventListener('input', () => { el.value = formatar(el.value.replace(/\D/g, '')); });
+      }
+
+      aplicarMascara('cnpj', d => d.slice(0, 14)
+        .replace(/^(\d{2})(\d)/, '$1.$2')
+        .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+        .replace(/\.(\d{3})(\d)/, '.$1/$2')
+        .replace(/(\d{4})(\d)/, '$1-$2'));
+
+      aplicarMascara('telefone', d => {
+        d = d.slice(0, 11);
+        if (d.length > 10) return `(${d.slice(0, 2)}) ${d[2]} ${d.slice(3, 7)}-${d.slice(7)}`;
+        if (d.length > 6)  return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+        if (d.length > 2)  return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+        return d ? `(${d}` : '';
+      });
+    </script>
 </body>
 </html>

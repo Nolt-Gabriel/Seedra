@@ -5,51 +5,98 @@
 {% block header_subtitle %}Painel Geral{% endblock %}
 {% block header_title %}Dashboard Orgânico{% endblock %}
 
-{% block header_actions %}
+{% block head_extra %}
+<style>
+  .hero-panel {
+    position: relative; overflow: hidden; color: #fff;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(120,184,99,0.35), transparent 35%),
+      radial-gradient(circle at 90% 95%, rgba(154,119,76,0.35), transparent 40%),
+      linear-gradient(160deg, #587e49 0%, #044b2d 70%, #001500 130%);
+  }
+  .leaf {
+    position: absolute; border-radius: 0 100% 0 100%; pointer-events: none;
+    background: linear-gradient(135deg, rgba(120,184,99,0.28), rgba(120,184,99,0.04));
+    border: 1px solid rgba(255,255,255,0.10);
+  }
+  .quick-link {
+    display: inline-flex; align-items: center; gap: .55rem; padding: .55rem 1rem; border-radius: 999px;
+    font-weight: 700; font-size: .9rem; color: #fff;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.16);
+    transition: background-color .2s, color .2s;
+  }
+  .quick-link:hover { background: #fff; color: var(--leaf-dark); }
 
+  .kpi-icon {
+    width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; flex: none;
+    background: linear-gradient(135deg, rgba(120,184,99,0.28), rgba(221,209,174,0.45)); color: var(--leaf-dark);
+  }
+  .bar { height: .6rem; border-radius: 999px; background: var(--seed-mist); overflow: hidden; }
+  .bar > span { display: block; height: 100%; border-radius: inherit; }
+</style>
 {% endblock %}
-{% block content %}
-    
 
-    <div class="flex justify-end gap-2 mb-4">
-      <a href="{{ url_for('relatorios.relatorios') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
-        <i class="fa-solid fa-plus"></i> Exportar
-      </a>
-      <a href="{{ url_for('movimentacao.movimentacao') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
-          <i class="fa-solid fa-plus"></i> Novo registro
-      </a>
-    </div>
+{% block header_actions %}
+  <a href="{{ url_for('relatorios.relatorios') }}" class="btn btn-sm md:btn-md rounded-2xl border border-seedra-leafDark/20 bg-white/60 hover:bg-white text-seedra-leafDark font-lato shadow-none">
+    <i class="fa-solid fa-file-export"></i><span class="hidden sm:inline">Exportar</span>
+  </a>
+  <a href="{{ url_for('movimentacao.movimentacao') }}" class="btn btn-sm md:btn-md rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+    <i class="fa-solid fa-plus"></i><span class="hidden sm:inline">Novo registro</span>
+  </a>
+{% endblock %}
+
+{% block content %}
+    {% set primeiro_nome = (current_user.nome or '').split()[0] if current_user.is_authenticated and current_user.nome else '' %}
+
     <section class="grid grid-cols-1 xl:grid-cols-3 gap-5">
-      <div class="xl:col-span-2 glass-card rounded-[2rem] p-6 bg-organic">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <div>
-            <span class="badge border-0 bg-seedra-seedSand text-seedra-leafDark rounded-full px-4 py-3 font-lato">Painel principal</span>
-            <h3 class="mt-4 text-3xl md:text-4xl font-extrabold text-seedra-leafDark leading-tight">Uma interface simples, acolhedora e conectada à ideia de crescimento.</h3>
-            <p class="mt-3 text-base leading-7 text-slate-700 max-w-2xl font-lato">O layout usa transparências suaves, formas arredondadas e a paleta da sua marca para transmitir natureza, cuidado e estabilidade em um dashboard fácil de navegar.</p>
-          </div>
-          <div class="w-full max-w-xs">
-            <div class="soft-card rounded-[1.8rem] p-4">
-              <p class="text-xs uppercase tracking-[0.28em] text-seedra-leafMid font-bold font-lato">Marca aplicada</p>
-              <img src="/static/img/Logo_completa_SEEDRA-removebg-preview.png" alt="Símbolo SEEDRA" class="mt-3 mx-auto w-42 h-42 object-cover rounded-[1.6rem] bg-white" />
+      <div class="xl:col-span-2 hero-panel rounded-[2rem] p-7 md:p-9">
+        <span class="leaf w-80 h-80 -top-24 -right-20 rotate-12"></span>
+        <span class="leaf w-48 h-48 -bottom-16 left-1/3 -rotate-45"></span>
+
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div class="max-w-xl">
+            <span class="badge border-0 bg-white/15 text-white rounded-full px-4 py-3 font-lato">Painel principal</span>
+            <h3 class="mt-4 text-3xl md:text-4xl font-extrabold leading-tight text-white">
+              Olá{% if primeiro_nome %}, {{ primeiro_nome }}{% endif %}! Veja como está o seu acervo hoje.
+            </h3>
+            <p class="mt-3 text-base leading-7 text-white/85 font-lato">
+              Acompanhe o catálogo, as movimentações e os relatórios do SEEDRA em um só lugar.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <a href="{{ url_for('catalogo.catalogo') }}" class="quick-link"><i class="fa-solid fa-magnifying-glass"></i>Catálogo e acervo</a>
+              <a href="{{ url_for('movimentacao.movimentacao') }}" class="quick-link"><i class="fa-solid fa-arrow-right-arrow-left"></i>Movimentações</a>
+              <a href="{{ url_for('relatorios.relatorios') }}" class="quick-link"><i class="fa-solid fa-file-lines"></i>Relatórios</a>
             </div>
+          </div>
+          <div class="hidden md:grid place-items-center w-44 h-44 shrink-0 rounded-[1.8rem] bg-white shadow-lg shadow-black/20 p-3">
+            <img src="/static/img/logo-seedra-folha.svg" alt="Símbolo SEEDRA" class="w-full h-full object-contain" />
           </div>
         </div>
       </div>
 
-      <div class="soft-card rounded-[2rem] p-5">
+      <div class="soft-card rounded-[2rem] p-6">
         <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Resumo vivo</p>
-        <div class="mt-5 space-y-4">
-          <div class="rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
-            <p class="text-sm text-slate-500 font-lato">Áreas acompanhadas</p>
-            <p class="metric-value text-3xl font-extrabold text-seedra-leafDark">24</p>
+        <div class="mt-5 space-y-3">
+          <div class="flex items-center gap-4 rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-map-location-dot"></i></span>
+            <div>
+              <p class="text-sm text-slate-500 font-lato">Áreas acompanhadas</p>
+              <p class="metric-value text-3xl font-extrabold text-seedra-leafDark leading-none mt-1">24</p>
+            </div>
           </div>
-          <div class="rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
-            <p class="text-sm text-slate-500 font-lato">Mudas em análise</p>
-            <p class="metric-value text-3xl font-extrabold text-seedra-seedBrown">1.284</p>
+          <div class="flex items-center gap-4 rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-seedling"></i></span>
+            <div>
+              <p class="text-sm text-slate-500 font-lato">Mudas em análise</p>
+              <p class="metric-value text-3xl font-extrabold text-seedra-seedBrown leading-none mt-1">1.284</p>
+            </div>
           </div>
-          <div class="rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
-            <p class="text-sm text-slate-500 font-lato">Saúde média</p>
-            <p class="metric-value text-3xl font-extrabold text-seedra-leafMid">92%</p>
+          <div class="flex items-center gap-4 rounded-2xl bg-white/70 p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+            <div>
+              <p class="text-sm text-slate-500 font-lato">Saúde média</p>
+              <p class="metric-value text-3xl font-extrabold text-seedra-leafMid leading-none mt-1">92%</p>
+            </div>
           </div>
         </div>
       </div>
@@ -57,45 +104,49 @@
 
     <section class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-5 mt-5">
       <div class="soft-card rounded-[1.8rem] p-5">
-        <p class="text-sm text-slate-500 font-lato">Cobertura vegetal</p>
-        <div class="mt-3 flex items-end justify-between">
-          <h4 class="metric-value text-3xl font-extrabold text-seedra-leafDark">78%</h4>
+        <div class="flex items-start justify-between gap-3">
+          <span class="kpi-icon"><i class="fa-solid fa-tree"></i></span>
           <span class="badge bg-seedra-leafLight/20 text-seedra-leafDark border-0 font-lato">+6,4%</span>
         </div>
-        <progress class="progress progress-success mt-4 h-3" value="78" max="100"></progress>
+        <p class="mt-4 text-sm text-slate-500 font-lato">Cobertura vegetal</p>
+        <h4 class="metric-value text-3xl font-extrabold text-seedra-leafDark">78%</h4>
+        <div class="bar mt-4"><span class="w-[78%] bg-seedra-leafLight"></span></div>
       </div>
 
       <div class="soft-card rounded-[1.8rem] p-5">
-        <p class="text-sm text-slate-500 font-lato">Umidade do solo</p>
-        <div class="mt-3 flex items-end justify-between">
-          <h4 class="metric-value text-3xl font-extrabold text-seedra-seedBrown">61%</h4>
+        <div class="flex items-start justify-between gap-3">
+          <span class="kpi-icon"><i class="fa-solid fa-droplet"></i></span>
           <span class="badge bg-seedra-seedSand text-seedra-leafDark border-0 font-lato">Estável</span>
         </div>
-        <progress class="progress mt-4 h-3" value="61" max="100" style="color:#9a774c"></progress>
+        <p class="mt-4 text-sm text-slate-500 font-lato">Umidade do solo</p>
+        <h4 class="metric-value text-3xl font-extrabold text-seedra-seedBrown">61%</h4>
+        <div class="bar mt-4"><span class="w-[61%] bg-seedra-seedBrown"></span></div>
       </div>
 
       <div class="soft-card rounded-[1.8rem] p-5">
-        <p class="text-sm text-slate-500 font-lato">Áreas prioritárias</p>
-        <div class="mt-3 flex items-end justify-between">
-          <h4 class="metric-value text-3xl font-extrabold text-seedra-leafMid">08</h4>
+        <div class="flex items-start justify-between gap-3">
+          <span class="kpi-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
           <span class="badge bg-white text-seedra-leafDark border border-seedra-leafDark/10 font-lato">Monitorar</span>
         </div>
-        <div class="mt-4 h-3 rounded-full bg-seedra-seedMist overflow-hidden"><div class="h-full w-2/5 rounded-full bg-seedra-leafMid"></div></div>
+        <p class="mt-4 text-sm text-slate-500 font-lato">Áreas prioritárias</p>
+        <h4 class="metric-value text-3xl font-extrabold text-seedra-leafMid">08</h4>
+        <div class="bar mt-4"><span class="w-2/5 bg-seedra-leafMid"></span></div>
       </div>
 
       <div class="soft-card rounded-[1.8rem] p-5">
-        <p class="text-sm text-slate-500 font-lato">Eficiência de recuperação</p>
-        <div class="mt-3 flex items-end justify-between">
-          <h4 class="metric-value text-3xl font-extrabold text-seedra-leafDark">89%</h4>
+        <div class="flex items-start justify-between gap-3">
+          <span class="kpi-icon"><i class="fa-solid fa-recycle"></i></span>
           <span class="badge bg-seedra-leafDark text-white border-0 font-lato">Ótimo</span>
         </div>
-        <div class="mt-4 h-3 rounded-full bg-seedra-seedMist overflow-hidden"><div class="h-full w-[89%] rounded-full bg-seedra-leafDark"></div></div>
+        <p class="mt-4 text-sm text-slate-500 font-lato">Eficiência de recuperação</p>
+        <h4 class="metric-value text-3xl font-extrabold text-seedra-leafDark">89%</h4>
+        <div class="bar mt-4"><span class="w-[89%] bg-seedra-leafDark"></span></div>
       </div>
     </section>
 
     <section class="grid grid-cols-1 xl:grid-cols-5 gap-5 mt-5">
-      <div class="xl:col-span-3 soft-card rounded-[2rem] p-5">
-        <div class="flex items-center justify-between gap-3">
+      <div class="xl:col-span-3 soft-card rounded-[2rem] p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Paleta da marca</p>
             <h3 class="text-2xl font-extrabold text-seedra-leafDark mt-2">Cores que sustentam a experiência</h3>
@@ -105,7 +156,7 @@
 
         <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
           <article class="rounded-[1.5rem] overflow-hidden border border-seedra-leafDark/10 bg-white">
-            <img src="/static/img/Cores_Folhas.png" alt="Paleta de folhas" class="max-w-auto h-auto object-cover" width="auto" height="105" loading="lazy" />
+            <img src="/static/img/Cores_Folhas.png" alt="Paleta de folhas" class="w-full h-28 object-cover" loading="lazy" />
             <div class="p-4">
               <h4 class="font-bold text-seedra-leafDark">Folhas</h4>
               <p class="text-sm text-slate-600 mt-1 font-lato">Verdes profundos e vivos para transmitir saúde, vida e continuidade.</p>
@@ -113,7 +164,7 @@
           </article>
 
           <article class="rounded-[1.5rem] overflow-hidden border border-seedra-leafDark/10 bg-white">
-            <img src="/static/img/Cores_Semente.png" alt="Paleta de sementes" class="w-full h-auto object-cover" width="470" height="105" loading="lazy" />
+            <img src="/static/img/Cores_Semente.png" alt="Paleta de sementes" class="w-full h-28 object-cover" loading="lazy" />
             <div class="p-4">
               <h4 class="font-bold text-seedra-leafDark">Sementes</h4>
               <p class="text-sm text-slate-600 mt-1 font-lato">Tons terrosos e suaves que deixam a interface mais humana e orgânica.</p>
@@ -121,7 +172,7 @@
           </article>
 
           <article class="rounded-[1.5rem] overflow-hidden border border-seedra-leafDark/10 bg-white">
-            <img src="/static/img/Cores_Neutras.png" alt="Paleta neutra" class="w-full h-auto object-cover" width="470" height="105" loading="lazy" />
+            <img src="/static/img/Cores_Neutras.png" alt="Paleta neutra" class="w-full h-28 object-cover" loading="lazy" />
             <div class="p-4">
               <h4 class="font-bold text-seedra-leafDark">Neutras</h4>
               <p class="text-sm text-slate-600 mt-1 font-lato">Base leve para equilibrar o painel e manter boa leitura em blocos de dados.</p>
@@ -130,54 +181,55 @@
         </div>
       </div>
 
-      <div class="xl:col-span-2 soft-card rounded-[2rem] p-5">
+      <div class="xl:col-span-2 soft-card rounded-[2rem] p-6">
         <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Atividades recentes</p>
-        <div class="mt-5 space-y-4">
-          <div class="rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <h4 class="font-bold text-seedra-leafDark">Mapeamento atualizado</h4>
-                <p class="text-sm text-slate-500 font-lato">Setor Norte • 12 min atrás</p>
-              </div>
-              <div class="radial-progress text-seedra-leafMid font-lato" style="--value:76; --size:3.2rem; --thickness:0.32rem;">76%</div>
+        <div class="mt-5 space-y-3">
+          <div class="flex items-center gap-4 rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-map"></i></span>
+            <div class="flex-1 min-w-0">
+              <h4 class="font-bold text-seedra-leafDark">Mapeamento atualizado</h4>
+              <p class="text-sm text-slate-500 font-lato">Setor Norte • 12 min atrás</p>
             </div>
+            <div class="radial-progress text-seedra-leafMid font-lato" style="--value:76; --size:3.2rem; --thickness:0.32rem;">76%</div>
           </div>
-          <div class="rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <h4 class="font-bold text-seedra-leafDark">Nova leitura do solo</h4>
-                <p class="text-sm text-slate-500 font-lato">Campo experimental • 35 min atrás</p>
-              </div>
-              <span class="badge rounded-full border-0 bg-seedra-seedSand text-seedra-leafDark px-4 py-3 font-lato">Concluído</span>
+          <div class="flex items-center gap-4 rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-flask"></i></span>
+            <div class="flex-1 min-w-0">
+              <h4 class="font-bold text-seedra-leafDark">Nova leitura do solo</h4>
+              <p class="text-sm text-slate-500 font-lato">Campo experimental • 35 min atrás</p>
             </div>
+            <span class="badge rounded-full border-0 bg-seedra-seedSand text-seedra-leafDark px-4 py-3 font-lato">Concluído</span>
           </div>
-          <div class="rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <h4 class="font-bold text-seedra-leafDark">Painel de reflorestamento</h4>
-                <p class="text-sm text-slate-500 font-lato">Indicadores revisados hoje</p>
-              </div>
-              <button class="btn btn-sm rounded-full bg-seedra-leafDark hover:bg-seedra-leafMid text-white border-0 font-lato">Abrir</button>
+          <div class="flex items-center gap-4 rounded-[1.4rem] bg-white p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-chart-line"></i></span>
+            <div class="flex-1 min-w-0">
+              <h4 class="font-bold text-seedra-leafDark">Painel de reflorestamento</h4>
+              <p class="text-sm text-slate-500 font-lato">Indicadores revisados hoje</p>
             </div>
+            <button class="btn btn-sm rounded-full bg-seedra-leafDark hover:bg-seedra-leafMid text-white border-0 font-lato">Abrir</button>
           </div>
         </div>
       </div>
     </section>
 
     <section class="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5 pb-4">
-      <div class="xl:col-span-2 soft-card rounded-[2rem] p-5">
-        <div class="flex items-center justify-between gap-3">
+      <div class="xl:col-span-2 soft-card rounded-[2rem] p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato" id="projetos">Projetos</p>
             <h3 class="text-2xl font-extrabold text-seedra-leafDark mt-2">Frentes de trabalho</h3>
           </div>
-          <input type="text" placeholder="Buscar projeto" class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/10 w-full max-w-xs font-lato" />
+          <label class="relative w-full max-w-xs">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input type="text" id="buscaProjeto" placeholder="Buscar projeto" aria-label="Buscar projeto"
+                   class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/10 w-full pl-10 font-lato focus:border-seedra-leafLight focus:outline-seedra-leafLight" />
+          </label>
         </div>
 
         <div class="mt-5 overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
-          <table class="table font-lato">
+          <table class="table font-lato" id="tabelaProjetos">
             <thead>
-              <tr class="text-seedra-leafDark">
+              <tr class="text-seedra-leafDark bg-seedra-leafLight/10">
                 <th>Projeto</th>
                 <th>Área</th>
                 <th>Status</th>
@@ -185,40 +237,62 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr class="hover:bg-seedra-leafLight/10">
                 <td class="font-semibold">Parque das Dunas</td>
                 <td>12,4 ha</td>
                 <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-lato">Em evolução</span></td>
-                <td><progress class="progress progress-success h-2 w-28" value="74" max="100"></progress></td>
+                <td><div class="bar w-28"><span class="w-[74%] bg-seedra-leafLight"></span></div></td>
               </tr>
-              <tr>
+              <tr class="hover:bg-seedra-leafLight/10">
                 <td class="font-semibold">Núcleo Semente Viva</td>
                 <td>8,1 ha</td>
                 <td><span class="badge border-0 bg-seedra-seedSand text-seedra-leafDark font-lato">Atenção</span></td>
-                <td><progress class="progress h-2 w-28" value="58" max="100" style="color:#9a774c"></progress></td>
+                <td><div class="bar w-28"><span class="w-[58%] bg-seedra-seedBrown"></span></div></td>
               </tr>
-              <tr>
+              <tr class="hover:bg-seedra-leafLight/10">
                 <td class="font-semibold">Viveiro</td>
                 <td>5,9 ha</td>
                 <td><span class="badge border-0 bg-seedra-leafDark text-white font-lato">Estável</span></td>
-                <td><progress class="progress progress-success h-2 w-28" value="91" max="100"></progress></td>
+                <td><div class="bar w-28"><span class="w-[91%] bg-seedra-leafLight"></span></div></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <div class="soft-card rounded-[2rem] p-5">
+      <div class="soft-card rounded-[2rem] p-6">
         <p class="text-xs uppercase tracking-[0.25em] text-seedra-leafMid font-bold font-lato">Direção visual</p>
-        <div class="mt-4 rounded-[1.5rem] bg-white p-4 border border-seedra-leafDark/10">
-          <ul class="space-y-3 text-sm leading-6 text-slate-600 font-lato">
-            <li><span class="font-bold text-seedra-leafDark">Formas suaves:</span> cantos amplos e blocos acolhedores.</li>
-            <li><span class="font-bold text-seedra-leafDark">Leveza:</span> superfícies claras com transparência discreta.</li>
-            <li><span class="font-bold text-seedra-leafDark">Naturalidade:</span> verdes, areia e tons terrosos.</li>
-            <li><span class="font-bold text-seedra-leafDark">Simplicidade:</span> leitura rápida e poucos excessos visuais.</li>
-          </ul>
-        </div>
+        <ul class="mt-4 space-y-3 font-lato">
+          <li class="flex gap-3 rounded-[1.3rem] bg-white p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-circle"></i></span>
+            <p class="text-sm leading-6 text-slate-600"><span class="font-bold text-seedra-leafDark block">Formas suaves</span>Cantos amplos e blocos acolhedores.</p>
+          </li>
+          <li class="flex gap-3 rounded-[1.3rem] bg-white p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-feather"></i></span>
+            <p class="text-sm leading-6 text-slate-600"><span class="font-bold text-seedra-leafDark block">Leveza</span>Superfícies claras com transparência discreta.</p>
+          </li>
+          <li class="flex gap-3 rounded-[1.3rem] bg-white p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-leaf"></i></span>
+            <p class="text-sm leading-6 text-slate-600"><span class="font-bold text-seedra-leafDark block">Naturalidade</span>Verdes, areia e tons terrosos.</p>
+          </li>
+          <li class="flex gap-3 rounded-[1.3rem] bg-white p-4 border border-seedra-leafDark/10">
+            <span class="kpi-icon"><i class="fa-solid fa-eye"></i></span>
+            <p class="text-sm leading-6 text-slate-600"><span class="font-bold text-seedra-leafDark block">Simplicidade</span>Leitura rápida e poucos excessos visuais.</p>
+          </li>
+        </ul>
       </div>
     </section>
+{% endblock %}
 
+{% block scripts %}
+<script>
+  const busca = document.getElementById('buscaProjeto');
+  const linhas = document.querySelectorAll('#tabelaProjetos tbody tr');
+  busca.addEventListener('input', () => {
+    const termo = busca.value.trim().toLowerCase();
+    linhas.forEach(tr => {
+      tr.style.display = tr.textContent.toLowerCase().includes(termo) ? '' : 'none';
+    });
+  });
+</script>
 {% endblock %}

@@ -5,90 +5,107 @@
 {% block header_subtitle %}Acervo Geral{% endblock %}
 {% block header_title %}Catálogo de Espécies{% endblock %}
 
-
+{% block header_actions %}
+  <a href="{{ url_for('catalogo.novo_item') }}" class="btn btn-sm md:btn-md rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
+    <i class="fa-solid fa-plus"></i><span class="hidden sm:inline">Novo cadastro</span>
+  </a>
+{% endblock %}
 
 {% block content %}
-<div class="flex justify-end mb-4">
-    <a href="{{ url_for('catalogo.novo_item') }}" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
-        <i class="fa-solid fa-plus"></i> Novo Cadastro
-    </a>
-</div>
+{% set lista = itens|list %}
+{% set ns = namespace(deficit=0) %}
+{% for i in lista %}{% if i.em_deficit() %}{% set ns.deficit = ns.deficit + 1 %}{% endif %}{% endfor %}
+{% set total_sementes = lista|selectattr('categoria', 'equalto', 'Semente')|list|length %}
+
+<section class="grid grid-cols-2 xl:grid-cols-4 gap-4">
+    <div class="soft-card rounded-[1.6rem] p-4 flex items-center gap-4">
+        <span class="w-11 h-11 shrink-0 rounded-2xl grid place-items-center bg-seedra-leafLight/20 text-seedra-leafDark"><i class="fa-solid fa-layer-group"></i></span>
+        <div>
+            <p class="text-sm text-slate-500 font-lato">Espécies cadastradas</p>
+            <p class="metric-value text-2xl font-extrabold text-seedra-leafDark leading-none mt-1">{{ lista|length }}</p>
+        </div>
+    </div>
+    <div class="soft-card rounded-[1.6rem] p-4 flex items-center gap-4">
+        <span class="w-11 h-11 shrink-0 rounded-2xl grid place-items-center bg-seedra-leafLight/20 text-seedra-leafDark"><i class="fa-solid fa-seedling"></i></span>
+        <div>
+            <p class="text-sm text-slate-500 font-lato">Plantas</p>
+            <p class="metric-value text-2xl font-extrabold text-seedra-leafMid leading-none mt-1">{{ lista|length - total_sementes }}</p>
+        </div>
+    </div>
+    <div class="soft-card rounded-[1.6rem] p-4 flex items-center gap-4">
+        <span class="w-11 h-11 shrink-0 rounded-2xl grid place-items-center bg-seedra-seedSand/50 text-seedra-seedBrown"><i class="fa-solid fa-circle-dot"></i></span>
+        <div>
+            <p class="text-sm text-slate-500 font-lato">Sementes</p>
+            <p class="metric-value text-2xl font-extrabold text-seedra-seedBrown leading-none mt-1">{{ total_sementes }}</p>
+        </div>
+    </div>
+    <div class="soft-card rounded-[1.6rem] p-4 flex items-center gap-4 {% if ns.deficit %}border-red-200{% endif %}">
+        <span class="w-11 h-11 shrink-0 rounded-2xl grid place-items-center {% if ns.deficit %}bg-red-100 text-red-600{% else %}bg-seedra-leafLight/20 text-seedra-leafDark{% endif %}"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <div>
+            <p class="text-sm text-slate-500 font-lato">Em déficit</p>
+            <p class="metric-value text-2xl font-extrabold leading-none mt-1 {% if ns.deficit %}text-red-600{% else %}text-seedra-leafDark{% endif %}">{{ ns.deficit }}</p>
+        </div>
+    </div>
+</section>
+
 <section class="mt-5 soft-card rounded-[2rem] p-6">
-    <!-- Botão De Categorias e Pesquisa e Filtrar-->
-    <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
+    <div class="flex flex-col xl:flex-row gap-3 xl:items-center xl:justify-between mb-6">
 
-        <!-- Pesquisa e Categorias -->
-        <div class="flex-1 w-full flex gap-2">
-            <input type="text" placeholder="Buscar por nome científico ou comum..." class="input input-bordered rounded-2xl bg-white border-seedra-leafDark/10 w-full max-w-md font-lato" id="c_search" />
-            
-            <div class="relative inline-block w-56">
+        <div class="flex flex-col sm:flex-row gap-3 flex-1">
+            <div class="relative w-full max-w-md">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" id="c_search" placeholder="Buscar por nome científico ou comum..."
+                    class="w-full pl-11 pr-4 py-3 text-sm font-lato text-gray-700 placeholder:text-gray-400 bg-white border border-seedra-leafDark/15 rounded-2xl focus:ring-2 focus:ring-seedra-leafLight focus:border-transparent outline-none transition-all" />
+            </div>
 
-                <button id="c_btn" class="btn w-full flex justify-center rounded-xl bg-white font-lato text-seedra-leafDark border-seedra-leafDark/10 gap-4 hover:bg-seedra-leafMid hover:text-white">
-
-                    <span id="content_span" class=" transition-transform easy-in-out">Todas as Categorias</span>
+            <div class="relative w-full sm:w-60">
+                <button id="c_btn" type="button" class="btn w-full flex justify-between rounded-2xl bg-white font-lato text-seedra-leafDark border-seedra-leafDark/15 hover:bg-seedra-leafMid hover:text-white hover:border-seedra-leafMid shadow-none">
+                    <span id="content_span" class="transition-transform easy-in-out">Todas as Categorias</span>
                     <i id="c_arrow" class="fa-solid fa-chevron-right transition-transform"></i>
-
                 </button>
 
-                <ul class="absolute hidden left-0 w-full bg-white border mt-3 z-10 text-center rounded-xl" id="c_list">
-                    <li class="p-3 hover:bg-seedra-leafDark hover:text-white hover:rounded-t-xl" >
-                        <button id="b_all" class="b_all block w-full">
-                            Todas as Categorias
-                        </button>
+                <ul class="absolute hidden left-0 w-full bg-white border border-seedra-leafDark/10 shadow-lg mt-2 z-10 text-center rounded-2xl overflow-hidden font-lato text-sm font-bold text-seedra-leafDark" id="c_list">
+                    <li class="p-3 hover:bg-seedra-leafDark hover:text-white">
+                        <button id="b_all" class="b_all block w-full">Todas as Categorias</button>
                     </li>
-                    <li class="p-3 border-t hover:bg-seedra-leafDark hover:text-white">
-                        <button type="button" id="b_planta" class="block w-full">
-                            Plantas
-                        </button>
+                    <li class="p-3 border-t border-seedra-leafDark/10 hover:bg-seedra-leafDark hover:text-white">
+                        <button type="button" id="b_planta" class="block w-full">Plantas</button>
                     </li>
-                    <li class="p-3 border-t hover:bg-seedra-leafDark hover:text-white hover:rounded-b-xl">
-                        <button id="b_semente" class="block w-full">
-                            Sementes
-                        </button>
+                    <li class="p-3 border-t border-seedra-leafDark/10 hover:bg-seedra-leafDark hover:text-white">
+                        <button id="b_semente" class="block w-full">Sementes</button>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="flex gap-2">
 
-            <!-- Filtrar e em déficit-->
-            <div class="relative inline-block w-56 ">
-
-                <button class="w-full flex justify-center btn rounded-2xl bg-white text-seedra-leafDark border border-seedra-leafDark/10 hover:bg-seedra-leafMid hover:text-white hover:border-seedra-seedSand shadow-sm font-lato" id="filter_button">
+        <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative w-full sm:w-60">
+                <button id="filter_button" type="button" class="w-full flex justify-center btn rounded-2xl bg-white text-seedra-leafDark border border-seedra-leafDark/15 hover:bg-seedra-leafMid hover:text-white hover:border-seedra-leafMid shadow-none font-lato">
                     <i id="filter_span" class="fa-solid fa-filter"></i> Filtrar
                 </button>
 
-                <ul class="hidden absolute left-0 w-full mt-3 bg-white border rounded-xl z-10" id="opt_menu">
-                    <li class="p-3 hover:bg-seedra-leafDark hover:text-white hover:rounded-t-xl">
-                        <button id="filter_all" type="button" class="opt_btn block w-full">
-                            Todas as Categorias
-                        </button>
+                <ul class="hidden absolute left-0 w-full mt-2 bg-white border border-seedra-leafDark/10 shadow-lg rounded-2xl z-10 overflow-hidden font-lato text-sm font-bold text-seedra-leafDark text-center" id="opt_menu">
+                    <li class="p-3 hover:bg-seedra-leafDark hover:text-white">
+                        <button id="filter_all" type="button" class="opt_btn block w-full">Todas as Categorias</button>
                     </li>
-                    <li class="p-3 hover:bg-seedra-leafDark hover:text-white border-t">
-                        <button id="filter_AZ" type="button" class="opt_btn block w-full">
-                            Ordem Alfabética (A-Z)
-                        </button>
+                    <li class="p-3 border-t border-seedra-leafDark/10 hover:bg-seedra-leafDark hover:text-white">
+                        <button id="filter_AZ" type="button" class="opt_btn block w-full">Ordem Alfabética (A-Z)</button>
                     </li>
-                    <li class="p-3 border-t hover:bg-seedra-leafDark hover:text-white">
-                        <button id="filter_ZA" type="button" class="opt_btn block w-full">
-                            Ordem Alfabética (Z-A)
-                        </button>
+                    <li class="p-3 border-t border-seedra-leafDark/10 hover:bg-seedra-leafDark hover:text-white">
+                        <button id="filter_ZA" type="button" class="opt_btn block w-full">Ordem Alfabética (Z-A)</button>
                     </li>
-                    <li class="p-3 border-t hover:bg-seedra-leafDark hover:text-white hover:rounded-b-xl">
-                        <button id="filter_lastEntry" class="opt_btn block w-full">
-                            Último Acesso
-                        </button>
+                    <li class="p-3 border-t border-seedra-leafDark/10 hover:bg-seedra-leafDark hover:text-white">
+                        <button id="filter_lastEntry" class="opt_btn block w-full">Último Acesso</button>
                     </li>
                 </ul>
             </div>
 
-            <button class="btn rounded-2xl bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 hover:border-red-300 shadow-sm font-lato" id="btn_deficit">
+            <button id="btn_deficit" type="button" class="btn rounded-2xl bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 hover:border-red-300 shadow-none font-lato">
                 <i class="fa-solid fa-triangle-exclamation"></i> Em Déficit
             </button>
         </div>
     </div>
 
-    <!-- Botão Déficit e Tabela -->
     <div class="overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
         <table class="table font-lato">
             <thead class="bg-seedra-leafLight/10 text-seedra-leafDark">
@@ -104,20 +121,25 @@
             <tbody>
 
                 {% for item in itens %}
-                <tr id="list_order_normal" class="{% if item.em_deficit() %}item_deficit{% else %}item_ok{% endif %} transition {% if item.categoria == 'Semente' %} c_semente {% else %} c_planta {% endif %}">
+                <tr id="list_order_normal" class="{% if item.em_deficit() %}item_deficit{% else %}item_ok{% endif %} transition hover:bg-seedra-leafLight/10 {% if item.categoria == 'Semente' %} c_semente {% else %} c_planta {% endif %}">
                     <td class="font-bold text-seedra-leafDark">{{ item.nome }}</td>
                     <td class="italic text-slate-500">{{ item.n_cientifico }}</td>
-                    <td><span class="badge border-0 bg-seedra-leafLight/20 text-seedra-leafDark font-bold">{{ item.categoria}}</span></td>
-                    <td class="metric-value font-bold text-lg">{{ item.quantidade }}</td>
-                    <td><span class="badge border-0 {% if item.em_deficit() %} bg-red-100 text-red-800 {% else %} bg-green-100 text-green-800 {% endif %}">
-                        {% if item.em_deficit() %}
-                            Item em deficit
-                        {% else %}
-                            Item em Estoque
-                        {% endif %}
-                    </span></td>
+                    <td>
+                        <span class="badge border-0 font-bold {% if item.categoria == 'Semente' %}bg-seedra-seedSand/60 text-seedra-seedBrown{% else %}bg-seedra-leafLight/20 text-seedra-leafDark{% endif %}">{{ item.categoria }}</span>
+                    </td>
+                    <td class="metric-value font-bold text-lg {% if item.em_deficit() %}text-red-600{% endif %}">{{ item.quantidade }}</td>
+                    <td>
+                        <span class="badge border-0 gap-1 {% if item.em_deficit() %} bg-red-100 text-red-800 {% else %} bg-green-100 text-green-800 {% endif %}">
+                            <i class="fa-solid {% if item.em_deficit() %}fa-circle-exclamation{% else %}fa-circle-check{% endif %} text-xs"></i>
+                            {% if item.em_deficit() %}
+                                Item em deficit
+                            {% else %}
+                                Item em Estoque
+                            {% endif %}
+                        </span>
+                    </td>
                     <td class="text-center">
-                        <a href="{{ url_for('catalogo.detalhes_item', id=item.id) }}" class="btn btn-sm btn-ghost text-seedra-leafMid rounded-xl"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ url_for('catalogo.detalhes_item', id=item.id) }}" class="btn btn-sm btn-ghost text-seedra-leafMid hover:bg-seedra-leafLight/20 rounded-xl" aria-label="Ver detalhes de {{ item.nome }}" title="Ver detalhes"><i class="fa-solid fa-eye"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -125,17 +147,27 @@
             </tbody>
         </table>
     </div>
-            {% with messages = get_flashed_messages(category_filter=["catalogo"], with_categories=true) %}
-                {% if messages %}
-                    <div class="mt-4">
-                    {% for categoria, mensagem in messages %}
-                        <div class="p-3 rounded-lg text-sm font-medium text-center    bg-green-50 text-green-700 border border-green-100">
-                            {{ mensagem }}
-                        </div>
-                    {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
+
+    {% if not lista %}
+    <div class="mt-4 text-center py-10 rounded-[1.5rem] border border-dashed border-seedra-leafDark/20 bg-white/60 font-lato">
+        <i class="fa-solid fa-seedling text-3xl text-seedra-leafLight"></i>
+        <p class="mt-3 font-bold text-seedra-leafDark">Nenhuma espécie cadastrada ainda</p>
+        <p class="text-sm text-slate-500">Use o botão "Novo cadastro" para adicionar a primeira planta ou semente.</p>
+    </div>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(category_filter=["catalogo"], with_categories=true) %}
+        {% if messages %}
+            <div class="mt-4 space-y-2">
+            {% for categoria, mensagem in messages %}
+                <div class="flex items-start gap-2 p-3 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-100">
+                    <i class="fa-solid fa-circle-check mt-0.5"></i>
+                    <span>{{ mensagem }}</span>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
 </section>
 {% endblock %}

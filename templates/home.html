@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SEEDRA — catálogo e gerenciamento de espécies vegetais, sementes e informações de cultivo.">
+  <title>SEEDRA — Natureza organizada por dados</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="/static/img/logo-seedra-icone.png" type="image/png">
+
+  <style>
+    :root {
+      --leaf-dark: #044b2d;
+      --leaf-mid: #587e49;
+      --leaf-light: #78b863;
+      --seed-brown: #9a774c;
+      --seed-sand: #ddd1ae;
+      --seed-mist: #d9d6cc;
+      --deep-forest: #001500;
+      --surface: rgba(249, 248, 243, 0.78);
+      --surface-strong: rgba(255, 252, 246, 0.92);
+      --line: rgba(4, 75, 45, 0.10);
+      --shadow: 0 8px 24px rgba(0, 21, 0, 0.06), 0 30px 60px rgba(4, 75, 45, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+
+    body {
+      margin: 0;
+      font-family: 'Lato', sans-serif;
+      color: #183124;
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at top left, rgba(120,184,99,0.18), transparent 20%),
+        radial-gradient(circle at bottom right, rgba(154,119,76,0.14), transparent 24%),
+        linear-gradient(135deg, #f4f0e8 0%, #eef4ea 40%, #f7f4ef 100%);
+      background-attachment: fixed;
+    }
+
+    h1, h2, h3, .brand-word { font-family: 'Balsamiq Sans', sans-serif; color: var(--leaf-dark); line-height: 1.15; margin: 0; }
+    p { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; }
+
+    :focus-visible { outline: 2px solid var(--leaf-light); outline-offset: 3px; border-radius: 8px; }
+
+    /* ---------- Botões ---------- */
+    .s-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      padding: .7rem 1.25rem; border-radius: 12px; font-weight: 700; font-size: .95rem;
+      border: 1px solid transparent; cursor: pointer; white-space: nowrap;
+      transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
+    }
+    .s-btn-primary { background: var(--leaf-dark); color: #fff; box-shadow: 0 6px 16px rgba(4,75,45,.22); }
+    .s-btn-primary:hover { background: var(--leaf-mid); }
+    .s-btn-outline { background: rgba(255,255,255,.55); color: var(--leaf-dark); border-color: rgba(4,75,45,.28); }
+    .s-btn-outline:hover { background: #fff; border-color: var(--leaf-mid); }
+
+    /* ---------- Header ---------- */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(244, 240, 232, 0.78);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-wrap {
+      max-width: 1200px; margin: 0 auto; padding: .85rem 1.5rem;
+      display: flex; align-items: center; gap: 1.5rem;
+    }
+    .brand { display: flex; align-items: center; gap: .6rem; }
+    .brand img { width: 40px; height: 40px; object-fit: contain; }
+    .brand-word { font-size: 1.5rem; font-weight: 700; }
+    .nav-links { display: flex; gap: 1.75rem; margin-left: auto; font-weight: 700; color: rgba(24,49,36,.8); }
+    .nav-links a { padding: .25rem 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
+    .nav-links a:hover { color: var(--leaf-dark); border-color: var(--leaf-light); }
+    .nav-actions { display: flex; gap: .6rem; }
+    .menu-toggle {
+      display: none; width: 42px; height: 42px; border-radius: 12px; font-size: 1.3rem; cursor: pointer;
+      border: 1px solid var(--line); background: rgba(255,255,255,.6); color: var(--leaf-dark);
+    }
+
+    /* ---------- Hero ---------- */
+    .hero { position: relative; overflow: hidden; }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto; padding: 5rem 1.5rem 5.5rem;
+      display: grid; grid-template-columns: 1.05fr .95fr; gap: 3rem; align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .55rem; padding: .4rem .9rem; border-radius: 999px;
+      background: var(--surface-strong); border: 1px solid var(--line);
+      font-size: .85rem; font-weight: 700; color: var(--leaf-mid); margin-bottom: 1.5rem;
+    }
+    .eyebrow-dot {
+      width: 10px; height: 10px; border-radius: 999px; display: inline-block;
+      background: linear-gradient(135deg, var(--leaf-light), var(--leaf-dark));
+      box-shadow: 0 0 0 4px rgba(120,184,99,.16);
+    }
+    .hero h1 { font-size: clamp(2.5rem, 5.2vw, 4.2rem); font-weight: 700; }
+    .hero h1 span { color: var(--leaf-mid); display: block; }
+    .hero-copy { margin-top: 1.4rem; font-size: 1.15rem; max-width: 34rem; color: rgba(24,49,36,.8); }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .hero-note { margin-top: 1.5rem; font-size: .9rem; color: rgba(24,49,36,.6); }
+
+    .visual-stage { position: relative; min-height: 460px; display: grid; place-items: center; }
+    .orbit {
+      position: absolute; width: min(440px, 90%); aspect-ratio: 1; border-radius: 50%;
+      border: 2px dashed rgba(88,126,73,.35);
+      background: radial-gradient(circle, rgba(120,184,99,.16), transparent 68%);
+    }
+    .floating-tag {
+      position: absolute; z-index: 2; padding: .5rem .95rem; border-radius: 999px; font-size: .85rem; font-weight: 700;
+      background: var(--leaf-dark); color: #fff; box-shadow: 0 10px 24px rgba(4,75,45,.25);
+    }
+    .tag-one { top: 6%; left: 2%; }
+    .tag-two { bottom: 6%; right: 2%; background: var(--seed-brown); }
+
+    .plant-card {
+      position: relative; z-index: 1; width: min(380px, 100%); padding: 1.4rem;
+      background: var(--surface-strong); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow);
+    }
+    .card-top { display: flex; justify-content: space-between; align-items: center; gap: .5rem; margin-bottom: 1.1rem; }
+    .card-kicker { font-size: .85rem; font-weight: 700; color: var(--leaf-mid); }
+    .live-pill { font-size: .75rem; font-weight: 700; padding: .25rem .65rem; border-radius: 999px; background: rgba(120,184,99,.18); color: var(--leaf-dark); }
+    .plant-feature { display: flex; gap: 1rem; align-items: center; padding: 1rem; border-radius: 20px; background: linear-gradient(135deg, rgba(120,184,99,.2), rgba(221,209,174,.35)); }
+    .plant-illustration { width: 76px; height: 76px; flex: none; border-radius: 20px; background: rgba(255,255,255,.75); display: grid; place-items: center; padding: .6rem; }
+    .plant-feature h3 { font-size: 1.2rem; }
+    .plant-feature p { font-size: .88rem; color: rgba(24,49,36,.75); margin-top: .2rem; }
+    .data-lines { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-top: 1rem; }
+    .data-chip { padding: .7rem .6rem; border-radius: 14px; background: #fff; border: 1px solid var(--line); text-align: center; }
+    .data-chip strong { display: block; font-size: .85rem; color: var(--leaf-dark); }
+    .data-chip span { font-size: .75rem; color: rgba(24,49,36,.6); }
+    .mini-list { margin-top: 1rem; display: grid; gap: .5rem; }
+    .mini-row { display: flex; justify-content: space-between; gap: .5rem; font-size: .85rem; padding: .6rem .85rem; border-radius: 12px; background: rgba(217,214,204,.35); }
+    .mini-row b { color: var(--leaf-mid); }
+
+    /* ---------- Seções ---------- */
+    .section { padding: 5.5rem 1.5rem; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-heading { max-width: 40rem; margin-bottom: 3rem; }
+    .section-kicker { display: inline-block; font-weight: 700; font-size: .9rem; color: var(--leaf-mid); margin-bottom: .75rem; }
+    .section-heading h2, .about-copy h2 { font-size: clamp(1.9rem, 3.4vw, 2.7rem); font-weight: 700; }
+    .section-heading p { margin-top: 1rem; color: rgba(24,49,36,.75); font-size: 1.05rem; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .feature-card {
+      padding: 1.75rem; border-radius: 24px; background: var(--surface-strong);
+      border: 1px solid var(--line); box-shadow: 0 8px 24px rgba(0,21,0,.06);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .feature-card:hover { border-color: rgba(88,126,73,.45); box-shadow: var(--shadow); }
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; margin-bottom: 1.1rem;
+      background: linear-gradient(135deg, rgba(120,184,99,.28), rgba(221,209,174,.4)); color: var(--leaf-dark);
+    }
+    .feature-icon svg { width: 26px; height: 26px; }
+    .feature-card h3 { font-size: 1.25rem; margin-bottom: .5rem; }
+    .feature-card p { color: rgba(24,49,36,.75); font-size: .97rem; }
+
+    /* ---------- Sobre (painel verde, igual ao login) ---------- */
+    .about { padding-top: 1rem; }
+    .about-grid {
+      position: relative; overflow: hidden; display: grid; grid-template-columns: .7fr 1.3fr; gap: 3rem; align-items: center;
+      padding: 3.5rem; border-radius: 2.5rem; color: #fff;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(120,184,99,.35), transparent 35%),
+        radial-gradient(circle at 90% 95%, rgba(154,119,76,.35), transparent 40%),
+        linear-gradient(160deg, #587e49 0%, #044b2d 70%, #001500 130%);
+    }
+    .leaf {
+      position: absolute; border-radius: 0 100% 0 100%; pointer-events: none;
+      background: linear-gradient(135deg, rgba(120,184,99,.28), rgba(120,184,99,.04)); border: 1px solid rgba(255,255,255,.1);
+    }
+    .leaf-a { width: 320px; height: 320px; top: -90px; right: -80px; transform: rotate(12deg); }
+    .leaf-b { width: 200px; height: 200px; bottom: -60px; left: 30%; transform: rotate(-45deg); }
+    .about-art { position: relative; display: grid; place-items: center; }
+    .about-art svg { width: min(220px, 70%); }
+    .about-copy { position: relative; }
+    .about-copy .section-kicker { color: var(--seed-sand); }
+    .about-copy h2 { color: #fff; }
+    .about-copy p { margin-top: 1rem; color: rgba(255,255,255,.85); font-size: 1.05rem; max-width: 38rem; }
+    .about-points { margin-top: 1.75rem; display: grid; gap: .6rem; }
+    .about-point {
+      display: flex; align-items: center; gap: .75rem; padding: .7rem 1rem; border-radius: 14px; font-weight: 700; font-size: .95rem;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(4px);
+    }
+    .check { width: 24px; height: 24px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: .8rem; background: var(--leaf-light); color: var(--deep-forest); }
+
+    /* ---------- CTA ---------- */
+    .cta-band { padding: 1rem 1.5rem 5.5rem; }
+    .cta-inner {
+      max-width: 1200px; margin: 0 auto; padding: 2.5rem 3rem; border-radius: 2rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap;
+      background: var(--surface-strong); border: 1px solid var(--line); box-shadow: var(--shadow);
+    }
+    .cta-inner h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+    .cta-inner p { margin-top: .5rem; color: rgba(24,49,36,.75); max-width: 34rem; }
+    .cta-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+    /* ---------- Footer ---------- */
+    .site-footer { background: var(--deep-forest); color: rgba(255,255,255,.8); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-brand { display: flex; align-items: center; gap: .6rem; font-family: 'Balsamiq Sans', sans-serif; font-size: 1.4rem; font-weight: 700; color: #fff; }
+    .footer-brand img { width: 36px; height: 36px; object-fit: contain; }
+    .footer-note { font-size: .9rem; text-align: right; color: rgba(255,255,255,.6); }
+
+    /* ---------- Responsivo ---------- */
+    @media (max-width: 980px) {
+      .hero-inner { grid-template-columns: 1fr; padding-top: 3rem; }
+      .visual-stage { min-height: 420px; }
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-grid { grid-template-columns: 1fr; padding: 2.5rem; }
+      .about-art { display: none; }
+    }
+    @media (max-width: 760px) {
+      .menu-toggle { display: grid; place-items: center; margin-left: auto; }
+      .nav-wrap { flex-wrap: wrap; gap: .75rem; }
+      .nav-links {
+        display: none; order: 3; width: 100%; flex-direction: column; gap: .25rem; margin: 0;
+        padding: .75rem; border-radius: 16px; background: var(--surface-strong); border: 1px solid var(--line);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: .6rem .5rem; border: 0; }
+      .nav-actions { order: 2; width: 100%; }
+      .nav-actions .s-btn { flex: 1; }
+      .menu-toggle { order: 1; }
+      .brand { order: 0; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .section { padding: 4rem 1.25rem; }
+      .cta-inner { padding: 2rem 1.5rem; }
+      .footer-note { text-align: left; }
+      .tag-one { left: 0; } .tag-two { right: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="#inicio" aria-label="SEEDRA - início">
+        <img src="/static/img/logo-seedra-folha.svg" alt="Logo SEEDRA">
+        <span class="brand-word">SEEDRA</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" aria-label="Navegação principal">
+        <a href="#funcionalidades">Funcionalidades</a>
+        <a href="#sobre">Sobre o projeto</a>
+        <a href="#proposito">Nosso propósito</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="s-btn s-btn-outline" href="{{ url_for('login.login') }}">Entrar</a>
+        <a class="s-btn s-btn-primary" href="{{ url_for('cadastro.cadastro') }}">Cadastrar</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Conhecimento que faz florescer</div>
+          <h1>Cultive conhecimento. <span>Organize o futuro.</span></h1>
+          <p class="hero-copy">
+            Um espaço para catalogar espécies vegetais, acompanhar quantidades e reunir
+            informações essenciais de cultivo em uma experiência simples e organizada.
+          </p>
+          <div class="hero-ctas">
+            <a class="s-btn s-btn-primary" href="{{ url_for('login.login') }}">Explore o SEEDRA <span aria-hidden="true">→</span></a>
+            <a class="s-btn s-btn-outline" href="#funcionalidades">Conheça as funcionalidades</a>
+          </div>
+          <p class="hero-note">Catálogo de plantas e sementes · Informação em um só lugar</p>
+        </div>
+
+        <div class="visual-stage" aria-label="Prévia ilustrativa do catálogo SEEDRA">
+          <div class="orbit"></div>
+          <div class="floating-tag tag-one">✦ Conhecimento botânico</div>
+          <div class="plant-card">
+            <div class="card-top">
+              <span class="card-kicker"></span>
+              <span class="live-pill">SEEDRA • Acervo</span>
+            </div>
+            <div class="plant-feature">
+              <div class="plant-illustration">
+                <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
+                  <path d="M50 84V38" stroke="#356B43" stroke-width="5" stroke-linecap="round"/>
+                  <path d="M50 57C26 57 18 39 20 21C39 20 55 32 50 57Z" fill="#78B863"/>
+                  <path d="M51 43C51 22 67 10 86 12C87 32 73 47 51 43Z" fill="#4E8A4D"/>
+                  <path d="M50 83C34 83 26 74 27 62C41 60 51 68 50 83Z" fill="#9A774C"/>
+                  <path d="M52 83C52 68 63 59 76 61C77 75 66 84 52 83Z" fill="#9A774C"/>
+                </svg>
+              </div>
+              <div>
+                <h3>Uma coleção viva</h3>
+                <p>Espécies, características e orientações reunidas em fichas organizadas.</p>
+              </div>
+            </div>
+            <div class="data-lines">
+              <div class="data-chip"><strong>Espécies</strong><span>Catálogo</span></div>
+              <div class="data-chip"><strong>Cuidados</strong><span>Informações</span></div>
+              <div class="data-chip"><strong>Acervo</strong><span>Quantidades</span></div>
+            </div>
+            <div class="mini-list">
+              <div class="mini-row"><span>◉ Informações de cultivo</span><b>Organizadas</b></div>
+              <div class="mini-row"><span>◉ Busca por características</span><b>Prática</b></div>
+            </div>
+          </div>
+          <div class="floating-tag tag-two">🌱 Da semente ao conhecimento</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section features" id="funcionalidades">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Tudo conectado ao seu acervo</span>
+          <h2>Informação organizada para cuidar melhor.</h2>
+          <p>O SEEDRA centraliza os dados importantes de cada espécie para tornar a consulta e o gerenciamento mais claros.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h8M8 11h7"/></svg></div>
+            <h3>Catálogo de espécies</h3>
+            <p>Cadastre e consulte plantas e sementes em um acervo centralizado e fácil de explorar.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h18M5 7V4h14v3M5 7v13h14V7"/><path d="M9 11h6M9 15h6"/></svg></div>
+            <h3>Controle de quantidades</h3>
+            <p>Acompanhe a quantidade disponível por espécie e mantenha o acervo mais organizado.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-4.4 7-11V5l-7-3-7 3v5c0 6.6 7 11 7 11Z"/><path d="M8 12c3-5 7-5 8-5-1 5-4 8-8 8"/></svg></div>
+            <h3>Fichas de cultivo</h3>
+            <p>Reúna orientações sobre rega, iluminação, solo e temperatura de cada espécie.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5M8 11h5M10.5 8.5v5"/></svg></div>
+            <h3>Busca e filtros</h3>
+            <p>Encontre espécies por nome, tipo ou características sem precisar percorrer todo o catálogo.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></div>
+            <h3>Cadastro e edição</h3>
+            <p>Adicione novas espécies e atualize os dados do acervo conforme necessário.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v14H4z"/><path d="M4 9h16M9 5v14M15 5v14"/></svg></div>
+            <h3>Categorização</h3>
+            <p>Organize o acervo por categorias como hortaliças, frutíferas, ornamentais e medicinais.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about" id="sobre">
+      <div class="section-inner about-grid">
+        <span class="leaf leaf-a" aria-hidden="true"></span>
+        <span class="leaf leaf-b" aria-hidden="true"></span>
+        <div class="about-art" aria-hidden="true">
+          <svg viewBox="0 0 180 210" fill="none">
+            <path d="M90 192V69" stroke="#E9E3CE" stroke-width="8" stroke-linecap="round"/>
+            <path d="M88 92C40 91 22 58 27 19C68 18 99 43 88 92Z" fill="#78B863" stroke="#E9E3CE" stroke-width="4"/>
+            <path d="M93 72C92 31 124 5 162 10C164 50 137 79 93 72Z" fill="#587E49" stroke="#E9E3CE" stroke-width="4"/>
+            <path d="M90 190C54 190 35 169 38 140C69 135 93 155 90 190Z" fill="#9A774C"/>
+            <path d="M94 190C94 155 120 133 150 139C152 170 127 192 94 190Z" fill="#9A774C"/>
+          </svg>
+        </div>
+        <div class="about-copy">
+          <span class="section-kicker">Sobre o SEEDRA</span>
+          <h2>Um lugar para cada espécie encontrar seu espaço.</h2>
+          <p>O SEEDRA é uma aplicação desenvolvida para facilitar o gerenciamento e a consulta de espécies vegetais. A proposta é reunir informações essenciais em um ambiente acessível, organizado e intuitivo.</p>
+          <p>Seja para hortas domésticas, viveiros ou coleções botânicas, o sistema ajuda a manter o conhecimento sobre cada planta ou semente sempre à mão.</p>
+          <div class="about-points">
+            <div class="about-point"><span class="check">✓</span> Informações reunidas em um só lugar</div>
+            <div class="about-point"><span class="check">✓</span> Organização por tipo e características</div>
+            <div class="about-point"><span class="check">✓</span> Consulta simples e objetiva</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band" id="proposito">
+      <div class="cta-inner">
+        <div>
+          <h2>Faça parte de uma gestão mais consciente.</h2>
+          <p>Organize seu acervo, explore informações e mantenha o conhecimento sobre espécies sempre acessível.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="s-btn s-btn-outline" href="{{ url_for('login.login') }}">Entrar</a>
+          <a class="s-btn s-btn-primary" href="{{ url_for('cadastro.cadastro') }}">Cadastrar <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="/static/img/logo-seedra-icone.png" alt="Logo SEEDRA">
+        <span>SEEDRA</span>
+      </div>
+      <div class="footer-note">Sistema de Reflorestamento e Estudo de Dados Ambientais<br>Organização, informação e cuidado com o mundo vegetal.</div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    menuToggle.addEventListener("click", () => {
+      const opened = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(opened));
+      menuToggle.textContent = opened ? "×" : "☰";
+    });
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.textContent = "☰";
+      });
+    });
+  </script>
+</body>
+</html>
