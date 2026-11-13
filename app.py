@@ -25,7 +25,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True, 'pool_recycle'
 secret_key = os.environ.get('SECRET_KEY')
 if not secret_key:
     if os.environ.get('FLASK_DEBUG') == '1':
-        secret_key = 'dev-key'
+        secret_key = 'acre_viveiro_para_dinossauros_pt2'
     else:
         raise RuntimeError("Defina a variável SECRET_KEY no .flaskenv antes de iniciar o sistema.")
 app.config['SECRET_KEY'] = secret_key
