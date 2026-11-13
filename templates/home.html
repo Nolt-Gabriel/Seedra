@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SEEDRA — catálogo e gerenciamento de espécies vegetais, sementes e informações de cultivo.">
   <title>SEEDRA — Natureza organizada por dados</title>
+  <script>
+    (function () {
+      const temaSalvo = localStorage.getItem('seedra-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', temaSalvo);
+      const escalaSalva = localStorage.getItem('seedra-font-scale');
+      if (escalaSalva) {
+        document.documentElement.style.fontSize = escalaSalva + '%';
+      }
+    })();
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
@@ -50,7 +60,6 @@
 
     :focus-visible { outline: 2px solid var(--leaf-light); outline-offset: 3px; border-radius: 8px; }
 
-    /* ---------- Botões ---------- */
     .s-btn {
       display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
       padding: .7rem 1.25rem; border-radius: 12px; font-weight: 700; font-size: .95rem;
@@ -62,7 +71,23 @@
     .s-btn-outline { background: rgba(255,255,255,.55); color: var(--leaf-dark); border-color: rgba(4,75,45,.28); }
     .s-btn-outline:hover { background: #fff; border-color: var(--leaf-mid); }
 
-    /* ---------- Header ---------- */
+    .a11y-controls {
+      display: inline-flex; align-items: center; gap: .25rem;
+      padding: .25rem .45rem; border-radius: 12px;
+      background: rgba(255,255,255,.65); border: 1px solid var(--line);
+    }
+    .a11y-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: .3rem .45rem; border-radius: 8px; border: 0; background: transparent;
+      color: var(--leaf-dark); font-weight: 700; font-size: .8rem; cursor: pointer;
+      transition: background-color .2s, color .2s;
+    }
+    .a11y-btn:hover { background: rgba(120,184,99,.2); }
+    .a11y-sep { width: 1px; height: 16px; background: var(--line); margin: 0 .15rem; }
+    .icon-sun { display: none; }
+    [data-theme="dark"] .icon-moon { display: none; }
+    [data-theme="dark"] .icon-sun { display: block; }
+
     .site-header {
       position: sticky; top: 0; z-index: 50;
       background: rgba(244, 240, 232, 0.78);
@@ -71,12 +96,12 @@
     }
     .nav-wrap {
       max-width: 1200px; margin: 0 auto; padding: .85rem 1.5rem;
-      display: flex; align-items: center; gap: 1.5rem;
+      display: flex; align-items: center; gap: 1.25rem;
     }
     .brand { display: flex; align-items: center; gap: .6rem; }
     .brand img { width: 40px; height: 40px; object-fit: contain; }
     .brand-word { font-size: 1.5rem; font-weight: 700; }
-    .nav-links { display: flex; gap: 1.75rem; margin-left: auto; font-weight: 700; color: rgba(24,49,36,.8); }
+    .nav-links { display: flex; gap: 1.5rem; margin-left: auto; font-weight: 700; color: rgba(24,49,36,.8); }
     .nav-links a { padding: .25rem 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
     .nav-links a:hover { color: var(--leaf-dark); border-color: var(--leaf-light); }
     .nav-actions { display: flex; gap: .6rem; }
@@ -85,7 +110,6 @@
       border: 1px solid var(--line); background: rgba(255,255,255,.6); color: var(--leaf-dark);
     }
 
-    /* ---------- Hero ---------- */
     .hero { position: relative; overflow: hidden; }
     .hero-inner {
       max-width: 1200px; margin: 0 auto; padding: 5rem 1.5rem 5.5rem;
@@ -139,7 +163,6 @@
     .mini-row { display: flex; justify-content: space-between; gap: .5rem; font-size: .85rem; padding: .6rem .85rem; border-radius: 12px; background: rgba(217,214,204,.35); }
     .mini-row b { color: var(--leaf-mid); }
 
-    /* ---------- Seções ---------- */
     .section { padding: 5.5rem 1.5rem; }
     .section-inner { max-width: 1200px; margin: 0 auto; }
     .section-heading { max-width: 40rem; margin-bottom: 3rem; }
@@ -162,7 +185,6 @@
     .feature-card h3 { font-size: 1.25rem; margin-bottom: .5rem; }
     .feature-card p { color: rgba(24,49,36,.75); font-size: .97rem; }
 
-    /* ---------- Sobre (painel verde, igual ao login) ---------- */
     .about { padding-top: 1rem; }
     .about-grid {
       position: relative; overflow: hidden; display: grid; grid-template-columns: .7fr 1.3fr; gap: 3rem; align-items: center;
@@ -191,7 +213,6 @@
     }
     .check { width: 24px; height: 24px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: .8rem; background: var(--leaf-light); color: var(--deep-forest); }
 
-    /* ---------- CTA ---------- */
     .cta-band { padding: 1rem 1.5rem 5.5rem; }
     .cta-inner {
       max-width: 1200px; margin: 0 auto; padding: 2.5rem 3rem; border-radius: 2rem;
@@ -202,14 +223,106 @@
     .cta-inner p { margin-top: .5rem; color: rgba(24,49,36,.75); max-width: 34rem; }
     .cta-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
 
-    /* ---------- Footer ---------- */
     .site-footer { background: var(--deep-forest); color: rgba(255,255,255,.8); }
     .footer-inner { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
     .footer-brand { display: flex; align-items: center; gap: .6rem; font-family: 'Balsamiq Sans', sans-serif; font-size: 1.4rem; font-weight: 700; color: #fff; }
     .footer-brand img { width: 36px; height: 36px; object-fit: contain; }
     .footer-note { font-size: .9rem; text-align: right; color: rgba(255,255,255,.6); }
+    .footer-lgpd { display: inline-block; margin-top: .35rem; color: var(--leaf-light); font-weight: 700; text-decoration: underline; }
 
-    /* ---------- Responsivo ---------- */
+    .lgpd-banner {
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      color: #183124;
+    }
+    .lgpd-banner-title { font-weight: 800; font-size: .92rem; color: var(--leaf-dark); margin-bottom: .2rem; }
+    .lgpd-banner-text { font-size: .78rem; color: rgba(24,49,36,.78); line-height: 1.45; }
+    .lgpd-banner-link { font-weight: 700; color: var(--leaf-dark); text-decoration: underline; }
+    .lgpd-banner-btn {
+      padding: .45rem .95rem; border-radius: 10px; border: 0; font-size: .78rem; font-weight: 700;
+      background: var(--leaf-dark); color: #fff; cursor: pointer; transition: background-color .2s;
+    }
+    .lgpd-banner-btn:hover { background: var(--leaf-mid); }
+
+    [data-theme="dark"] {
+      --surface: rgba(24, 38, 31, 0.88);
+      --surface-strong: #18261f;
+      --line: rgba(163, 217, 149, 0.16);
+      --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }
+    [data-theme="dark"] body {
+      background:
+        radial-gradient(circle at top left, rgba(120,184,99,0.10), transparent 22%),
+        radial-gradient(circle at bottom right, rgba(154,119,76,0.08), transparent 26%),
+        #0f1713;
+      color: #e5ece8;
+    }
+    [data-theme="dark"] h1,
+    [data-theme="dark"] h2,
+    [data-theme="dark"] h3,
+    [data-theme="dark"] .brand-word,
+    [data-theme="dark"] .lgpd-banner-title,
+    [data-theme="dark"] .lgpd-banner-link {
+      color: #a7e096;
+    }
+    [data-theme="dark"] .about-copy h2 { color: #ffffff; }
+    [data-theme="dark"] .hero h1 span,
+    [data-theme="dark"] .section-kicker,
+    [data-theme="dark"] .mini-row b {
+      color: #7cc468;
+    }
+    [data-theme="dark"] .site-header {
+      background: rgba(15, 23, 19, 0.88);
+    }
+    [data-theme="dark"] .nav-links {
+      color: rgba(229, 236, 232, 0.82);
+    }
+    [data-theme="dark"] .nav-links a:hover {
+      color: #a7e096;
+    }
+    [data-theme="dark"] .hero-copy,
+    [data-theme="dark"] .section-heading p,
+    [data-theme="dark"] .feature-card p,
+    [data-theme="dark"] .plant-feature p,
+    [data-theme="dark"] .cta-inner p,
+    [data-theme="dark"] .lgpd-banner-text {
+      color: #b7c7be;
+    }
+    [data-theme="dark"] .hero-note,
+    [data-theme="dark"] .data-chip span {
+      color: #8fa398;
+    }
+    [data-theme="dark"] .s-btn-outline,
+    [data-theme="dark"] .a11y-controls,
+    [data-theme="dark"] .menu-toggle {
+      background: #1f3028;
+      color: #a7e096;
+      border-color: rgba(163, 217, 149, 0.24);
+    }
+    [data-theme="dark"] .s-btn-outline:hover {
+      background: #273c32;
+    }
+    [data-theme="dark"] .a11y-btn {
+      color: #a7e096;
+    }
+    [data-theme="dark"] .data-chip {
+      background: #1f3028;
+    }
+    [data-theme="dark"] .data-chip strong,
+    [data-theme="dark"] .live-pill {
+      color: #a7e096;
+    }
+    [data-theme="dark"] .mini-row {
+      background: rgba(31, 48, 40, 0.7);
+    }
+    [data-theme="dark"] .plant-illustration {
+      background: #1f3028;
+    }
+    [data-theme="dark"] .feature-icon {
+      color: #a7e096;
+    }
+
     @media (max-width: 980px) {
       .hero-inner { grid-template-columns: 1fr; padding-top: 3rem; }
       .visual-stage { min-height: 420px; }
@@ -218,8 +331,9 @@
       .about-art { display: none; }
     }
     @media (max-width: 760px) {
-      .menu-toggle { display: grid; place-items: center; margin-left: auto; }
+      .menu-toggle { display: grid; place-items: center; margin-left: .25rem; }
       .nav-wrap { flex-wrap: wrap; gap: .75rem; }
+      .a11y-controls { margin-left: auto; }
       .nav-links {
         display: none; order: 3; width: 100%; flex-direction: column; gap: .25rem; margin: 0;
         padding: .75rem; border-radius: 16px; background: var(--surface-strong); border: 1px solid var(--line);
@@ -252,6 +366,18 @@
         <a href="#sobre">Sobre o projeto</a>
         <a href="#proposito">Nosso propósito</a>
       </nav>
+
+      <div class="a11y-controls" role="group" aria-label="Controles de acessibilidade">
+        <button type="button" class="a11y-btn" onclick="alterarFonte(-10)" title="Diminuir fonte" aria-label="Diminuir tamanho da fonte">A-</button>
+        <button type="button" class="a11y-btn" onclick="resetarFonte()" title="Tamanho padrão da fonte" aria-label="Restaurar tamanho padrão da fonte">A</button>
+        <button type="button" class="a11y-btn" onclick="alterarFonte(10)" title="Aumentar fonte" aria-label="Aumentar tamanho da fonte">A+</button>
+        <span class="a11y-sep" aria-hidden="true"></span>
+        <button type="button" id="btn-tema" class="a11y-btn" onclick="alternarTema()" title="Alternar modo escuro" aria-label="Alternar entre modo claro e modo escuro">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+      </div>
+
       <div class="nav-actions">
         <a class="s-btn s-btn-outline" href="{{ url_for('login.login') }}">Entrar</a>
         <a class="s-btn s-btn-primary" href="{{ url_for('cadastro.cadastro') }}">Cadastrar</a>
@@ -403,10 +529,49 @@
         <img src="/static/img/logo-seedra-icone.png" alt="Logo SEEDRA">
         <span>SEEDRA</span>
       </div>
-      <div class="footer-note">Sistema de Reflorestamento e Estudo de Dados Ambientais<br>Organização, informação e cuidado com o mundo vegetal.</div>
+      <div class="footer-note">
+        Sistema de Reflorestamento e Estudo de Dados Ambientais<br>
+        Organização, informação e cuidado com o mundo vegetal.<br>
+        <a href="{{ url_for('lgpd.privacidade') }}" class="footer-lgpd">Política de Privacidade e LGPD</a>
+      </div>
     </div>
   </footer>
 
+  <!-- LGPD -->
+  <div id="banner-lgpd" class="lgpd-banner hidden fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-50 p-4 rounded-2xl">
+    <div class="flex items-start gap-3">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0 mt-0.5" style="color: var(--leaf-mid);" aria-hidden="true">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+        <path d="m9 12 2 2 4-4"/>
+      </svg>
+      <div>
+        <p class="lgpd-banner-title">Privacidade e Cookies</p>
+        <p class="lgpd-banner-text">
+          Utilizamos cookies essenciais de sessão e armazenamento local para suas preferências de acessibilidade, em conformidade com a <strong>LGPD</strong>.
+          <a href="{{ url_for('lgpd.privacidade') }}" class="lgpd-banner-link">Saiba mais</a>.
+        </p>
+      </div>
+    </div>
+    <div class="mt-3 flex justify-end">
+      <button type="button" onclick="aceitarCookiesLGPD()" class="lgpd-banner-btn">
+        Entendi e concordo
+      </button>
+    </div>
+  </div>
+
+  <!-- Acessibilidade com VLibras -->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+
+  <script src="/static/js/script.js"></script>
   <script>
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");

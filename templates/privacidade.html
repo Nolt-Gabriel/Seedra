@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEEDRA - Política de Privacidade e LGPD</title>
+  <script>
+    (function () {
+      const temaSalvo = localStorage.getItem('seedra-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', temaSalvo);
+      const escalaSalva = localStorage.getItem('seedra-font-scale');
+      if (escalaSalva) document.documentElement.style.fontSize = escalaSalva + '%';
+    })();
+  </script>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="icon" href="/static/img/logo-seedra-icone.png" type="image/png" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html, body { overflow: auto !important; height: auto !important; }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 sm:px-8 font-lato">
+  <div class="max-w-4xl mx-auto space-y-6">
+
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <a href="{{ url_for('dashboard.dashboard') if current_user.is_authenticated else url_for('home') }}"
+         class="btn btn-sm rounded-2xl border border-seedra-leafDark/20 bg-white/80 text-seedra-leafDark">
+        <i class="fa-solid fa-arrow-left"></i> Voltar ao sistema
+      </a>
+      <span class="text-xs font-bold uppercase tracking-widest text-seedra-leafMid">Conformidade LGPD • Lei nº 13.709/2018</span>
+    </div>
+
+    {% with messages = get_flashed_messages(category_filter=["lgpd_error"], with_categories=true) %}
+      {% if messages %}
+        {% for categoria, mensagem in messages %}
+          <div class="p-4 rounded-2xl text-sm font-bold bg-red-50 text-red-700 border border-red-200 flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i><span>{{ mensagem }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="soft-card rounded-[2rem] p-6 sm:p-10 space-y-6">
+      <div class="border-b border-seedra-leafDark/10 pb-6">
+        <h1 class="text-3xl font-extrabold text-seedra-leafDark">Política de Privacidade e Proteção de Dados</h1>
+        <p class="text-sm text-slate-500 mt-2">Última atualização: Novembro de 2026 • Controlador: Plataforma SEEDRA</p>
+      </div>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-extrabold text-seedra-leafDark">1. Dados Pessoais Coletados e Finalidade</h2>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          O SEEDRA coleta apenas os dados estritamente necessários (princípio da minimização, Art. 6º, III) para autenticação, controle de acesso Multi-Tenant e rastreabilidade de acervo botânico:
+        </p>
+        <ul class="list-disc pl-5 text-sm text-slate-600 space-y-1">
+          <li><strong>Dados de Identificação:</strong> Nome completo e e-mail institucional ou pessoal para criação de conta e login.</li>
+          <li><strong>Credenciais de Segurança:</strong> Senha armazenada exclusivamente em formato criptografado (hash), sem acesso em texto puro.</li>
+          <li><strong>Dados Institucionais:</strong> Nome, CNPJ, endereço e telefone das organizações vinculadas para isolamento de catálogo.</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-extrabold text-seedra-leafDark">2. Cookies e Armazenamento Local (localStorage)</h2>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Utilizamos exclusivamente <strong>cookies estritamente necessários</strong> (cookie de sessão autenticado com flags <code>HttpOnly</code> e <code>SameSite=Lax</code>) para manter sua sessão segura, além de armazenamento local no navegador para salvar suas preferências de acessibilidade (modo escuro e escala de fonte) e o aceite deste aviso. Não utilizamos cookies de rastreamento publicitário.
+        </p>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-extrabold text-seedra-leafDark">3. Segurança e Compartilhamento</h2>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Os dados são isolados por instituição vinculada, impedindo que usuários de uma organização visualizem registros de outra. Seus dados pessoais não são comercializados nem compartilhados com terceiros fora do escopo operacional do sistema.
+        </p>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-extrabold text-seedra-leafDark">4. Seus Direitos como Titular (Art. 18 da LGPD)</h2>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Você possui o direito de confirmar a existência de tratamento, acessar seus dados, solicitar portabilidade em formato estruturado, revogar o consentimento e solicitar a eliminação dos seus dados pessoais a qualquer momento.
+        </p>
+      </section>
+    </div>
+
+    {% if current_user.is_authenticated %}
+    <div class="soft-card rounded-[2rem] p-6 sm:p-8 space-y-6">
+      <div>
+        <h2 class="text-xl font-extrabold text-seedra-leafDark">Portal de Privacidade do Titular</h2>
+        <p class="text-sm text-slate-500 mt-1">
+          Consentimento registrado em:
+          <strong class="text-seedra-leafDark">
+            {{ current_user.aceite_lgpd_em.strftime('%d/%m/%Y às %H:%M') if current_user.aceite_lgpd_em else 'Anterior à atualização de registro' }}
+          </strong>
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-5 rounded-2xl bg-white/70 border border-seedra-leafDark/15 flex flex-col justify-between gap-4">
+          <div>
+            <h3 class="font-bold text-seedra-leafDark flex items-center gap-2">
+              <i class="fa-solid fa-file-code text-seedra-leafMid"></i> Portabilidade e Acesso
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">Baixe uma cópia completa dos seus dados pessoais e vínculos cadastrados em formato JSON.</p>
+          </div>
+          <a href="{{ url_for('lgpd.exportar_dados') }}" class="btn btn-sm rounded-xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white">
+            <i class="fa-solid fa-download"></i> Exportar meus dados (JSON)
+          </a>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-red-50/60 border border-red-200 flex flex-col justify-between gap-4">
+          <div>
+            <h3 class="font-bold text-red-700 flex items-center gap-2">
+              <i class="fa-solid fa-user-slash"></i> Revogação e Exclusão de Conta
+            </h3>
+            <p class="text-xs text-slate-600 mt-1">Remove permanentemente seu perfil e seus vínculos do sistema. Esta ação não pode ser desfeita.</p>
+          </div>
+          <form action="{{ url_for('lgpd.excluir_conta') }}" method="POST" class="flex gap-2">
+            <input type="text" name="confirmacao" placeholder="Digite EXCLUIR" required
+              class="input input-sm w-full rounded-xl bg-white border-red-200 text-xs" />
+            <button type="submit" class="btn btn-sm rounded-xl bg-red-600 hover:bg-red-700 text-white border-0">
+              Excluir
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <script src="/static/js/script.js"></script>
+</body>
+</html>

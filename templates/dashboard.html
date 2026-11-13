@@ -37,7 +37,7 @@
 {% endblock %}
 
 {% block header_actions %}
-  <a href="{{ url_for('relatorios.relatorios') }}" class="btn btn-sm md:btn-md rounded-2xl border border-seedra-leafDark/20 bg-white/60 hover:bg-white text-seedra-leafDark font-lato shadow-none">
+  <a href="{{ url_for('relatorios_pdf.relatorios') }}" class="btn btn-sm md:btn-md rounded-2xl border border-seedra-leafDark/20 bg-white/60 hover:bg-white text-seedra-leafDark font-lato shadow-none">
     <i class="fa-solid fa-file-export"></i><span class="hidden sm:inline">Exportar</span>
   </a>
   <a href="{{ url_for('movimentacao.movimentacao') }}" class="btn btn-sm md:btn-md rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-lato">
@@ -63,9 +63,13 @@
               Acompanhe o catálogo, as movimentações e os relatórios do SEEDRA em um só lugar.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <a href="{{ url_for('catalogo.catalogo') }}" class="quick-link"><i class="fa-solid fa-magnifying-glass"></i>Catálogo e acervo</a>
+              <a href="{{ url_for('catalogo.listar_catalogo') }}" class="quick-link"><i class="fa-solid fa-magnifying-glass"></i>Catálogo e acervo</a>
               <a href="{{ url_for('movimentacao.movimentacao') }}" class="quick-link"><i class="fa-solid fa-arrow-right-arrow-left"></i>Movimentações</a>
-              <a href="{{ url_for('relatorios.relatorios') }}" class="quick-link"><i class="fa-solid fa-file-lines"></i>Relatórios</a>
+              <a href="{{ url_for('relatorios_pdf.relatorios') }}" class="quick-link"><i class="fa-solid fa-file-lines"></i>Relatórios</a>
+              
+              {% if current_user.is_authenticated and current_user.is_admin %}
+                <a href="{{ url_for('admin.listar_aprovacoes') }}" class="quick-link"><i class="fa-solid fa-check-double"></i>Aprovações</a>
+              {% endif %}
             </div>
           </div>
           <div class="hidden md:grid place-items-center w-44 h-44 shrink-0 rounded-[1.8rem] bg-white shadow-lg shadow-black/20 p-3">

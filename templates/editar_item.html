@@ -24,7 +24,20 @@
         </a>
     </div>
 
-    <form action="{{ url_for('catalogo.editar_item', id=item.id) }}" method="POST" class="space-y-6 font-lato">
+    {% with messages = get_flashed_messages(category_filter=["catalogo_error"], with_categories=true) %}
+        {% if messages %}
+            <div class="mb-6 space-y-2 font-lato">
+            {% for categoria, mensagem in messages %}
+                <div class="flex items-start gap-2 p-3 rounded-xl text-sm font-bold bg-red-50 text-red-700 border border-red-100">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+                    <span>{{ mensagem }}</span>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('catalogo.editar_item', id=item.id) }}" method="POST" enctype="multipart/form-data" class="space-y-6 font-lato">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -59,6 +72,28 @@
         </div>
 
         <div>
+            <label for="imagem" class="{{ rotulo }}">Foto do Espécime</label>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                {% if item.imagem %}
+                    <img id="preview_imagem" src="{{ url_for('static', filename='uploads/itens/' + item.imagem) }}" alt="{{ item.nome }}" class="w-20 h-20 object-cover rounded-2xl border border-seedra-leafDark/15 shrink-0" />
+                {% else %}
+                    <img id="preview_imagem" src="#" alt="Pré-visualização" class="hidden w-20 h-20 object-cover rounded-2xl border border-seedra-leafDark/15 shrink-0" />
+                {% endif %}
+                <div class="w-full">
+                    <input type="file" id="imagem" name="imagem" accept="image/png, image/jpeg, image/webp"
+                        class="file-input file-input-bordered w-full rounded-xl bg-white/70 border-seedra-leafDark/15 text-sm" />
+                    <p class="text-xs text-slate-400 mt-1">
+                        {% if item.imagem %}
+                            Envie um novo arquivo apenas se desejar substituir a foto atual.
+                        {% else %}
+                            Nenhuma foto cadastrada. Formatos aceitos: PNG, JPG, JPEG ou WEBP.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div>
             <label for="observacoes" class="{{ rotulo }}">Observações de Cuidado / Plantio</label>
             <textarea id="observacoes" name="observacoes" class="{{ campo }} h-32 resize-y">{{ item.obs or '' }}</textarea>
         </div>
@@ -71,4 +106,15 @@
         </div>
     </form>
 </div>
+
+<script>
+  document.getElementById('imagem').addEventListener('change', function (e) {
+    const preview = document.getElementById('preview_imagem');
+    const file = e.target.files[0];
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove('hidden');
+    }
+  });
+</script>
 {% endblock %}

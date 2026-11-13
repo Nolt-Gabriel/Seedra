@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page { size: A4; margin: 1.5cm; }
+        body { font-family: Helvetica, Arial, sans-serif; color: #1f2937; font-size: 11px; }
+        .header { border-bottom: 2px solid #2d5a27; padding-bottom: 10px; margin-bottom: 16px; }
+        .header h1 { color: #2d5a27; margin: 0; font-size: 19px; }
+        .header p { margin: 4px 0 0; color: #4b5563; font-size: 11px; }
+        .badge-filtro { display: inline-block; margin-top: 6px; padding: 3px 8px; background: #e6f0e5; color: #2d5a27; font-weight: bold; font-size: 10px; }
+        .resumo { width: 100%; margin-bottom: 16px; border-collapse: collapse; }
+        .resumo td { background: #f3f7f2; border: 1px solid #d1e0cf; padding: 8px 10px; text-align: center; }
+        .resumo strong { display: block; font-size: 14px; color: #2d5a27; }
+        table.dados { width: 100%; border-collapse: collapse; }
+        table.dados th { background-color: #2d5a27; color: #ffffff; text-align: left; padding: 8px; font-size: 10px; }
+        table.dados td { border-bottom: 1px solid #e5e7eb; padding: 7px 8px; }
+        .deficit { color: #dc2626; font-weight: bold; }
+        .ok { color: #15803d; }
+        .footer { margin-top: 22px; text-align: right; font-size: 10px; color: #6b7280; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Relatório de Acervo — {{ empresa.nome }}</h1>
+        <p><strong>CNPJ:</strong> {{ empresa.cnpj or 'Não informado' }} | <strong>Endereço:</strong> {{ empresa.endereco }}</p>
+        <div class="badge-filtro">Filtro aplicado: {{ titulo_filtro }}</div>
+    </div>
+
+    <table class="resumo">
+        <tr>
+            <td><span>Itens Listados</span><strong>{{ itens|length }}</strong></td>
+            <td><span>Plantas</span><strong>{{ total_plantas }}</strong></td>
+            <td><span>Sementes</span><strong>{{ total_sementes }}</strong></td>
+            <td><span>Em Déficit</span><strong style="color: #dc2626;">{{ total_deficit }}</strong></td>
+        </tr>
+    </table>
+
+    <table class="dados">
+        <thead>
+            <tr>
+                <th>Nome Comum</th>
+                <th>Nome Científico</th>
+                <th>Categoria</th>
+                <th>Qtd. Atual</th>
+                <th>Limite Déficit</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td><strong>{{ item.nome }}</strong></td>
+                <td><em>{{ item.n_cientifico }}</em></td>
+                <td>{{ item.categoria }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td>{{ item.deficit_limit }}</td>
+                <td class="{{ 'deficit' if item.em_deficit() else 'ok' }}">
+                    {{ 'Em déficit' if item.em_deficit() else 'Regular' }}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 15px;">Nenhum item encontrado para o filtro selecionado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        Relatório gerado por {{ admin_nome }} em {{ data_geracao }}
+    </div>
+</body>
+</html>

@@ -179,6 +179,17 @@
                         </div>
                     </div>
 
+                    <div class="flex items-start gap-3 p-3.5 rounded-xl bg-white/70 border border-seedra-leafDark/15 font-lato">
+                        <input type="checkbox" id="aceite_lgpd" name="aceite_lgpd" value="1" required
+                            class="checkbox checkbox-sm checkbox-success mt-0.5" />
+                        <label for="aceite_lgpd" class="text-xs text-slate-600 leading-relaxed cursor-pointer">
+                            Li e concordo com a
+                            <a href="{{ url_for('lgpd.privacidade') }}" target="_blank" class="font-bold text-seedra-leafDark underline hover:text-seedra-leafMid">
+                                Política de Privacidade e Termos de Uso
+                            </a>, autorizando o tratamento dos meus dados pessoais para operação do sistema SEEDRA.
+                        </label>
+                    </div>
+
                     <button type="submit"
                         class="w-full bg-seedra-leafDark hover:bg-seedra-leafMid text-white font-bold py-3 rounded-xl transition-colors mt-2 shadow-md shadow-seedra-leafDark/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-seedra-leafLight">
                         <i class="fa-solid fa-seedling mr-2"></i>Finalizar cadastro

@@ -1,0 +1,24 @@
+{# Mensagens (flash) exibidas no topo das páginas internas. As do login e dos cadastros públicos ficam nas próprias telas. #}
+{% set ocultas = ['login', 'login_error', 'cadastro', 'cadastro_empresas', 'empresas_error'] %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% set visiveis = messages | rejectattr('0', 'in', ocultas) | list %}
+  {% if visiveis %}
+    <div class="mb-5 space-y-2 font-lato">
+    {% for categoria, mensagem in visiveis %}
+      {% if categoria.endswith('_error') or categoria in ['erro', 'error'] %}
+        <div class="flex items-start gap-2 p-3 rounded-xl text-sm font-bold bg-red-50 text-red-700 border border-red-100">
+          <i class="fa-solid fa-circle-exclamation mt-0.5"></i><span>{{ mensagem }}</span>
+        </div>
+      {% elif categoria in ['warning', 'aviso'] %}
+        <div class="flex items-start gap-2 p-3 rounded-xl text-sm font-bold bg-amber-50 text-amber-800 border border-amber-200">
+          <i class="fa-solid fa-triangle-exclamation mt-0.5"></i><span>{{ mensagem }}</span>
+        </div>
+      {% else %}
+        <div class="flex items-start gap-2 p-3 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-100">
+          <i class="fa-solid fa-circle-check mt-0.5"></i><span>{{ mensagem }}</span>
+        </div>
+      {% endif %}
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}

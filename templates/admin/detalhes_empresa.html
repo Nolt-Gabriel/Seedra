@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes da Empresa{% endblock %}
+{% set page_id = 'admin_empresas' %}
+{% block header_subtitle %}Administração{% endblock %}
+{% block header_title %}{{ empresa.nome }}{% endblock %}
+
+{% block header_actions %}
+  <a href="{{ url_for('admin.gerenciar_empresas') }}" class="btn btn-sm md:btn-md rounded-2xl border-seedra-leafDark/20 bg-white hover:bg-gray-50 text-seedra-leafDark font-lato">
+    <i class="fa-solid fa-arrow-left"></i><span class="hidden sm:inline">Voltar</span>
+  </a>
+{% endblock %}
+
+{% block content %}
+
+<div class="soft-card rounded-[2rem] p-6 bg-white border border-seedra-leafDark/10 mb-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+    <div>
+        <h2 class="text-2xl font-bold text-seedra-leafDark"><i class="fa-solid fa-building mr-2"></i>{{ empresa.nome }}</h2>
+        <p class="text-gray-500 font-lato mt-2"><strong>CNPJ:</strong> {{ empresa.cnpj or 'Não informado' }}</p>
+        <p class="text-gray-500 font-lato"><strong>Endereço:</strong> {{ empresa.endereco }}</p>
+        <p class="text-gray-500 font-lato"><strong>Telefone:</strong> {{ empresa.telefone }}</p>
+    </div>
+    <div class="px-6 py-4 bg-seedra-leafLight/10 rounded-2xl text-center min-w-[150px]">
+        <p class="text-sm font-bold text-gray-500 font-lato">Operadores</p>
+        <p class="text-3xl font-extrabold text-seedra-leafMid">{{ empresa.usuario_instituicoes|length }}</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="soft-card rounded-[2rem] p-6 bg-white border border-seedra-leafDark/10 h-fit">
+        <h3 class="text-lg font-bold text-seedra-leafDark mb-4"><i class="fa-solid fa-user-plus mr-2"></i>Vincular Operador</h3>
+        <form action="{{ url_for('admin.vincular_usuario') }}" method="POST" class="space-y-4 font-lato">
+            <input type="hidden" name="id_instituicao" value="{{ empresa.id }}">
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Selecione o Usuário</label>
+                <select name="id_usuario" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-seedra-leafLight outline-none">
+                    <option value="" disabled selected>Escolha um operador...</option>
+                    {% for user in usuarios %}
+                        <option value="{{ user.id }}">{{ user.nome }} ({{ user.email }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn w-full rounded-xl bg-seedra-leafDark hover:bg-seedra-leafMid text-white border-0">Adicionar à Empresa</button>
+        </form>
+    </div>
+
+    <div class="lg:col-span-2">
+        <div class="overflow-x-auto rounded-[1.5rem] border border-seedra-leafDark/10 bg-white">
+            <table class="table font-lato w-full">
+                <thead class="bg-gray-50 text-gray-600 text-left">
+                    <tr>
+                        <th class="p-4">Nome do Operador</th>
+                        <th class="p-4">Email</th>
+                        <th class="p-4 text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vinculo in empresa.usuario_instituicoes %}
+                    <tr class="border-t border-gray-100 hover:bg-gray-50 transition">
+                        <td class="p-4 font-bold text-gray-700">{{ vinculo.usuarios.nome }}</td>
+                        <td class="p-4 text-gray-500">{{ vinculo.usuarios.email }}</td>
+                        <td class="p-4 text-center">
+                            <form action="{{ url_for('admin.desvincular_usuario', id_vinculo=vinculo.id) }}" method="POST" class="inline">
+                                <button type="submit" class="btn btn-sm btn-ghost text-red-500 hover:bg-red-50 rounded-xl" title="Remover Acesso" onclick="return confirm('Remover o acesso deste operador a esta empresa?')">
+                                    <i class="fa-solid fa-unlink"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" class="p-8 text-center text-gray-400 italic font-lato">Nenhum operador vinculado a esta empresa ainda.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

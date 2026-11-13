@@ -1,5 +1,8 @@
 import os
 
+from controllers.admin import bp_admin
+import click
+
 from flask import Flask, render_template
 from flask_login import LoginManager
 
@@ -13,8 +16,9 @@ from controllers.logout import bp_logout
 from controllers.dashboard import bp_dashboard
 from controllers.catalogo import bp_catalogo
 from controllers.movimentacoes import bp_movimentacao
-from controllers.relatorios import bp_relatorios
+from controllers.relatorios import bp_relatorios_pdf
 from controllers.usuarios import bp_usuarios
+from controllers.lgpd import bp_lgpd
 
 
 app = Flask(__name__)
@@ -25,7 +29,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True, 'pool_recycle'
 secret_key = os.environ.get('SECRET_KEY')
 if not secret_key:
     if os.environ.get('FLASK_DEBUG') == '1':
-        secret_key = 'acre_viveiro_para_dinossauros_pt2'
+        secret_key = 'dev-key'
     else:
         raise RuntimeError("Defina a variável SECRET_KEY no .flaskenv antes de iniciar o sistema.")
 app.config['SECRET_KEY'] = secret_key
@@ -44,6 +48,16 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login.login'
 
+@app.cli.command("cria-admin")
+@click.argument("email")
+def cria_admin(email):
+    usuario = db.session.query(Usuarios).filter_by(email=email).first()
+    if usuario:
+        usuario.is_admin = True
+        db.session.commit()
+        print(f"Usuário {email} promovido a Administrador com sucesso!")
+    else:
+        print(f"Erro: Usuário {email} não encontrado.")
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -53,7 +67,7 @@ def load_user(user_id):
 def home():
     return render_template('home.html')
 
-
+app.register_blueprint(bp_admin, url_prefix="/admin")
 app.register_blueprint(bp_login, url_prefix="/login")
 app.register_blueprint(bp_cadastro, url_prefix="/cadastro")
 app.register_blueprint(bp_cdempresas, url_prefix="/cadastro_empresas")
@@ -62,8 +76,9 @@ app.register_blueprint(bp_logout, url_prefix="/logout")
 app.register_blueprint(bp_dashboard, url_prefix="/dashboard")
 app.register_blueprint(bp_catalogo, url_prefix="/catalogo")
 app.register_blueprint(bp_movimentacao, url_prefix="/movimentacao")
-app.register_blueprint(bp_relatorios, url_prefix="/relatorios")
+app.register_blueprint(bp_relatorios_pdf, url_prefix="/relatorios")
 app.register_blueprint(bp_usuarios, url_prefix="/usuarios")
+app.register_blueprint(bp_lgpd, url_prefix="/privacidade")
 
 
 if __name__ == '__main__':

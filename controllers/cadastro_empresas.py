@@ -1,6 +1,7 @@
 import re
 
 from flask import Blueprint, render_template, url_for, request, flash, redirect
+from flask_login import current_user
 
 from hash import hashear
 from db import db
@@ -29,7 +30,6 @@ def cadastro_empresas():
             flash("Preencha todos os campos!", 'empresas_error')
             return redirect(url_for('cadastro_empresas.cadastro_empresas'))
 
-        # Aceita com ou sem máscara e sempre salva no formato XX.XXX.XXX/XXXX-XX
         digitos = re.sub(r'\D', '', cnpj)
         if len(digitos) != 14:
             flash("CNPJ inválido! Ele deve ter 14 números.", 'empresas_error')
@@ -45,6 +45,7 @@ def cadastro_empresas():
             return redirect(url_for('cadastro_empresas.cadastro_empresas'))
 
         nova_empresa = Instituicao(
+            id_criador=current_user.id,
             cnpj=cnpj_formatado,
             senha=hashear(senha),
             endereco=endereco,

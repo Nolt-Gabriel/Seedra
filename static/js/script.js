@@ -1,6 +1,3 @@
-// Interatividade do SEEDRA: catálogo, movimentação e detalhes do item
-
-// Estilos dos estados (abrir menu / filtro ativo). Ficam aqui para não depender do Tailwind.
 (function injetarEstilos() {
     const estilo = document.createElement('style');
     estilo.textContent = `
@@ -16,8 +13,6 @@
 })();
 
 
-// ---------- Catálogo (catalogo.html) ----------
-// Busca, categorias, ordenação e "Em déficit" funcionam juntos.
 (function catalogo() {
     const busca = document.getElementById('c_search');
     const btnCategoria = document.getElementById('c_btn');
@@ -28,7 +23,6 @@
     const menuFiltro = document.getElementById('opt_menu');
     const btnDeficit = document.getElementById('btn_deficit');
 
-    // Não está na página do catálogo
     if (!btnCategoria || !btnFiltro) return;
 
     const tbody = document.querySelector('table tbody');
@@ -68,7 +62,6 @@
         fecharMenus();
     }
 
-    // Abrir/fechar menus
     btnCategoria.addEventListener('click', (e) => {
         e.stopPropagation();
         const abrir = listaCategoria.classList.contains('hidden');
@@ -92,12 +85,10 @@
 
     document.addEventListener('click', fecharMenus);
 
-    // Categorias
     document.getElementById('b_all').addEventListener('click', (e) => { e.stopPropagation(); escolherCategoria('todas', 'Todas as Categorias'); });
     document.getElementById('b_planta').addEventListener('click', (e) => { e.stopPropagation(); escolherCategoria('planta', 'Plantas'); });
     document.getElementById('b_semente').addEventListener('click', (e) => { e.stopPropagation(); escolherCategoria('semente', 'Sementes'); });
 
-    // Ordenação
     document.getElementById('filter_all').addEventListener('click', (e) => {
         e.stopPropagation();
         ordenar(ordemOriginal);
@@ -118,13 +109,11 @@
         fecharMenus();
     });
 
-    // "Último Acesso": a tabela não tem essa informação, então só fecha o menu por enquanto.
     document.getElementById('filter_lastEntry').addEventListener('click', (e) => {
         e.stopPropagation();
         fecharMenus();
     });
 
-    // Em déficit
     if (btnDeficit) {
         btnDeficit.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -134,7 +123,6 @@
         });
     }
 
-    // Busca por nome comum ou científico
     if (busca) {
         busca.addEventListener('input', () => {
             estado.termo = semAcento(busca.value.trim());
@@ -144,12 +132,10 @@
 })();
 
 
-// ---------- Movimentação (movimentacao.html) ----------
 (function movimentacao() {
     const botaoLista = document.getElementById('btn_lista_planta');
     const lista = document.getElementById('lista_planta');
 
-    // Não está na página de movimentação
     if (!botaoLista || !lista) return;
 
     const rotulo = document.getElementById('span_planta');
@@ -175,20 +161,83 @@
 })();
 
 
-// ---------- Botão excluir em catalogo/<id> ----------
 function excluirItem(id) {
-    if (!confirm('Tem certeza que deseja excluir esta espécie? Essa ação não pode ser desfeita.')) return;
+    if (!confirm('Tem certeza que deseja prosseguir com a exclusão desta espécie?')) return;
 
     fetch(`/catalogo/excluir_item/${id}`, {
         method: 'DELETE'
     })
     .then((response) => {
-        if (response.ok) {
-            alert('Item excluído com sucesso!');
-            window.location.href = '/catalogo';
-        } else {
-            alert('Erro ao excluir o item');
+        if (!response.ok) {
+            throw new Error('Erro na requisição');
         }
+        return response.json();
     })
-    .catch(() => alert('Erro de conexão ao excluir o item'));
+    .then((dados) => {
+        alert(dados.mensagem);
+        window.location.href = '/catalogo';
+    })
+    .catch(() => alert('Erro ao tentar excluir o item'));
 }
+
+
+const ESCALA_MIN = 90;
+const ESCALA_MAX = 130;
+const ESCALA_PADRAO = 100;
+
+function aplicarEscalaFonte(escala) {
+    const valorLimitado = Math.min(ESCALA_MAX, Math.max(ESCALA_MIN, escala));
+    document.documentElement.style.fontSize = valorLimitado + '%';
+    localStorage.setItem('seedra-font-scale', valorLimitado);
+}
+
+function alterarFonte(delta) {
+    const atual = parseInt(localStorage.getItem('seedra-font-scale') || ESCALA_PADRAO, 10);
+    aplicarEscalaFonte(atual + delta);
+}
+
+function resetarFonte() {
+    aplicarEscalaFonte(ESCALA_PADRAO);
+}
+
+function atualizarIconeTema(tema) {
+    const icone = document.getElementById('icone-tema');
+    const botao = document.getElementById('btn-tema');
+    if (icone) {
+        if (tema === 'dark') {
+            icone.classList.remove('fa-moon');
+            icone.classList.add('fa-sun');
+        } else {
+            icone.classList.remove('fa-sun');
+            icone.classList.add('fa-moon');
+        }
+    }
+    if (botao) {
+        botao.title = tema === 'dark' ? 'Alternar para modo claro' : 'Alternar para modo escuro';
+    }
+}
+
+function alternarTema() {
+    const temaAtual = document.documentElement.getAttribute('data-theme') || 'light';
+    const novoTema = temaAtual === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', novoTema);
+    localStorage.setItem('seedra-theme', novoTema);
+    atualizarIconeTema(novoTema);
+}
+
+
+function aceitarCookiesLGPD() {
+    localStorage.setItem('seedra-lgpd-cookies', 'aceito');
+    const banner = document.getElementById('banner-lgpd');
+    if (banner) banner.classList.add('hidden');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const temaSalvo = localStorage.getItem('seedra-theme') || 'light';
+    atualizarIconeTema(temaSalvo);
+
+    const banner = document.getElementById('banner-lgpd');
+    if (banner && !localStorage.getItem('seedra-lgpd-cookies')) {
+        banner.classList.remove('hidden');
+    }
+});

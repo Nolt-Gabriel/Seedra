@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Aprovações{% endblock %}
+{% set page_id = 'aprovacoes' %}
+
+{% block header_subtitle %}Administração{% endblock %}
+{% block header_title %}Painel de Aprovações{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <div class="soft-card rounded-[2rem] p-6 sm:p-8 self-start bg-white/40 shadow-sm border border-seedra-leafDark/5">
+        <div class="flex items-center justify-between gap-3 mb-6">
+            <div class="flex items-center gap-4">
+                <span class="w-12 h-12 shrink-0 rounded-2xl grid place-items-center bg-yellow-100 text-yellow-700 text-xl">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </span>
+                <div>
+                    <h3 class="text-xl font-extrabold text-seedra-leafDark">Movimentações</h3>
+                    <p class="text-sm text-slate-500 font-lato">Entradas e saídas aguardando análise.</p>
+                </div>
+            </div>
+            <span class="badge border-0 bg-yellow-100 text-yellow-800 font-bold px-3 py-2 rounded-full font-lato">{{ movimentacoes|list|length }}</span>
+        </div>
+
+        <ul class="space-y-4 font-lato">
+            {% for mov in movimentacoes %}
+                <li class="flex flex-col sm:flex-row gap-4 sm:items-center justify-between rounded-[1.4rem] bg-white p-5 border border-seedra-leafDark/10 shadow-sm">
+                    <div class="flex gap-4">
+                        <span class="w-10 h-10 shrink-0 rounded-2xl grid place-items-center {% if mov.Typ == 'Entrada' %}bg-green-100 text-green-700{% else %}bg-orange-100 text-orange-600{% endif %}">
+                            <i class="fa-solid {% if mov.Typ == 'Entrada' %}fa-arrow-down{% else %}fa-arrow-up{% endif %}"></i>
+                        </span>
+                        <div class="min-w-0">
+                            <p class="font-bold text-seedra-leafDark flex items-center gap-2">
+                                {{ mov.Typ }}: <span class="text-lg">{{ mov.quantidade }}</span>
+                            </p>
+                            <p class="text-sm text-slate-600 font-bold">{{ mov.item.nome }}</p>
+                            <p class="text-xs text-slate-500 italic">"{{ mov.justificativa }}"</p>
+                            <p class="text-xs text-slate-400 mt-1">
+                                <i class="fa-regular fa-calendar mr-1"></i>{{ mov.data_move.strftime('%d/%m/%Y') }} por <strong>{{ mov.operador }}</strong>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex sm:flex-col gap-2 shrink-0">
+                        <form action="{{ url_for('admin.aprovar_movimentacao', id=mov.id) }}" method="POST" class="inline">
+                            <button type="submit" class="btn btn-sm bg-green-600 hover:bg-green-700 text-white border-0 rounded-xl w-full">
+                                <i class="fa-solid fa-check"></i> Aprovar
+                            </button>
+                        </form>
+                        <form action="{{ url_for('admin.negar_movimentacao', id=mov.id) }}" method="POST" class="inline">
+                            <button type="submit" class="btn btn-sm bg-red-100 hover:bg-red-200 text-red-700 border-0 rounded-xl w-full">
+                                <i class="fa-solid fa-xmark"></i> Negar
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% else %}
+                <li class="text-center py-10 rounded-[1.4rem] border border-dashed border-seedra-leafDark/20 bg-white/60">
+                    <i class="fa-solid fa-check-double text-3xl text-seedra-leafLight mb-2"></i>
+                    <p class="text-sm text-slate-500 font-bold">Nenhuma movimentação pendente!</p>
+                    <p class="text-xs text-slate-400 mt-1">Tudo está em dia por aqui.</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="soft-card rounded-[2rem] p-6 sm:p-8 self-start bg-white/40 shadow-sm border border-seedra-leafDark/5">
+        <div class="flex items-center justify-between gap-3 mb-6">
+            <div class="flex items-center gap-4">
+                <span class="w-12 h-12 shrink-0 rounded-2xl grid place-items-center bg-red-100 text-red-700 text-xl">
+                    <i class="fa-solid fa-trash-can"></i>
+                </span>
+                <div>
+                    <h3 class="text-xl font-extrabold text-seedra-leafDark">Exclusões</h3>
+                    <p class="text-sm text-slate-500 font-lato">Itens solicitados para remoção.</p>
+                </div>
+            </div>
+            <span class="badge border-0 bg-red-100 text-red-800 font-bold px-3 py-2 rounded-full font-lato">{{ exclusoes|list|length }}</span>
+        </div>
+
+        <ul class="space-y-4 font-lato">
+            {% for exc in exclusoes %}
+                <li class="flex flex-col sm:flex-row gap-4 sm:items-center justify-between rounded-[1.4rem] bg-white p-5 border border-seedra-leafDark/10 shadow-sm">
+                    <div class="flex gap-4">
+                        <span class="w-10 h-10 shrink-0 rounded-2xl grid place-items-center bg-slate-100 text-slate-600">
+                            <i class="fa-solid fa-file-circle-xmark"></i>
+                        </span>
+                        <div class="min-w-0">
+                            <p class="font-bold text-seedra-leafDark">{{ exc.item.nome }}</p>
+                            <p class="text-xs text-slate-500 italic mt-1">Motivo: "{{ exc.justificativa }}"</p>
+                            <p class="text-xs text-slate-400 mt-1">
+                                Solicitado por <strong>{{ exc.operador }}</strong>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex sm:flex-col gap-2 shrink-0">
+                        <form action="{{ url_for('admin.aprovar_exclusao', id=exc.id) }}" method="POST" class="inline">
+                            <button type="submit" class="btn btn-sm bg-red-600 hover:bg-red-700 text-white border-0 rounded-xl w-full">
+                                <i class="fa-solid fa-trash"></i> Confirmar
+                            </button>
+                        </form>
+                        <form action="{{ url_for('admin.negar_exclusao', id=exc.id) }}" method="POST" class="inline">
+                            <button type="submit" class="btn btn-sm bg-slate-100 hover:bg-slate-200 text-slate-700 border-0 rounded-xl w-full">
+                                <i class="fa-solid fa-ban"></i> Cancelar
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% else %}
+                <li class="text-center py-10 rounded-[1.4rem] border border-dashed border-seedra-leafDark/20 bg-white/60">
+                    <i class="fa-solid fa-shield-halved text-3xl text-seedra-leafLight mb-2"></i>
+                    <p class="text-sm text-slate-500 font-bold">Nenhuma exclusão pendente!</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+{% endblock %}

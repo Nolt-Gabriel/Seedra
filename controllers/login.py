@@ -1,5 +1,5 @@
 from flask import render_template, Blueprint, redirect, url_for, flash, session, request
-from flask_login import login_user
+from flask_login import login_user, current_user
 from functools import wraps
 
 from models import Usuarios
@@ -18,7 +18,15 @@ def login_required(f):
     return decorated_function
 
 
-# ---------- LOGIN ------------------------------
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if getattr(current_user, 'is_admin', False) == False:
+            flash("Acesso restrito para administradores.", "erro")
+            return redirect(url_for('dashboard.dashboard'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 @bp_login.route('/', methods=['GET', 'POST'])
 def login():

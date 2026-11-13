@@ -4,17 +4,26 @@ from flask import Blueprint, request, flash, redirect, url_for, render_template
 from flask_login import current_user
 
 from db import db
-from models import Movimentacao, Item
+from models import Movimentacao, Item, STATUS_PENDENTE, STATUS_APROVADA
 from controllers.login import login_required
 
 bp_movimentacao = Blueprint("movimentacao", __name__, template_folder='templates')
 
 TIPOS_VALIDOS = ('Entrada', 'Saída')
 
-
 @bp_movimentacao.route('/', methods=['GET', 'POST'])
 @login_required
 def movimentacao():
+    is_admin = getattr(current_user, 'is_admin', False)
+    tem_empresa = is_admin or (hasattr(current_user, 'usuario_instituicoes') and len(current_user.usuario_instituicoes) > 0)
+    sem_empresa = not tem_empresa
+
+    if sem_empresa:
+        if request.method == 'POST':
+            flash('Você precisa estar vinculado a uma empresa para realizar movimentações.', 'warning')
+            return redirect(url_for('movimentacao.movimentacao'))
+        return render_template('movimentacao.html', sem_empresa=True)
+    
     if request.method == 'POST':
         id_item = request.form.get('id_item', '').strip()
         data_move = request.form.get('data_move', '').strip()
@@ -55,24 +64,33 @@ def movimentacao():
             flash(f'Estoque insuficiente: "{item.nome}" tem apenas {item.quantidade} unidade(s).', 'warning')
             return redirect(url_for('movimentacao.movimentacao'))
 
+        is_admin = getattr(current_user, 'is_admin', False)
+        status_mov = STATUS_APROVADA if is_admin else STATUS_PENDENTE
+        decidido = current_user.nome if is_admin else None
+
         nova_movimentacao = Movimentacao(
             id_item=item.id,
             data_move=data_movimentacao,
             Typ=tipo,
             quantidade=quantidade,
             justificativa=justificativa,
-            operador=current_user.email
+            operador=current_user.email,
+            status=status_mov,
+            decidido_por=decidido
         )
         db.session.add(nova_movimentacao)
 
-        if tipo == 'Entrada':
-            item.quantidade += quantidade
+        if is_admin:
+            if tipo == 'Entrada':
+                item.quantidade += quantidade
+            else:
+                item.quantidade -= quantidade
+            flash("Movimentação registrada e aprovada com sucesso!", 'success')
         else:
-            item.quantidade -= quantidade
+            flash("Solicitação de movimentação enviada para aprovação do administrador!", 'success')
 
         db.session.commit()
 
-        flash("Movimentação registrada com sucesso!", 'success')
         return redirect(url_for('movimentacao.movimentacao'))
 
     itens = Item.query.order_by(Item.nome).all()
@@ -83,4 +101,4 @@ def movimentacao():
         .all()
     )
 
-    return render_template('movimentacao.html', itens=itens, movimentacoes=movimentacoes)
+    return render_template('movimentacao.html', itens=itens, movimentacoes=movimentacoes, sem_empresa=False)

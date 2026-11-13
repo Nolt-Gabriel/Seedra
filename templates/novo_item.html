@@ -18,7 +18,35 @@
         </div>
     </div>
 
-    <form action="{{ url_for('catalogo.novo_item') }}" method="POST" class="space-y-6 font-lato">
+    {% with messages = get_flashed_messages(category_filter=["catalogo_error"], with_categories=true) %}
+        {% if messages %}
+            <div class="mb-6 space-y-2 font-lato">
+            {% for categoria, mensagem in messages %}
+                <div class="flex items-start gap-2 p-3 rounded-xl text-sm font-bold bg-red-50 text-red-700 border border-red-100">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+                    <span>{{ mensagem }}</span>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('catalogo.novo_item') }}" method="POST" enctype="multipart/form-data" class="space-y-6 font-lato">
+        {% if instituicoes|length > 1 %}
+        <div>
+            <label for="id_instituicao" class="{{ rotulo }}">Empresa</label>
+            <select id="id_instituicao" name="id_instituicao" class="{{ campo }}" required>
+                {% for inst in instituicoes %}
+                    <option value="{{ inst.id }}" {% if inst_atual and inst.id == inst_atual.id %}selected{% endif %}>
+                        {{ inst.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+        <input type="hidden" name="id_instituicao" value="{{ inst_atual.id }}">
+        {% endif %}
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label for="nome_comum" class="{{ rotulo }}">Nome Comum</label>
@@ -53,16 +81,41 @@
         </div>
 
         <div>
+            <label for="imagem" class="{{ rotulo }}">Foto do Espécime (opcional)</label>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                <img id="preview_imagem" src="#" alt="Pré-visualização" class="hidden w-20 h-20 object-cover rounded-2xl border border-seedra-leafDark/15 shrink-0" />
+                <div class="w-full">
+                    <input type="file" id="imagem" name="imagem" accept="image/png, image/jpeg, image/webp"
+                        class="file-input file-input-bordered w-full rounded-xl bg-white/70 border-seedra-leafDark/15 text-sm" />
+                    <p class="text-xs text-slate-400 mt-1">Formatos aceitos: PNG, JPG, JPEG ou WEBP.</p>
+                </div>
+            </div>
+        </div>
+
+        <div>
             <label for="observacoes" class="{{ rotulo }}">Observações de Cuidado / Plantio</label>
             <textarea id="observacoes" name="observacoes" class="{{ campo }} h-28 resize-y" placeholder="Ex: Necessita de exposição direta ao sol e solo úmido."></textarea>
         </div>
 
         <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 border-t border-seedra-leafDark/10 pt-6">
-            <a href="{{ url_for('catalogo.catalogo') }}" class="btn btn-ghost rounded-2xl text-slate-500">Cancelar</a>
+            <a href="{{ url_for('catalogo.listar_catalogo') }}" class="btn btn-ghost rounded-2xl text-slate-500">Cancelar</a>
             <button type="submit" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white shadow-md shadow-seedra-leafDark/20">
                 <i class="fa-solid fa-floppy-disk"></i> Salvar registro
             </button>
         </div>
     </form>
 </div>
+
+<script>
+  document.getElementById('imagem').addEventListener('change', function (e) {
+    const preview = document.getElementById('preview_imagem');
+    const file = e.target.files[0];
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove('hidden');
+    } else {
+      preview.classList.add('hidden');
+    }
+  });
+</script>
 {% endblock %}
