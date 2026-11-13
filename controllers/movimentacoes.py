@@ -11,11 +11,22 @@ bp_movimentacao = Blueprint("movimentacao", __name__, template_folder='templates
 
 TIPOS_VALIDOS = ('Entrada', 'Saída')
 
+
+def _obter_instituicao_ids(usuario):
+    vinculos = getattr(usuario, 'usuario_instituicoes', []) or []
+    ids = [
+        getattr(v, 'id_instituicao', getattr(v, 'id', None))
+        for v in vinculos
+    ]
+    return [i for i in ids if i is not None]
+
+
 @bp_movimentacao.route('/', methods=['GET', 'POST'])
 @login_required
 def movimentacao():
     is_admin = getattr(current_user, 'is_admin', False)
-    tem_empresa = is_admin or (hasattr(current_user, 'usuario_instituicoes') and len(current_user.usuario_instituicoes) > 0)
+    instituicao_ids = _obter_instituicao_ids(current_user)
+    tem_empresa = is_admin or len(instituicao_ids) > 0
     sem_empresa = not tem_empresa
 
     if sem_empresa:
@@ -23,7 +34,7 @@ def movimentacao():
             flash('Você precisa estar vinculado a uma empresa para realizar movimentações.', 'warning')
             return redirect(url_for('movimentacao.movimentacao'))
         return render_template('movimentacao.html', sem_empresa=True)
-    
+
     if request.method == 'POST':
         id_item = request.form.get('id_item', '').strip()
         data_move = request.form.get('data_move', '').strip()
@@ -56,15 +67,14 @@ def movimentacao():
             return redirect(url_for('movimentacao.movimentacao'))
 
         item = db.session.get(Item, id_item)
-        if item is None:
-            flash('Item não encontrado!', 'warning')
+        if item is None or (instituicao_ids and item.id_instituicao not in instituicao_ids):
+            flash('Item não encontrado ou não pertence à sua empresa!', 'warning')
             return redirect(url_for('movimentacao.movimentacao'))
 
         if tipo == 'Saída' and quantidade > item.quantidade:
             flash(f'Estoque insuficiente: "{item.nome}" tem apenas {item.quantidade} unidade(s).', 'warning')
             return redirect(url_for('movimentacao.movimentacao'))
 
-        is_admin = getattr(current_user, 'is_admin', False)
         status_mov = STATUS_APROVADA if is_admin else STATUS_PENDENTE
         decidido = current_user.nome if is_admin else None
 
@@ -93,9 +103,16 @@ def movimentacao():
 
         return redirect(url_for('movimentacao.movimentacao'))
 
-    itens = Item.query.order_by(Item.nome).all()
+    query_itens = Item.query
+    query_mov = Movimentacao.query.join(Item)
+
+    if instituicao_ids:
+        query_itens = query_itens.filter(Item.id_instituicao.in_(instituicao_ids))
+        query_mov = query_mov.filter(Item.id_instituicao.in_(instituicao_ids))
+
+    itens = query_itens.order_by(Item.nome).all()
     movimentacoes = (
-        Movimentacao.query
+        query_mov
         .order_by(Movimentacao.data_move.desc(), Movimentacao.id.desc())
         .limit(10)
         .all()
