@@ -101,7 +101,7 @@
       .main { overflow: visible; }
     }
 
-    /* Escuro */
+    /* Tema Escuro */
 
     [data-theme="dark"] {
       --surface: rgba(24, 38, 31, 0.88);
@@ -131,6 +131,11 @@
       background-color: #18261f !important;
       border-color: rgba(163, 217, 149, 0.14) !important;
       box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    [data-theme="dark"] .bg-seedra-seedSand {
+      background-color: #786b46 !important;
+      color: #786b46 !important;
     }
 
     [data-theme="dark"] .bg-white,

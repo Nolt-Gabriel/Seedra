@@ -19,6 +19,7 @@ from controllers.movimentacoes import bp_movimentacao
 from controllers.relatorios import bp_relatorios_pdf
 from controllers.usuarios import bp_usuarios
 from controllers.lgpd import bp_lgpd
+from controllers.instituicoes import bp_instituicoes
 
 
 app = Flask(__name__)
@@ -79,6 +80,7 @@ app.register_blueprint(bp_movimentacao, url_prefix="/movimentacao")
 app.register_blueprint(bp_relatorios_pdf, url_prefix="/relatorios")
 app.register_blueprint(bp_usuarios, url_prefix="/usuarios")
 app.register_blueprint(bp_lgpd, url_prefix="/privacidade")
+app.register_blueprint(bp_instituicoes, url_prefix="/instituicoes")
 
 
 if __name__ == '__main__':

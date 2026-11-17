@@ -61,6 +61,16 @@
                         <a href="{{ url_for('admin.detalhes_empresa', id=inst.id) }}" class="btn btn-sm btn-ghost text-seedra-leafMid hover:bg-seedra-leafLight/20 rounded-xl" title="Ver detalhes e operadores">
                             <i class="fa-solid fa-eye"></i>
                         </a>
+
+                        <a href="{{ url_for('instituicoes.editar_instituicao', id=inst.id) }}" class="btn btn-sm btn-ghost text-blue-500 hover:bg-blue-100 rounded-xl" title="Editar empresa">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+
+                        <form action="{{ url_for('instituicoes.excluir_instituicao', id=inst.id) }}" method="POST" class="inline-block m-0 p-0">
+                            <button type="submit" class="btn btn-sm btn-ghost text-red-500 hover:bg-red-100 rounded-xl" title="Excluir empresa" onclick="return confirm('Tem certeza que deseja excluir a empresa {{ inst.nome }}? Todos os operadores perderão o vínculo com ela.');">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
                     </td>
                     {% endif %}
                 </tr>

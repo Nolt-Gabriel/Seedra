@@ -6,7 +6,7 @@
 {% block header_title %}{{ empresa.nome }}{% endblock %}
 
 {% block header_actions %}
-  <a href="{{ url_for('admin.gerenciar_empresas') }}" class="btn btn-sm md:btn-md rounded-2xl border-seedra-leafDark/20 bg-white hover:bg-gray-50 text-seedra-leafDark font-lato">
+  <a href="{{ url_for('usuarios.usuarios') }}" class="btn btn-sm md:btn-md rounded-2xl border-seedra-leafDark/20 bg-white hover:bg-gray-50 text-seedra-leafDark font-lato">
     <i class="fa-solid fa-arrow-left"></i><span class="hidden sm:inline">Voltar</span>
   </a>
 {% endblock %}

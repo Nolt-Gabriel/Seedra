@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Empresa{% endblock %}
+
+{% set page_id = 'editar_empresa'%}
+{% block header_subtitle %}Administração{% endblock %}
+{% block header_title %}Editar Empresa{% endblock %}
+
+{% block content %}
+<section class="soft-card rounded-[2rem] p-6 max-w-2xl mx-auto bg-white border border-seedra-leafDark/10">
+    <div class="mb-5">
+        <h3 class="text-2xl font-extrabold text-seedra-leafDark">Atualizar Dados da Instituição</h3>
+    </div>
+    
+    <form method="POST" action="{{ url_for('instituicoes.editar_instituicao', id=inst.id) }}" class="font-lato">
+        
+        <!-- Exibição de Mensagens Flash de Erro -->
+        {% with messages = get_flashed_messages(category_filter=['usuarios_error']) %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-error mb-4 rounded-xl">
+                <span>{{ message }}</span>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="form-control w-full mb-4">
+            <label class="label"><span class="label-text font-bold text-seedra-leafDark">Nome da Empresa</span></label>
+            <input type="text" name="nome_empresa" value="{{ inst.nome }}" class="input input-bordered w-full rounded-xl" required />
+        </div>
+
+        <div class="form-control w-full mb-4">
+            <label class="label"><span class="label-text font-bold text-seedra-leafDark">CNPJ</span></label>
+            <input type="text" name="cnpj" value="{{ inst.cnpj }}" class="input input-bordered w-full rounded-xl" placeholder="Apenas números ou formato padrão" />
+        </div>
+
+        <div class="form-control w-full mb-4">
+            <label class="label"><span class="label-text font-bold text-seedra-leafDark">Endereço</span></label>
+            <input type="text" name="endereco" value="{{ inst.endereco }}" class="input input-bordered w-full rounded-xl" />
+        </div>
+
+        <div class="form-control w-full mb-6">
+            <label class="label"><span class="label-text font-bold text-seedra-leafDark">Telefone</span></label>
+            <input type="text" name="telefone" value="{{ inst.telefone }}" class="input input-bordered w-full rounded-xl" />
+        </div>
+
+        <div class="flex gap-3 mt-6">
+            <button type="submit" class="btn rounded-2xl border-0 bg-seedra-leafDark hover:bg-seedra-leafMid text-white flex-1">
+                <i class="fa-solid fa-check mr-2"></i> Salvar Alterações
+            </button>
+            <a href="{{ url_for('usuarios.usuarios') }}" class="btn rounded-2xl flex-1 btn-ghost border border-slate-300">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</section>
+{% endblock %}
